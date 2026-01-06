@@ -1,0 +1,254 @@
+{
+  "schema": "weather-icons/v2",
+  "source": {
+    "provider": "openweathermap",
+    "ref": "https://openweathermap.org/weather-conditions"
+  },
+  "naming": {
+    "convention": "owm-{code}-{variant}",
+    "variants": ["day", "night", "neutral"],
+    "note": "Les noms d'assets ci-dessous sont sans extension (.svg)."
+  },
+
+  "conditions": {
+    "800": {
+      "group": "Clear",
+      "condition": "clear sky",
+      "icons": {"day": "01d", "night": "01n"},
+      "assets": {"day": "owm-800-day", "night": "owm-800-night", "default": "owm-800-day"}
+    },
+
+    "802": {
+      "group": "Clouds",
+      "condition": "scattered clouds (25–50%)",
+      "icons": {"day": "03d", "night": "03n"},
+      "assets": {"neutral": "owm-802-neutral", "default": "owm-802-neutral"}
+    },
+
+    "803": {
+      "group": "Clouds",
+      "condition": "broken clouds (51–84%)",
+      "icons": {"day": "04d", "night": "04n"},
+      "assets": {"neutral": "owm-803-neutral", "default": "owm-803-neutral"}
+    },
+
+    "804": {
+      "group": "Clouds",
+      "condition": "overcast clouds (85–100%)",
+      "icons": {"day": "04d", "night": "04n"},
+      "assets": {"day": "owm-804-day", "night": "owm-804-night", "neutral": "owm-804-neutral", "default": "owm-804-neutral"}
+    },
+
+    "301": {
+      "group": "Drizzle",
+      "condition": "drizzle",
+      "icons": {"day": "09d", "night": "09n"},
+      "assets": {"neutral": "owm-301-neutral", "default": "owm-301-neutral"}
+    },
+
+    "501": {
+      "group": "Rain",
+      "condition": "moderate rain",
+      "icons": {"day": "10d", "night": "10n"},
+      "assets": {"neutral": "owm-501-neutral", "default": "owm-501-neutral"}
+    },
+
+    "601": {
+      "group": "Snow",
+      "condition": "snow",
+      "icons": {"day": "13d", "night": "13n"},
+      "assets": {"neutral": "owm-601-neutral", "default": "owm-601-neutral"}
+    },
+
+    "611": {
+      "group": "Snow",
+      "condition": "sleet",
+      "icons": {"day": "13d", "night": "13n"},
+      "assets": {"neutral": "owm-611-neutral", "default": "owm-611-neutral"}
+    },
+
+    "701": {
+      "group": "Atmosphere",
+      "condition": "mist",
+      "icons": {"day": "50d", "night": "50n"},
+      "assets": {"neutral": "owm-701-neutral", "default": "owm-701-neutral"}
+    },
+
+    "711": {
+      "group": "Atmosphere",
+      "condition": "smoke",
+      "icons": {"day": "50d", "night": "50n"},
+      "assets": {"neutral": "owm-711-neutral", "default": "owm-711-neutral"}
+    },
+
+    "721": {
+      "group": "Atmosphere",
+      "condition": "haze",
+      "icons": {"day": "50d", "night": "50n"},
+      "assets": {"day": "owm-721-day", "night": "owm-721-night", "neutral": "owm-721-neutral", "default": "owm-721-neutral"}
+    },
+
+    "731": {
+      "group": "Atmosphere",
+      "condition": "sand/dust whirls",
+      "icons": {"day": "50d", "night": "50n"},
+      "assets": {"neutral": "owm-731-neutral", "default": "owm-731-neutral"}
+    },
+
+    "741": {
+      "group": "Atmosphere",
+      "condition": "fog",
+      "icons": {"day": "50d", "night": "50n"},
+      "assets": {"day": "owm-741-day", "night": "owm-741-night", "neutral": "owm-741-neutral", "default": "owm-741-neutral"}
+    },
+
+    "761": {
+      "group": "Atmosphere",
+      "condition": "dust",
+      "icons": {"day": "50d", "night": "50n"},
+      "assets": {"day": "owm-761-day", "night": "owm-761-night", "neutral": "owm-761-neutral", "default": "owm-761-neutral"}
+    },
+
+    "781": {
+      "group": "Atmosphere",
+      "condition": "tornado",
+      "icons": {"day": "50d", "night": "50n"},
+      "assets": {"neutral": "owm-781-neutral", "default": "owm-781-neutral"}
+    },
+
+    "201": {
+      "group": "Thunderstorm",
+      "condition": "thunderstorm with rain",
+      "icons": {"day": "11d", "night": "11n"},
+      "assets": {"day": "owm-201-day", "night": "owm-201-night", "neutral": "owm-201-neutral", "default": "owm-201-day"}
+    },
+
+    "211": {
+      "group": "Thunderstorm",
+      "condition": "thunderstorm",
+      "icons": {"day": "11d", "night": "11n"},
+      "assets": {"day": "owm-211-day", "night": "owm-211-night", "neutral": "owm-211-neutral", "default": "owm-211-day"}
+    }
+  },
+
+  "indexes": {
+    "icon_id": {
+      "01d": {"code": 800, "variant": "day"},
+      "01n": {"code": 800, "variant": "night"},
+
+      "03d": {"code": 802, "variant": "day"},
+      "03n": {"code": 802, "variant": "night"},
+
+      "04d": {"code": 804, "variant": "day"},
+      "04n": {"code": 804, "variant": "night"},
+
+      "09d": {"code": 301, "variant": "day"},
+      "09n": {"code": 301, "variant": "night"},
+
+      "10d": {"code": 501, "variant": "day"},
+      "10n": {"code": 501, "variant": "night"},
+
+      "11d": {"code": 211, "variant": "day"},
+      "11n": {"code": 211, "variant": "night"},
+
+      "13d": {"code": 601, "variant": "day"},
+      "13n": {"code": 601, "variant": "night"},
+
+      "50d": {"code": 741, "variant": "day"},
+      "50n": {"code": 741, "variant": "night"}
+    },
+
+    "asset": {
+      "owm-800-day": {"code": 800, "variant": "day"},
+      "owm-800-night": {"code": 800, "variant": "night"},
+
+      "owm-802-neutral": {"code": 802, "variant": "neutral"},
+      "owm-803-neutral": {"code": 803, "variant": "neutral"},
+
+      "owm-804-day": {"code": 804, "variant": "day"},
+      "owm-804-night": {"code": 804, "variant": "night"},
+      "owm-804-neutral": {"code": 804, "variant": "neutral"},
+
+      "owm-301-neutral": {"code": 301, "variant": "neutral"},
+      "owm-501-neutral": {"code": 501, "variant": "neutral"},
+      "owm-601-neutral": {"code": 601, "variant": "neutral"},
+      "owm-611-neutral": {"code": 611, "variant": "neutral"},
+
+      "owm-701-neutral": {"code": 701, "variant": "neutral"},
+      "owm-711-neutral": {"code": 711, "variant": "neutral"},
+
+      "owm-721-day": {"code": 721, "variant": "day"},
+      "owm-721-night": {"code": 721, "variant": "night"},
+      "owm-721-neutral": {"code": 721, "variant": "neutral"},
+
+      "owm-731-neutral": {"code": 731, "variant": "neutral"},
+
+      "owm-741-day": {"code": 741, "variant": "day"},
+      "owm-741-night": {"code": 741, "variant": "night"},
+      "owm-741-neutral": {"code": 741, "variant": "neutral"},
+
+      "owm-761-day": {"code": 761, "variant": "day"},
+      "owm-761-night": {"code": 761, "variant": "night"},
+      "owm-761-neutral": {"code": 761, "variant": "neutral"},
+
+      "owm-781-neutral": {"code": 781, "variant": "neutral"},
+
+      "owm-201-day": {"code": 201, "variant": "day"},
+      "owm-201-night": {"code": 201, "variant": "night"},
+      "owm-201-neutral": {"code": 201, "variant": "neutral"},
+
+      "owm-211-day": {"code": 211, "variant": "day"},
+      "owm-211-night": {"code": 211, "variant": "night"},
+      "owm-211-neutral": {"code": 211, "variant": "neutral"}
+    }
+  },
+
+  "aliases": {
+    "clear-day": "owm-800-day",
+    "clear-night": "owm-800-night",
+
+    "cloudy": "owm-802-neutral",
+
+    "overcast": "owm-804-neutral",
+    "overcast-day": "owm-804-day",
+    "overcast-night": "owm-804-night",
+
+    "drizzle": "owm-301-neutral",
+    "rain": "owm-501-neutral",
+
+    "snow": "owm-601-neutral",
+    "sleet": "owm-611-neutral",
+
+    "mist": "owm-701-neutral",
+    "smoke": "owm-711-neutral",
+
+    "haze": "owm-721-neutral",
+    "haze-day": "owm-721-day",
+    "haze-night": "owm-721-night",
+
+    "dust-wind": "owm-731-neutral",
+
+    "fog": "owm-741-neutral",
+    "fog-day": "owm-741-day",
+    "fog-night": "owm-741-night",
+
+    "dust": "owm-761-neutral",
+    "dust-day": "owm-761-day",
+    "dust-night": "owm-761-night",
+
+    "tornado": "owm-781-neutral",
+
+    "thunderstorms": "owm-211-neutral",
+    "thunderstorms-day": "owm-211-day",
+    "thunderstorms-night": "owm-211-night",
+
+    "thunderstorms-rain": "owm-201-neutral",
+    "thunderstorms-day-rain": "owm-201-day",
+    "thunderstorms-night-rain": "owm-201-night"
+  },
+
+  "extras": {
+    "note": "Réservé aux icônes UI non-OWM (wind, humidity, uv, alerts, etc.)."
+  }
+}
+
