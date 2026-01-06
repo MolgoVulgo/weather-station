@@ -15,11 +15,13 @@ extern "C" {
 // Flow global variables
 
 enum FlowGlobalVariables {
-    FLOW_GLOBAL_VARIABLE_NONE
+    FLOW_GLOBAL_VARIABLE_UI_METEO_DATE = 0
 };
 
 // Native global variables
 
+extern const char *get_var_ui_meteo_date();
+extern void set_var_ui_meteo_date(const char *value);
 
 
 #ifdef __cplusplus

@@ -25,9 +25,11 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
    - init backlight PWM.
    - init LCD QSPI + panneau AXS15231B.
    - init tactile I2C et enregistrement LVGL input.
-5. Montage SD (/sdcard) et listing des fichiers.
-6. `ui_init()` cree l'interface LVGL (EEZ Studio).
-7. `ui_screen_start()` demarre l'horloge locale (timer LVGL).
+5. Init Wi-Fi (STA) avec credentials NVS (valeurs par defaut via `include/secrets.h`).
+6. Init NVS + synchro NTP (pool configurable, offset en secondes).
+7. Montage SD (/sdcard) et listing des fichiers.
+8. `ui_init()` cree l'interface LVGL (EEZ Studio).
+9. `ui_screen_start()` demarre l'horloge locale (timer LVGL).
 
 ## Pipeline d'affichage
 - `bsp_display_new()` configure le bus QSPI et le panneau AXS15231B.
@@ -46,6 +48,8 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - LVGL: `src/lv_conf.h`, injecte via `LV_CONF_PATH` dans `platformio.ini`.
 - Taille buffer LVGL: `bsp_display_cfg_t.buffer_size` dans `src/weatherStation.c`.
 - Pins QSPI/I2C: `src/esp_bsp.h`.
+- NTP: pool et décalage (secondes) en NVS, namespace `time_cfg` (`src/time_sync.c`).
+- Wi-Fi: SSID + mot de passe en NVS, namespace `wifi_cfg` (`src/wifi_manager.c`).
 
 ## Points d'extension
 - Utiliser `bsp_display_lock()` / `bsp_display_unlock()` pour proteger les appels LVGL depuis d'autres tasks.

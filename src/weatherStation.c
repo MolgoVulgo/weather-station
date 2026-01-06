@@ -9,11 +9,16 @@
 #include <esp_chip_info.h>
 #include <esp_system.h>
 #include <esp_heap_caps.h>
+#include <esp_err.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include "wifi_manager.h"
 #include <driver/sdmmc_host.h>
 #include <esp_vfs_fat.h>
 #include <sdmmc_cmd.h>
 #include <dirent.h>
 #include "ui_screen.h"
+#include "time_sync.h"
 
 static const char *TAG = "WeatherStation";
 
@@ -98,6 +103,7 @@ void setup()
 {
   //  String title = "WeatherStation";
 
+  vTaskDelay(pdMS_TO_TICKS(10000));
   logSection("WeatherStation start");
   esp_chip_info_t chip_info;
   uint32_t flash_size;
@@ -143,6 +149,18 @@ void setup()
 
   bsp_display_start_with_config(&cfg);
   bsp_display_backlight_on();
+
+  logSection("WiFi");
+  esp_err_t wifi_ret = wifi_manager_init();
+  if (wifi_ret != ESP_OK) {
+    ESP_LOGE(TAG, "WiFi init failed: %s", esp_err_to_name(wifi_ret));
+  }
+
+  logSection("Time sync");
+  esp_err_t time_ret = time_sync_init();
+  if (time_ret != ESP_OK) {
+    ESP_LOGE(TAG, "Time sync init failed: %s", esp_err_to_name(time_ret));
+  }
 
   logSection("Mount SD card");
   if (sdcard_mount() == ESP_OK) {
