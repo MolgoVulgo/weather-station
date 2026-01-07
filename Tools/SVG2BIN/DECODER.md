@@ -4,7 +4,22 @@ Cette page documente la lib C pour decoder le format `.bin` genere par `svg2bin.
 
 ## Format .bin
 
-Chaque image est stockee comme une entree, et le fichier merge est une concatenation d'entrees.
+Le fichier commence par un en-tete d'index, suivi des entrees images.
+
+### En-tete
+
+- `char[4] magic` = "S2BI"
+- `uint16 version` = 1
+- `uint16 index_count`
+
+### Index (repetition `index_count`)
+
+- `uint16 code` (OWM)
+- `uint8 variant` (0=jour, 1=nuit, 2=neutre)
+- `uint8 reserved` (0)
+- `uint32 offset` (offset absolu vers l'entree image)
+
+### Entree image (a l'offset)
 
 - `uint16 name_len`
 - `name_len` bytes: nom (UTF-8)
@@ -43,6 +58,11 @@ Ajoutez-les a votre composant ESP-IDF.
   - Appelle `draw_cb` avec le pointeur RGB565.
 - Retourne `ESP_OK` si toutes les entrees sont decodees, sinon un code d'erreur.
 
+`esp_err_t svg2bin_find_entry_offset(const uint8_t *buffer, size_t buffer_len, uint16_t code, uint8_t variant, uint32_t *out_offset)`
+
+- Cherche l'offset d'une entree via l'index integre dans le `.bin`.
+- Retourne `ESP_OK` si trouve, `ESP_ERR_NOT_FOUND` sinon.
+
 `esp_err_t svg2bin_decode_stream(FILE *fp, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
 
 - Decode un fichier `.bin` en streaming (pas de buffer global).
@@ -50,6 +70,10 @@ Ajoutez-les a votre composant ESP-IDF.
 - Decompresse si `compressed == 1` (zlib).
 - Appelle `draw_cb` avec le pointeur RGB565.
 - Retourne `ESP_OK` si toutes les entrees sont decodees, sinon un code d'erreur.
+
+`esp_err_t svg2bin_find_entry_offset_stream(FILE *fp, uint16_t code, uint8_t variant, uint32_t *out_offset)`
+
+- Version streaming de la recherche d'offset via l'index integre.
 
 `esp_err_t svg2bin_decode_entry_at_offset(FILE *fp, uint32_t offset, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
 

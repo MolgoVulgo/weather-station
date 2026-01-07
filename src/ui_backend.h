@@ -11,6 +11,11 @@ static inline lv_obj_t *ui_time_label(void)
 {
     return objects.ui_meteo_clock;
 }
+
+static inline lv_obj_t *ui_weather_image(void)
+{
+    return objects.ui_meteo_img;
+}
 #else
 #error "Define UI_BACKEND_EEZ to select the UI backend."
 #endif

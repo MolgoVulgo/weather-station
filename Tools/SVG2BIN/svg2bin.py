@@ -8,6 +8,11 @@ import zlib
 from pathlib import Path
 from typing import Optional, Tuple
 
+INDEX_MAGIC = b"S2BI"
+INDEX_VERSION = 1
+INDEX_HEADER_SIZE = 8
+INDEX_ENTRY_SIZE = 8
+
 try:
     import cairosvg
     from PIL import Image
@@ -153,6 +158,21 @@ def build_index_entries(weather_entries: list[dict], asset_entries: dict[str, di
             }
         )
     return index_entries
+
+
+def build_index_blob(index_entries: list[dict], data_start: int) -> tuple[bytes, list[dict]]:
+    variant_map = {"day": 0, "night": 1, "neutral": 2}
+    blob = bytearray()
+    abs_entries: list[dict] = []
+    for entry in index_entries:
+        variant_name = entry.get("variant")
+        variant = variant_map.get(variant_name, 2)
+        offset = int(entry["offset"]) + data_start
+        blob.extend(struct.pack("<HBBI", int(entry["code"]), int(variant), 0, offset))
+        abs_entry = dict(entry)
+        abs_entry["offset"] = offset
+        abs_entries.append(abs_entry)
+    return bytes(blob), abs_entries
 
 
 def write_index_header(bin_path: Path, entries: list[dict]) -> None:
@@ -334,12 +354,16 @@ def main() -> int:
                 "data_len": len(payload),
             }
         )
-        write_file(args.out, entry)
-        index_entries = entries
+        index_entries: list[dict] = []
         if weather_entries:
             index_entries = build_index_entries(weather_entries, {entry_name: entries[0]})
-        update_index(index_entries)
-        write_index_header(args.out, index_entries)
+        data_start = INDEX_HEADER_SIZE + INDEX_ENTRY_SIZE * len(index_entries)
+        index_blob, index_entries_abs = build_index_blob(index_entries, data_start)
+        header = INDEX_MAGIC + struct.pack("<HH", INDEX_VERSION, len(index_entries))
+        write_file(args.out, header + index_blob + entry)
+        if index_entries_abs:
+            update_index(index_entries_abs)
+            write_index_header(args.out, index_entries_abs)
         return 0
 
     if args.out_dir:
@@ -398,13 +422,17 @@ def main() -> int:
     if args.out.suffix.lower() != ".bin":
         print("For a directory input, --out must be a .bin file.", file=sys.stderr)
         return 2
-    write_file(args.out, bytes(merged))
-    index_entries = entries
+    index_entries: list[dict] = []
     if weather_entries:
         entry_map = {entry["name"]: entry for entry in entries}
         index_entries = build_index_entries(weather_entries, entry_map)
-    update_index(index_entries)
-    write_index_header(args.out, index_entries)
+    data_start = INDEX_HEADER_SIZE + INDEX_ENTRY_SIZE * len(index_entries)
+    index_blob, index_entries_abs = build_index_blob(index_entries, data_start)
+    header = INDEX_MAGIC + struct.pack("<HH", INDEX_VERSION, len(index_entries))
+    write_file(args.out, header + index_blob + bytes(merged))
+    if index_entries_abs:
+        update_index(index_entries_abs)
+        write_index_header(args.out, index_entries_abs)
     return 0
 
 

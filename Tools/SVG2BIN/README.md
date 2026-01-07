@@ -35,8 +35,20 @@ python3 svg2bin.py assets/ --size 128x64 --out merged.bin --out-dir bins/ --comp
 
 ## Format binaire (.bin)
 
-Chaque image est stockee comme une entree, et le fichier merge est une concatenation d'entrees.
+Le fichier merge commence par un en-tete d'index, puis les entrees images.
 
+En-tete:
+- `char[4] magic` = "S2BI"
+- `uint16 version` = 1
+- `uint16 index_count`
+
+Index (repete `index_count`):
+- `uint16 code` (OWM)
+- `uint8 variant` (0=jour, 1=nuit, 2=neutre)
+- `uint8 reserved` (0)
+- `uint32 offset` (offset absolu vers l'entree image)
+
+Entree image (a l'offset):
 - `uint16 name_len`
 - `name_len` bytes: nom (UTF-8)
 - `uint16 width`

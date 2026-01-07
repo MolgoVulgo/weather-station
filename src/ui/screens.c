@@ -38,7 +38,7 @@ void create_screen_ui_meteo() {
             // ui_meteo_img
             lv_obj_t *obj = lv_img_create(parent_obj);
             objects.ui_meteo_img = obj;
-            lv_obj_set_pos(obj, 25, 25);
+            lv_obj_set_pos(obj, 31, 16);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_img_set_src(obj, "s:/ui_image_clear_day.bin");
         }
@@ -58,20 +58,22 @@ void create_screen_ui_meteo() {
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.ui_meteo_temp = obj;
             lv_obj_set_pos(obj, 255, 107);
-            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_size(obj, 160, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &ui_font_ui_40, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text(obj, "-199.0°C");
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "");
         }
         {
             // ui_meteo_condition
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.ui_meteo_condition = obj;
-            lv_obj_set_pos(obj, 213, 155);
-            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_pos(obj, 210, 150);
+            lv_obj_set_size(obj, 250, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text(obj, "Orages avec pluie forte et bruine");
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "");
         }
         {
             lv_obj_t *obj = lv_line_create(parent_obj);
@@ -322,6 +324,24 @@ void tick_screen_ui_meteo() {
         if (strcmp(new_val, cur_val) != 0) {
             tick_value_change_obj = objects.ui_meteo_date;
             lv_label_set_text(objects.ui_meteo_date, new_val);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        const char *new_val = get_var_ui_meteo_temp();
+        const char *cur_val = lv_label_get_text(objects.ui_meteo_temp);
+        if (strcmp(new_val, cur_val) != 0) {
+            tick_value_change_obj = objects.ui_meteo_temp;
+            lv_label_set_text(objects.ui_meteo_temp, new_val);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        const char *new_val = get_var_ui_meteo_condition();
+        const char *cur_val = lv_label_get_text(objects.ui_meteo_condition);
+        if (strcmp(new_val, cur_val) != 0) {
+            tick_value_change_obj = objects.ui_meteo_condition;
+            lv_label_set_text(objects.ui_meteo_condition, new_val);
             tick_value_change_obj = NULL;
         }
     }
