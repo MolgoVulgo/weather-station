@@ -4,6 +4,7 @@
 char ui_meteo_date[100] = { 0 };
 char ui_meteo_houre[32] = { 0 };
 char ui_meteo_temp[32] = { 0 };
+char ui_meteo_condition[64] = { 0 };
 
 const char *get_var_ui_meteo_date(void)
 {
@@ -36,4 +37,15 @@ void set_var_ui_meteo_temp(const char *value)
 {
     strncpy(ui_meteo_temp, value, sizeof(ui_meteo_temp) / sizeof(char));
     ui_meteo_temp[sizeof(ui_meteo_temp) / sizeof(char) - 1] = 0;
+}
+
+const char *get_var_ui_meteo_condition(void)
+{
+    return ui_meteo_condition;
+}
+
+void set_var_ui_meteo_condition(const char *value)
+{
+    strncpy(ui_meteo_condition, value, sizeof(ui_meteo_condition) / sizeof(char));
+    ui_meteo_condition[sizeof(ui_meteo_condition) / sizeof(char) - 1] = 0;
 }

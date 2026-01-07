@@ -18,7 +18,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - Do not modify `src/ui/` contents (generated files).
 
 ## UI Variables (EEZ)
-- Variables declared in `src/ui/vars.h` are implemented in `src/vars.c` via `get_var_` / `set_var_`.
+- Variables declared in `src/ui/vars.h` must be implemented in `src/vars.c` via `get_var_` / `set_var_` (generate/update `src/vars.c` whenever `src/ui/vars.h` changes).
 - The UI updates labels in `src/ui/screens.c` on each `tick_screen()` by reading these getters.
 
 ## Boot Flow

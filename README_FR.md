@@ -18,7 +18,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - Interdiction de modifier le contenu de `src/ui/` (fichiers generes).
 
 ## Variables UI (EEZ)
-- Les variables exposees dans `src/ui/vars.h` sont implementees dans `src/vars.c` via `get_var_` / `set_var_`.
+- Les variables exposees dans `src/ui/vars.h` doivent etre implementees dans `src/vars.c` via `get_var_` / `set_var_` (generer/mettre a jour `src/vars.c` a chaque modification de `src/ui/vars.h`).
 - L'UI met a jour les labels dans `src/ui/screens.c` a chaque `tick_screen()` en lisant ces getters.
 
 ## Flux de demarrage
