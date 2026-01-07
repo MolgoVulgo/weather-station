@@ -12,7 +12,7 @@ Chaque image est stockee comme une entree, et le fichier merge est une concatena
 - `uint16 height`
 - `uint32 data_len`
 - `uint8 compressed` (0 ou 1)
-- `data_len` bytes: payload RGB565 (brut ou zlib)
+- `data_len` bytes: payload RGB565 (brut). Le flag `compressed` est reserve.
 
 Notes:
 - `width` et `height` sont en pixels.
@@ -42,6 +42,20 @@ Ajoutez-les a votre composant ESP-IDF.
   - Verifie la taille attendue.
   - Appelle `draw_cb` avec le pointeur RGB565.
 - Retourne `ESP_OK` si toutes les entrees sont decodees, sinon un code d'erreur.
+
+`esp_err_t svg2bin_decode_stream(FILE *fp, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
+
+- Decode un fichier `.bin` en streaming (pas de buffer global).
+- Lit l'en-tete puis le payload entree par entree depuis `FILE *`.
+- Decompresse si `compressed == 1` (zlib).
+- Appelle `draw_cb` avec le pointeur RGB565.
+- Retourne `ESP_OK` si toutes les entrees sont decodees, sinon un code d'erreur.
+
+`esp_err_t svg2bin_decode_entry_at_offset(FILE *fp, uint32_t offset, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
+
+- Decode une seule entree a partir d'un offset (en bytes) dans le `.bin`.
+- Utilise `fseek` puis lit l'entree a partir de cet offset.
+- Retourne `ESP_OK` si l'entree est decodee, sinon un code d'erreur.
 
 `esp_err_t svg2bin_draw_raw(const uint8_t *rgb565, size_t rgb565_len, const char *name, uint16_t width, uint16_t height, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
 
@@ -84,4 +98,7 @@ void app_main(void)
 }
 ```
 
-Dependance: zlib (`REQUIRES zlib` dans le CMakeLists.txt du composant).
+## Compression
+
+Le flag `compressed` est conserve dans le format mais n'est pas supporte par le decodeur.
+Si `compressed == 1`, le decodeur retourne `ESP_ERR_NOT_SUPPORTED`.

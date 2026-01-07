@@ -19,6 +19,7 @@
 #include <dirent.h>
 #include "ui_screen.h"
 #include "time_sync.h"
+#include "svg2bin_fs.h"
 
 static const char *TAG = "WeatherStation";
 
@@ -87,6 +88,7 @@ static void sdcard_list_dir(const char *path)
  */
 // #include <demos/lv_demos.h>
 #include "ui_backend.h"
+#include "ui.h"
 
 void setup();
 
@@ -162,6 +164,12 @@ void setup()
     ESP_LOGE(TAG, "Time sync init failed: %s", esp_err_to_name(time_ret));
   }
 
+  logSection("SPIFFS");
+  esp_err_t spiffs_ret = svg2bin_fs_init_spiffs();
+  if (spiffs_ret != ESP_OK) {
+    ESP_LOGE(TAG, "SPIFFS init failed: %s", esp_err_to_name(spiffs_ret));
+  }
+
   logSection("Mount SD card");
   if (sdcard_mount() == ESP_OK) {
     sdcard_list_dir("/sdcard");
@@ -177,6 +185,7 @@ void setup()
    */
   ui_init();
   ui_screen_start();
+  lv_timer_create((lv_timer_cb_t)ui_tick, 100, NULL);
 
   /* Release the mutex */
   bsp_display_unlock();

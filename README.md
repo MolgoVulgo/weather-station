@@ -15,6 +15,11 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 
 ## UI: EEZ Studio
 - `ui/` (EEZ Studio): generates an `objects` structure (e.g. `objects.ui_screen_label_time`) and an EEZ screen pipeline (`loadScreen`, `tick_screen`).
+- Do not modify `src/ui/` contents (generated files).
+
+## UI Variables (EEZ)
+- Variables declared in `src/ui/vars.h` are implemented in `src/vars.c` via `get_var_` / `set_var_`.
+- The UI updates labels in `src/ui/screens.c` on each `tick_screen()` by reading these getters.
 
 ## Boot Flow
 1. `app_main()` calls `setup()` in `src/weatherStation.c`. (default skeleton)

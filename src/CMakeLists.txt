@@ -8,4 +8,5 @@ idf_component_register(
     INCLUDE_DIRS
         ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/src/ui
+    REQUIRES spiffs
 )

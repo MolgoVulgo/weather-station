@@ -27,7 +27,7 @@ Conversion d'un repertoire avec un .bin par SVG en plus du merge:
 python3 svg2bin.py assets/ --size 128x64 --out merged.bin --out-dir bins/
 ```
 
-Compression optionnelle (zlib) pour le merge et chaque .bin:
+Compression optionnelle (flag present dans le format, non supportee dans le decodeur ESP-IDF):
 
 ```bash
 python3 svg2bin.py assets/ --size 128x64 --out merged.bin --out-dir bins/ --compress
@@ -43,7 +43,7 @@ Chaque image est stockee comme une entree, et le fichier merge est une concatena
 - `uint16 height`
 - `uint32 data_len`
 - `uint8 compressed` (0 ou 1)
-- `data_len` bytes: payload RGB565 (brut ou zlib)
+- `data_len` bytes: payload RGB565 (brut). Le flag `compressed` est reserve.
 
 Notes:
 - `width` et `height` sont en pixels.
@@ -70,6 +70,18 @@ Ajouter `svg2bin_decoder.c` et `svg2bin_decoder.h` dans votre composant. Le deco
   - Verifie la taille attendue.
   - Appelle `draw_cb` avec le pointeur RGB565.
 - Retourne `ESP_OK` si toutes les entrees sont decodees, sinon un code d'erreur.
+
+`esp_err_t svg2bin_decode_stream(FILE *fp, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
+
+- Decode un fichier `.bin` en streaming (pas de buffer global).
+- Lit l'en-tete puis le payload entree par entree depuis `FILE *`.
+- Retourne `ESP_OK` si toutes les entrees sont decodees, sinon un code d'erreur.
+
+`esp_err_t svg2bin_decode_entry_at_offset(FILE *fp, uint32_t offset, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
+
+- Decode une seule entree a partir d'un offset (en bytes) dans le `.bin`.
+- Utilise `fseek` puis lit l'entree a partir de cet offset.
+- Retourne `ESP_OK` si l'entree est decodee, sinon un code d'erreur.
 
 `esp_err_t svg2bin_draw_raw(const uint8_t *rgb565, size_t rgb565_len, const char *name, uint16_t width, uint16_t height, svg2bin_draw_cb_t draw_cb, void *user_ctx)`
 

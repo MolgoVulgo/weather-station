@@ -15,6 +15,11 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 
 ## UI: EEZ Studio
 - `ui/` (EEZ Studio): genere une structure `objects` (ex: `objects.ui_screen_label_time`) et un pipeline d'ecrans EEZ (`loadScreen`, `tick_screen`).
+- Interdiction de modifier le contenu de `src/ui/` (fichiers generes).
+
+## Variables UI (EEZ)
+- Les variables exposees dans `src/ui/vars.h` sont implementees dans `src/vars.c` via `get_var_` / `set_var_`.
+- L'UI met a jour les labels dans `src/ui/screens.c` a chaque `tick_screen()` en lisant ces getters.
 
 ## Flux de demarrage
 1. `app_main()` appelle `setup()` dans `src/weatherStation.c`. ( squelette par défaut)
