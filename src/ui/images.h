@@ -7,12 +7,15 @@
 extern "C" {
 #endif
 
+extern const lv_img_dsc_t img_night_clear;
+extern const lv_img_dsc_t img_clear_day;
+extern const lv_img_dsc_t img_clear_day_50;
 
 #ifndef EXT_IMG_DESC_T
 #define EXT_IMG_DESC_T
 typedef struct _ext_img_desc_t {
     const char *name;
-    const void *img_dsc;
+    const lv_img_dsc_t *img_dsc;
 } ext_img_desc_t;
 #endif
 
