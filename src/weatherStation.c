@@ -93,6 +93,7 @@ static void sdcard_list_dir(const char *path)
 #include "svg2bin_decoder.h"
 #include "lv_fs_spiffs.h"
 #include "weather_service.h"
+#include "boot_progress.h"
 
 void setup();
 
@@ -156,17 +157,25 @@ void setup()
   bsp_display_start_with_config(&cfg);
   bsp_display_backlight_on();
 
+  logSection("Create UI");
+  bsp_display_lock(0);
+  ui_init();
+  boot_progress_init();
+  bsp_display_unlock();
+
   logSection("WiFi");
   esp_err_t wifi_ret = wifi_manager_init();
   if (wifi_ret != ESP_OK) {
     ESP_LOGE(TAG, "WiFi init failed: %s", esp_err_to_name(wifi_ret));
   }
+  boot_progress_set(25, "WiFi");
 
   logSection("Time sync");
   esp_err_t time_ret = time_sync_init();
   if (time_ret != ESP_OK) {
     ESP_LOGE(TAG, "Time sync init failed: %s", esp_err_to_name(time_ret));
   }
+  boot_progress_set(50, "NTP");
 
   logSection("SPIFFS");
   esp_err_t spiffs_ret = svg2bin_fs_init_spiffs();
@@ -180,7 +189,7 @@ void setup()
     sdcard_list_dir("/sdcard");
   }
 
-  logSection("Create UI");
+  logSection("Start UI");
   /* Lock the mutex due to the LVGL APIs are not thread-safe */
   bsp_display_lock(0);
 
@@ -188,7 +197,6 @@ void setup()
    * Or try out a demo.
    * Don't forget to uncomment header and enable the demos in `lv_conf.h`. E.g. `LV_USE_DEMOS_WIDGETS`
    */
-  ui_init();
   ui_screen_start();
   weather_service_start();
   lv_timer_create((lv_timer_cb_t)ui_tick, 100, NULL);

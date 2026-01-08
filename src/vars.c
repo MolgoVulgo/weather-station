@@ -23,6 +23,8 @@ char ui_meteo_ft2_3[16] = { 0 };
 char ui_meteo_ft2_4[16] = { 0 };
 char ui_meteo_ft2_5[16] = { 0 };
 char ui_meteo_ft2_6[16] = { 0 };
+char ui_start_bar_texte[64] = { 0 };
+int32_t ui_start_bar = 0;
 
 const char *get_var_ui_meteo_date(void)
 {
@@ -264,4 +266,25 @@ void set_var_ui_meteo_ft2_6(const char *value)
 {
     strncpy(ui_meteo_ft2_6, value, sizeof(ui_meteo_ft2_6) / sizeof(char));
     ui_meteo_ft2_6[sizeof(ui_meteo_ft2_6) / sizeof(char) - 1] = 0;
+}
+
+int32_t get_var_ui_start_bar(void)
+{
+    return ui_start_bar;
+}
+
+void set_var_ui_start_bar(int32_t value)
+{
+    ui_start_bar = value;
+}
+
+const char *get_var_ui_start_bar_texte(void)
+{
+    return ui_start_bar_texte;
+}
+
+void set_var_ui_start_bar_texte(const char *value)
+{
+    strncpy(ui_start_bar_texte, value, sizeof(ui_start_bar_texte) / sizeof(char));
+    ui_start_bar_texte[sizeof(ui_start_bar_texte) / sizeof(char) - 1] = 0;
 }

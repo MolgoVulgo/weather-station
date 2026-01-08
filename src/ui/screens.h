@@ -8,13 +8,17 @@ extern "C" {
 #endif
 
 typedef struct _objects_t {
+    lv_obj_t *ui_start;
     lv_obj_t *ui_meteo;
+    lv_obj_t *ui_start_bar;
+    lv_obj_t *ui_start_bar_texte;
+    lv_obj_t *obj0;
     lv_obj_t *ui_meteo_clock;
     lv_obj_t *ui_meteo_img;
     lv_obj_t *ui_meteo_date;
     lv_obj_t *ui_meteo_temp;
     lv_obj_t *ui_meteo_condition;
-    lv_obj_t *obj0;
+    lv_obj_t *obj1;
     lv_obj_t *ui_meteo_fi1;
     lv_obj_t *ui_meteo_fi2;
     lv_obj_t *ui_meteo_fi3;
@@ -33,7 +37,7 @@ typedef struct _objects_t {
     lv_obj_t *ui_meteo_ft2_5;
     lv_obj_t *ui_meteo_ft1_6;
     lv_obj_t *ui_meteo_ft2_6;
-    lv_obj_t *obj1;
+    lv_obj_t *obj2;
     lv_obj_t *ui_meteo_fd1;
     lv_obj_t *ui_meteo_fd2;
     lv_obj_t *ui_meteo_fd3;
@@ -45,8 +49,12 @@ typedef struct _objects_t {
 extern objects_t objects;
 
 enum ScreensEnum {
-    SCREEN_ID_UI_METEO = 1,
+    SCREEN_ID_UI_START = 1,
+    SCREEN_ID_UI_METEO = 2,
 };
+
+void create_screen_ui_start();
+void tick_screen_ui_start();
 
 void create_screen_ui_meteo();
 void tick_screen_ui_meteo();

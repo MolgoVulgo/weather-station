@@ -14,6 +14,8 @@
 #include "secrets.h"
 #include "ui_backend.h"
 #include "vars.h"
+#include "boot_progress.h"
+#include "ui/screens.h"
 #include "weather_fetcher.h"
 #include "weather_icons.h"
 
@@ -25,6 +27,7 @@ static bool s_first_fetch_done;
 static esp_event_handler_instance_t s_ip_handler;
 static TaskHandle_t s_weather_task;
 static const char *kWeekdaysShort[7] = {"DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"};
+static bool s_boot_done;
 
 static bool weather_netif_ready(void)
 {
@@ -58,6 +61,7 @@ static void weather_apply_ui(const CurrentWeatherData *current)
     if (icon_ret != ESP_OK) {
         ESP_LOGE(TAG, "Weather icon set failed: %s", esp_err_to_name(icon_ret));
     }
+    tick_screen_by_id(SCREEN_ID_UI_METEO);
     bsp_display_unlock();
 }
 
@@ -102,10 +106,10 @@ static void weather_apply_forecast(const ForecastEntry *entries, size_t count)
             }
         }
 
-        char temp_min[16];
-        char temp_max[16];
-        snprintf(temp_min, sizeof(temp_min), "%.0f", entry->minTemp);
-        snprintf(temp_max, sizeof(temp_max), "%.0f", entry->maxTemp);
+        char temp_min[24];
+        char temp_max[24];
+        snprintf(temp_min, sizeof(temp_min), "Min: %.0f", entry->minTemp);
+        snprintf(temp_max, sizeof(temp_max), "Max: %.0f", entry->maxTemp);
         switch (i) {
         case 0:
             set_var_ui_meteo_ft1_1(temp_min);
@@ -144,13 +148,13 @@ static void weather_apply_forecast(const ForecastEntry *entries, size_t count)
                 entry->iconVariant);
         }
     }
+    tick_screen_by_id(SCREEN_ID_UI_METEO);
     bsp_display_unlock();
 }
 
 static void weather_fetch_once(void)
 {
     if (!weather_netif_ready()) {
-        ESP_LOGW(TAG, "WiFi pas encore connecte, meteo differee");
         return;
     }
     WeatherFetcher fetcher;
@@ -193,9 +197,15 @@ static void weather_fetch_once(void)
         ESP_LOGE(TAG, "Weather fetch failed: %s", fetcher.lastError().c_str());
         return;
     }
+    boot_progress_set(75, "Meteo");
     weather_apply_ui(&current);
     if (strlen(OPENWEATHERMAP_API_KEY_3) > 0) {
         weather_apply_forecast(daily, 6);
+        if (!s_boot_done) {
+            boot_progress_set(100, "Forecast");
+            boot_progress_show_meteo();
+            s_boot_done = true;
+        }
     } else {
         ForecastEntry forecast[6];
         int written = snprintf(
@@ -214,6 +224,11 @@ static void weather_fetch_once(void)
         esp_err_t forecast_ret = fetcher.fetchForecast(url, forecast, 6);
         if (forecast_ret == ESP_OK) {
             weather_apply_forecast(forecast, 6);
+            if (!s_boot_done) {
+                boot_progress_set(100, "Forecast");
+                boot_progress_show_meteo();
+                s_boot_done = true;
+            }
         } else {
             ESP_LOGW(TAG, "Forecast fetch failed: %s", fetcher.lastError().c_str());
         }
@@ -320,7 +335,6 @@ void weather_service_start(void)
         ESP_LOGE(TAG, "IP event handler failed: %s", esp_err_to_name(err));
         return;
     }
-    weather_fetch_once();
     err = esp_timer_start_periodic(s_weather_timer, period_us);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Timer start failed: %s", esp_err_to_name(err));

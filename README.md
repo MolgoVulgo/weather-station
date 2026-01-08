@@ -83,6 +83,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `ui_init()` (`src/ui/ui.c`): initializes screens and loads the main screen.
 - `ui_screen_start()` (`src/ui_screen.c`): initializes the clock at 00:00:00 and updates the time label every second.
 - Weather service (`src/weather_service.cpp`): fetches current data at startup and then every `WEATHER_REFRESH_MINUTES`, updates UI text, and loads the icon from `icon_150.bin` using the embedded index.
+- Boot progress (`src/boot_progress.c`): updates `ui_start_bar`/`ui_start_bar_texte` and switches to `ui_meteo` when ready.
 - Main function catalog: `docs/MAIN_FUNCTIONS.md`.
 
 ## Build Notes

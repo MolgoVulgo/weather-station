@@ -14,11 +14,73 @@ objects_t objects;
 lv_obj_t *tick_value_change_obj;
 uint32_t active_theme_index = 0;
 
+void create_screen_ui_start() {
+    lv_obj_t *obj = lv_obj_create(0);
+    objects.ui_start = obj;
+    lv_obj_set_pos(obj, 0, 0);
+    lv_obj_set_size(obj, 480, 320);
+    lv_obj_set_style_bg_color(obj, lv_color_hex(0xff000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    {
+        lv_obj_t *parent_obj = obj;
+        {
+            // ui_start_bar
+            lv_obj_t *obj = lv_bar_create(parent_obj);
+            objects.ui_start_bar = obj;
+            lv_obj_set_pos(obj, 165, 155);
+            lv_obj_set_size(obj, 150, 10);
+        }
+        {
+            // ui_start_bar_texte
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.ui_start_bar_texte = obj;
+            lv_obj_set_pos(obj, 140, 127);
+            lv_obj_set_size(obj, 200, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &ui_font_ui_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "");
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.obj0 = obj;
+            lv_obj_set_pos(obj, 182, 71);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &ui_font_ui_18, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Station Météo");
+        }
+    }
+    
+    tick_screen_ui_start();
+}
+
+void tick_screen_ui_start() {
+    {
+        int32_t new_val = get_var_ui_start_bar();
+        int32_t cur_val = lv_bar_get_value(objects.ui_start_bar);
+        if (new_val != cur_val) {
+            tick_value_change_obj = objects.ui_start_bar;
+            lv_bar_set_value(objects.ui_start_bar, new_val, LV_ANIM_ON);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        const char *new_val = get_var_ui_start_bar_texte();
+        const char *cur_val = lv_label_get_text(objects.ui_start_bar_texte);
+        if (strcmp(new_val, cur_val) != 0) {
+            tick_value_change_obj = objects.ui_start_bar_texte;
+            lv_label_set_text(objects.ui_start_bar_texte, new_val);
+            tick_value_change_obj = NULL;
+        }
+    }
+}
+
 void create_screen_ui_meteo() {
     lv_obj_t *obj = lv_obj_create(0);
     objects.ui_meteo = obj;
     lv_obj_set_pos(obj, 0, 0);
     lv_obj_set_size(obj, 480, 320);
+    lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(obj, lv_color_hex(0xff000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     {
         lv_obj_t *parent_obj = obj;
@@ -77,7 +139,7 @@ void create_screen_ui_meteo() {
         }
         {
             lv_obj_t *obj = lv_line_create(parent_obj);
-            objects.obj0 = obj;
+            objects.obj1 = obj;
             lv_obj_set_pos(obj, 25, 183);
             lv_obj_set_size(obj, 430, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
@@ -257,7 +319,7 @@ void create_screen_ui_meteo() {
         }
         {
             lv_obj_t *obj = lv_line_create(parent_obj);
-            objects.obj1 = obj;
+            objects.obj2 = obj;
             lv_obj_set_pos(obj, 24, 292);
             lv_obj_set_size(obj, 430, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
@@ -537,6 +599,7 @@ void tick_screen_ui_meteo() {
 
 typedef void (*tick_screen_func_t)();
 tick_screen_func_t tick_screen_funcs[] = {
+    tick_screen_ui_start,
     tick_screen_ui_meteo,
 };
 void tick_screen(int screen_index) {
@@ -551,5 +614,6 @@ void create_screens() {
     lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     
+    create_screen_ui_start();
     create_screen_ui_meteo();
 }

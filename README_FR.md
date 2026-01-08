@@ -83,6 +83,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - `ui_init()` (`src/ui/ui.c`): initialise les ecrans et charge l'ecran principal.
 - `ui_screen_start()` (`src/ui_screen.c`): initialise l'horloge a 00:00:00 et met a jour le label d'heure chaque seconde.
 - Service meteo (`src/weather_service.cpp`): recupere les donnees au demarrage puis toutes les `WEATHER_REFRESH_MINUTES`, met a jour les textes UI et charge l'icone depuis `icon_150.bin` via l'index integre.
+- Demarrage (`src/boot_progress.c`): met a jour `ui_start_bar`/`ui_start_bar_texte` et bascule vers `ui_meteo` une fois pret.
 - Recueil des fonctions principales: `docs/MAIN_FUNCTIONS.md`.
 
 ## Notes build

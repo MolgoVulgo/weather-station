@@ -13,6 +13,7 @@ This document lists the main runtime functions used by the weather station app.
 ## Weather Service
 - `weather_service_start()` (`src/weather_service.cpp`): periodic weather updates + IP event hook.
 - `weather_fetch_once()` (`src/weather_service.cpp`): fetch and apply current data to UI.
+ - `boot_progress_init()` / `boot_progress_set()` / `boot_progress_show_meteo()` (`src/boot_progress.c`): start screen progress + screen switch.
 
 ## Weather Fetcher (OWM)
 - `WeatherFetcher::fetchCurrent()` (`libraries/weather/weather_fetcher.cpp`): OWM v2.5 current weather.
