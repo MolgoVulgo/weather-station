@@ -35,6 +35,8 @@ python3 svg2bin.py assets/ --size 128x64 --out merged.bin --out-dir bins/ --comp
 
 ## Format binaire (.bin)
 
+### Sortie `svg2bin.py` (format S2BI, RGB565)
+
 Le fichier merge commence par un en-tete d'index, puis les entrees images.
 
 En-tete:
@@ -61,6 +63,22 @@ Notes:
 - `width` et `height` sont en pixels.
 - `data_len` est la taille du payload (brut ou compresse).
 - RGB565 est en little-endian, 2 bytes par pixel, ordre R(5)-G(6)-B(5).
+
+### Sortie `svg2bin_gui.py`
+
+Deux modes sont disponibles:
+
+#### Mode "1 bin par fichier" (pas de merge)
+
+- Chaque image est convertie au format choisi (RGB565, RGB888, ARGB8888, A8, A8A8).
+- Le fichier de sortie est `nom_image.bin` et ne contient que le payload.
+- Un `index.h` est genere avec les metadonnees (code, variant, taille, format, data_len, nom, bin).
+
+#### Mode "bin merge"
+
+- Chaque image est convertie en RGB565 (format impose).
+- Le merge suit le format S2BI (identique a `svg2bin.py`).
+- Un index est place en tete du fichier merge, avec l'offset absolu de chaque entree.
 
 ## Decodeur (ESP-IDF)
 

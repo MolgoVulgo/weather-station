@@ -2,17 +2,23 @@
   "200": {
     "name": "Thunderstorm with light rain",
     "icon_day": "thunderstorms-rain.svg",
-    "icon_night": "thunderstorms-rain.svg"
+    "icon_night": "thunderstorms-rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "201": {
     "name": "Thunderstorm with rain",
     "icon_day": "thunderstorms-rain.svg",
-    "icon_night": "thunderstorms-rain.svg"
+    "icon_night": "thunderstorms-rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "202": {
     "name": "Thunderstorm with heavy rain",
     "icon_day": "thunderstorms-rain.svg",
-    "icon_night": "thunderstorms-rain.svg"
+    "icon_night": "thunderstorms-rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "210": {
     "name": "Light thunderstorm",
@@ -37,167 +43,233 @@
   "230": {
     "name": "Thunderstorm with light drizzle",
     "icon_day": "thunderstorms-rain.svg",
-    "icon_night": "thunderstorms-rain.svg"
+    "icon_night": "thunderstorms-rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "231": {
     "name": "Thunderstorm with drizzle",
     "icon_day": "thunderstorms-rain.svg",
-    "icon_night": "thunderstorms-rain.svg"
+    "icon_night": "thunderstorms-rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "232": {
     "name": "Thunderstorm with heavy drizzle",
     "icon_day": "thunderstorms-rain.svg",
-    "icon_night": "thunderstorms-rain.svg"
+    "icon_night": "thunderstorms-rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "300": {
     "name": "Light drizzle",
     "icon_day": "partly-cloudy-day-drizzle.svg",
-    "icon_night": "partly-cloudy-night-drizzle.svg"
+    "icon_night": "partly-cloudy-night-drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "301": {
     "name": "Drizzle",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "302": {
     "name": "Heavy drizzle",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "310": {
     "name": "Light drizzle rain",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "311": {
     "name": "Drizzle rain",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "312": {
     "name": "Heavy drizzle rain",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "313": {
     "name": "Shower rain and drizzle",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "314": {
     "name": "Heavy shower rain and drizzle",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "321": {
     "name": "Shower drizzle",
     "icon_day": "drizzle.svg",
-    "icon_night": "drizzle.svg"
+    "icon_night": "drizzle.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "500": {
     "name": "Light rain",
     "icon_day": "partly-cloudy-day-rain.svg",
-    "icon_night": "partly-cloudy-night-rain.svg"
+    "icon_night": "partly-cloudy-night-rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "501": {
     "name": "Moderate rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "502": {
     "name": "Heavy intensity rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "503": {
     "name": "Very heavy rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "504": {
     "name": "Extreme rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "511": {
     "name": "Freezing rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "520": {
     "name": "Light intensity shower rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "521": {
     "name": "Shower rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "522": {
     "name": "Heavy intensity shower rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "531": {
     "name": "Ragged shower rain",
     "icon_day": "rain.svg",
-    "icon_night": "rain.svg"
+    "icon_night": "rain.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "600": {
     "name": "Light snow",
     "icon_day": "partly-cloudy-day-snow.svg",
-    "icon_night": "partly-cloudy-night-snow.svg"
+    "icon_night": "partly-cloudy-night-snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "601": {
     "name": "Snow",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "602": {
     "name": "Heavy snow",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "611": {
     "name": "Sleet",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "612": {
     "name": "Light shower sleet",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "613": {
     "name": "Shower sleet",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "615": {
     "name": "Light rain and snow",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "616": {
     "name": "Rain and snow",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "620": {
     "name": "Light shower snow",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "621": {
     "name": "Shower snow",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "622": {
     "name": "Heavy shower snow",
     "icon_day": "snow.svg",
-    "icon_night": "snow.svg"
+    "icon_night": "snow.svg",
+    "frame_day": 1,
+    "frame_night": 1
   },
   "701": {
     "name": "Mist",
