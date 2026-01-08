@@ -12,6 +12,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - `src/esp_lcd_touch.c` / `src/esp_lcd_touch.h`: abstraction tactile ESP LCD.
 - `src/lv_conf.h`: configuration LVGL compile-time.
 - `src/ui/`: export EEZ Studio (UI, assets, screens). A ne pas modifier a la main.
+- `libraries/weather/`: fetcher meteo ESP-IDF et mapping icones OWM (index integre).
 
 ## UI: EEZ Studio
 - `ui/` (EEZ Studio): genere une structure `objects` (ex: `objects.ui_screen_label_time`) et un pipeline d'ecrans EEZ (`loadScreen`, `tick_screen`).
@@ -81,7 +82,11 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - `sdcard_list_dir()` (`src/weatherStation.c`): logge le contenu de la SD pour debug.
 - `ui_init()` (`src/ui/ui.c`): initialise les ecrans et charge l'ecran principal.
 - `ui_screen_start()` (`src/ui_screen.c`): initialise l'horloge a 00:00:00 et met a jour le label d'heure chaque seconde.
+- Service meteo (`src/weather_service.cpp`): recupere les donnees au demarrage puis toutes les `WEATHER_REFRESH_MINUTES`, met a jour les textes UI et charge l'icone depuis `icon_150.bin` via l'index integre.
+- Recueil des fonctions principales: `docs/MAIN_FUNCTIONS.md`.
 
 ## Notes build
 - Plateforme: ESP-IDF via PlatformIO (`platformio.ini`).
 - Environnement par defaut: `LVGL-320-480`.
+- La meteo requiert `esp_http_client`, `esp-tls`, `mbedtls`, `json` (declares dans `src/CMakeLists.txt`).
+- Le service meteo utilise `OPENWEATHERMAP_API_KEY_3` (One Call v3) si renseigne, sinon `OPENWEATHERMAP_API_KEY_2` (meteo courante v2.5).

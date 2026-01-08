@@ -92,6 +92,7 @@ static void sdcard_list_dir(const char *path)
 #include "weather_icons.h"
 #include "svg2bin_decoder.h"
 #include "lv_fs_spiffs.h"
+#include "weather_service.h"
 
 void setup();
 
@@ -189,10 +190,7 @@ void setup()
    */
   ui_init();
   ui_screen_start();
-  esp_err_t icon_ret = weather_icons_set_main(800, SVG2BIN_VARIANT_DAY);
-  if (icon_ret != ESP_OK) {
-    ESP_LOGE(TAG, "Weather icon set failed: %s", esp_err_to_name(icon_ret));
-  }
+  weather_service_start();
   lv_timer_create((lv_timer_cb_t)ui_tick, 100, NULL);
 
   /* Release the mutex */

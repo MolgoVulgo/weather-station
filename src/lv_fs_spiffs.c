@@ -3,8 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "lvgl.h"
+#include "esp_log.h"
 
 static const char *LV_FS_SPIFFS_BASE = "/spiffs";
+static const char *TAG = "LVFS";
 
 static void *fs_open(lv_fs_drv_t *drv, const char *path, lv_fs_mode_t mode)
 {
@@ -92,4 +94,10 @@ void lv_fs_spiffs_init(void)
     drv.seek_cb = fs_seek;
     drv.tell_cb = fs_tell;
     lv_fs_drv_register(&drv);
+
+    lv_fs_drv_t drv_upper = drv;
+    drv_upper.letter = 'S';
+    lv_fs_drv_register(&drv_upper);
+
+    ESP_LOGI(TAG, "LVGL FS registered for /spiffs as 's:'");
 }

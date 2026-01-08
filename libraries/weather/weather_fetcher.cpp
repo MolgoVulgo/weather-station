@@ -1,421 +1,514 @@
 #include "weather_fetcher.h"
 
-#include <ESP8266HTTPClient.h>
-#include <JsonListener.h>
-#include <JsonStreamingParser.h>
+#include <cmath>
+#include <cstring>
+#include "cJSON.h"
+#include "esp_crt_bundle.h"
+#include "esp_http_client.h"
+#include "esp_log.h"
 
 namespace {
 constexpr float MS_TO_KMH = 3.6f;
 
-struct IconMapEntry {
-  const char* code;
-  const char* assetId;
-};
+static float json_number_or(cJSON *obj, const char *key, float fallback);
+static int json_int_or(cJSON *obj, const char *key, int fallback);
+static const char* json_string_or(cJSON *obj, const char *key);
 
-constexpr IconMapEntry kIconMap[] = {
-    {"01d", "day_clear"},
-    {"01n", "night_clear"},
-    {"02d", "day_partial_cloud"},
-    {"02n", "night_partial_cloud"},
-    {"03d", "cloudy"},
-    {"03n", "cloudy"},
-    {"04d", "overcast"},
-    {"04n", "overcast"},
-    {"09d", "rain"},
-    {"09n", "rain"},
-    {"10d", "day_rain"},
-    {"10n", "night_rain"},
-    {"11d", "day_rain_thunder"},
-    {"11n", "night_rain_thunder"},
-    {"13d", "day_snow"},
-    {"13n", "night_snow"},
-    {"50d", "mist"},
-    {"50n", "mist"},
-};
-
-const char* mapIconName(const String& iconCode, int conditionId) {
-  if (iconCode.length() >= 3) {
-    for (const auto& entry : kIconMap) {
-      if (iconCode == entry.code) {
-        return entry.assetId;
-      }
+static uint8_t map_icon_variant(const char *icon_code) {
+  if (icon_code && strlen(icon_code) >= 3) {
+    char suffix = icon_code[strlen(icon_code) - 1];
+    if (suffix == 'd') {
+      return 0;
+    }
+    if (suffix == 'n') {
+      return 1;
     }
   }
-
-  // Fallback par conditionId si le code icone est absent.
-  if (conditionId >= 200 && conditionId <= 232) return "day_rain_thunder";
-  if (conditionId >= 300 && conditionId <= 321) return "rain";
-  if (conditionId >= 500 && conditionId <= 504) return "day_rain";
-  if (conditionId == 511) return "day_snow";
-  if (conditionId >= 520 && conditionId <= 531) return "rain";
-  if (conditionId >= 600 && conditionId <= 622) return "day_snow";
-  if (conditionId >= 701 && conditionId <= 781) return "mist";
-  if (conditionId == 800) return "day_clear";
-  if (conditionId == 801) return "day_partial_cloud";
-  if (conditionId == 802) return "cloudy";
-  if (conditionId >= 803 && conditionId <= 804) return "overcast";
-  return "day_clear";
+  return 2;
 }
 
-class CurrentWeatherParser : public JsonListener {
- public:
-  explicit CurrentWeatherParser(CurrentWeatherData& data) : data_(data) {}
+static void parse_weather_item(cJSON *weather,
+                               int *condition_id,
+                               std::string *icon_id,
+                               uint8_t *variant,
+                               std::string *main_text,
+                               std::string *description)
+{
+  if (!cJSON_IsArray(weather) || cJSON_GetArraySize(weather) == 0) {
+    return;
+  }
+  cJSON *item = cJSON_GetArrayItem(weather, 0);
+  if (!cJSON_IsObject(item)) {
+    return;
+  }
+  if (condition_id) {
+    *condition_id = json_int_or(item, "id", *condition_id);
+  }
+  const char *icon_code = json_string_or(item, "icon");
+  if (icon_code && icon_id) {
+    *icon_id = icon_code;
+  }
+  if (variant) {
+    *variant = map_icon_variant(icon_code);
+  }
+  const char *main_val = json_string_or(item, "main");
+  if (main_val && main_text) {
+    *main_text = main_val;
+  }
+  const char *desc_val = json_string_or(item, "description");
+  if (desc_val && description) {
+    *description = desc_val;
+  }
+}
 
-  bool ok() const { return hasTemp_; }
+static float json_number_or(cJSON *obj, const char *key, float fallback) {
+  cJSON *item = cJSON_GetObjectItemCaseSensitive(obj, key);
+  if (cJSON_IsNumber(item)) {
+    return static_cast<float>(item->valuedouble);
+  }
+  return fallback;
+}
 
-  void whitespace(char) override {}
-  void startDocument() override {}
-  void endDocument() override {}
-  void startArray() override {}
-  void endArray() override {}
-  void startObject() override { currentParent_ = currentKey_; }
-  void endObject() override {
-    if (currentParent_ == "weather") {
-      weatherItemCounter_++;
-    }
-    currentParent_ = "";
+static int json_int_or(cJSON *obj, const char *key, int fallback) {
+  cJSON *item = cJSON_GetObjectItemCaseSensitive(obj, key);
+  if (cJSON_IsNumber(item)) {
+    return item->valueint;
+  }
+  return fallback;
+}
+
+static const char* json_string_or(cJSON *obj, const char *key) {
+  cJSON *item = cJSON_GetObjectItemCaseSensitive(obj, key);
+  if (cJSON_IsString(item) && item->valuestring) {
+    return item->valuestring;
+  }
+  return nullptr;
+}
+
+static bool parse_current(const char *json, CurrentWeatherData &out) {
+  cJSON *root = cJSON_Parse(json);
+  if (!root) {
+    return false;
   }
 
-  void key(String key) override { currentKey_ = key; }
+  cJSON *main = cJSON_GetObjectItemCaseSensitive(root, "main");
+  if (cJSON_IsObject(main)) {
+    out.temperature = json_number_or(main, "temp", out.temperature);
+    out.feelsLike = json_number_or(main, "feels_like", out.feelsLike);
+    out.tempMin = json_number_or(main, "temp_min", out.tempMin);
+    out.tempMax = json_number_or(main, "temp_max", out.tempMax);
+    out.pressure = json_number_or(main, "pressure", out.pressure);
+    out.pressureSeaLevel = json_number_or(main, "sea_level", out.pressureSeaLevel);
+    out.pressureGroundLevel = json_number_or(main, "grnd_level", out.pressureGroundLevel);
+    out.humidity = static_cast<uint8_t>(json_int_or(main, "humidity", out.humidity));
+  }
 
-  void value(String value) override {
-    if (currentParent_ == "main") {
-      if (currentKey_ == "temp") {
-        data_.temperature = value.toFloat();
-        hasTemp_ = true;
-      } else if (currentKey_ == "feels_like") {
-        data_.feelsLike = value.toFloat();
-      } else if (currentKey_ == "temp_min") {
-        data_.tempMin = value.toFloat();
-      } else if (currentKey_ == "temp_max") {
-        data_.tempMax = value.toFloat();
-      } else if (currentKey_ == "pressure") {
-        data_.pressure = value.toFloat();
-      } else if (currentKey_ == "sea_level") {
-        data_.pressureSeaLevel = value.toFloat();
-      } else if (currentKey_ == "grnd_level") {
-        data_.pressureGroundLevel = value.toFloat();
-      } else if (currentKey_ == "humidity") {
-        data_.humidity = static_cast<uint8_t>(value.toInt());
-      }
-      return;
-    }
+  cJSON *wind = cJSON_GetObjectItemCaseSensitive(root, "wind");
+  if (cJSON_IsObject(wind)) {
+    out.windKmh = json_number_or(wind, "speed", out.windKmh) * MS_TO_KMH;
+    out.windDeg = json_number_or(wind, "deg", out.windDeg);
+    out.windGustKmh = json_number_or(wind, "gust", out.windGustKmh) * MS_TO_KMH;
+  }
 
-    if (currentParent_ == "wind") {
-      if (currentKey_ == "speed") {
-        data_.windKmh = value.toFloat() * MS_TO_KMH;
-      } else if (currentKey_ == "deg") {
-        data_.windDeg = value.toFloat();
-      } else if (currentKey_ == "gust") {
-        data_.windGustKmh = value.toFloat() * MS_TO_KMH;
-      }
-      return;
-    }
+  cJSON *clouds = cJSON_GetObjectItemCaseSensitive(root, "clouds");
+  if (cJSON_IsObject(clouds)) {
+    out.clouds = static_cast<uint8_t>(json_int_or(clouds, "all", out.clouds));
+  }
 
-    if (currentParent_ == "clouds" && currentKey_ == "all") {
-      data_.clouds = static_cast<uint8_t>(value.toInt());
-      return;
-    }
+  cJSON *rain = cJSON_GetObjectItemCaseSensitive(root, "rain");
+  if (cJSON_IsObject(rain)) {
+    out.rain1h = json_number_or(rain, "1h", out.rain1h);
+    out.rain3h = json_number_or(rain, "3h", out.rain3h);
+  }
 
-    if (currentParent_ == "rain") {
-      if (currentKey_ == "1h") {
-        data_.rain1h = value.toFloat();
-      } else if (currentKey_ == "3h") {
-        data_.rain3h = value.toFloat();
-      }
-      return;
-    }
+  cJSON *snow = cJSON_GetObjectItemCaseSensitive(root, "snow");
+  if (cJSON_IsObject(snow)) {
+    out.snow1h = json_number_or(snow, "1h", out.snow1h);
+    out.snow3h = json_number_or(snow, "3h", out.snow3h);
+  }
 
-    if (currentParent_ == "snow") {
-      if (currentKey_ == "1h") {
-        data_.snow1h = value.toFloat();
-      } else if (currentKey_ == "3h") {
-        data_.snow3h = value.toFloat();
-      }
-      return;
-    }
-
-    if (currentParent_ == "sys") {
-      if (currentKey_ == "sunrise") {
-        data_.sunrise = value.toInt();
-      } else if (currentKey_ == "sunset") {
-        data_.sunset = value.toInt();
-      } else if (currentKey_ == "country") {
-        data_.country = value;
-      }
-      return;
-    }
-
-    if (currentParent_ == "weather" && weatherItemCounter_ == 0) {
-      if (currentKey_ == "id") {
-        data_.conditionId = value.toInt();
-      } else if (currentKey_ == "main") {
-        data_.main = value;
-      } else if (currentKey_ == "description") {
-        data_.description = value;
-      } else if (currentKey_ == "icon") {
-        iconCode_ = value;
-      }
-      if (!iconCode_.isEmpty() && data_.conditionId != 0) {
-        data_.iconId = mapIconName(iconCode_, data_.conditionId);
-      }
-      return;
-    }
-
-    if (currentKey_ == "visibility") {
-      data_.visibility = static_cast<uint16_t>(value.toInt());
-      return;
-    }
-
-    if (currentKey_ == "dt") {
-      data_.observationTime = static_cast<time_t>(value.toInt());
-      return;
-    }
-
-    if (currentKey_ == "timezone") {
-      data_.timezone = value.toInt();
-      return;
-    }
-
-    if (currentKey_ == "name") {
-      data_.cityName = value;
-      return;
+  cJSON *sys = cJSON_GetObjectItemCaseSensitive(root, "sys");
+  if (cJSON_IsObject(sys)) {
+    out.sunrise = static_cast<time_t>(json_int_or(sys, "sunrise", out.sunrise));
+    out.sunset = static_cast<time_t>(json_int_or(sys, "sunset", out.sunset));
+    const char *country = json_string_or(sys, "country");
+    if (country) {
+      out.country = country;
     }
   }
 
- private:
-  CurrentWeatherData& data_;
-  String currentKey_;
-  String currentParent_;
-  String iconCode_;
-  uint8_t weatherItemCounter_ = 0;
-  bool hasTemp_ = false;
-};
-
-class ForecastWeatherParser : public JsonListener {
- public:
-  ForecastWeatherParser(ForecastEntry* entries, size_t count)
-      : entries_(entries), count_(count) {
-    resetItems();
-    time_t now = time(nullptr);
-    struct tm nowInfo;
-    if (localtime_r(&now, &nowInfo)) {
-      todayDayOfYear_ = nowInfo.tm_yday;
-      hasToday_ = true;
-    }
-  }
-
-  bool ok() const { return hasToday_; }
-
-  void whitespace(char) override {}
-  void startDocument() override {}
-  void endDocument() override {}
-
-  void startArray() override {
-    arrayDepth_++;
-    if (currentKey_ == "list") {
-      inList_ = true;
-      listDepth_ = arrayDepth_;
-    } else if (currentKey_ == "weather") {
-      inWeather_ = true;
-      weatherDepth_ = arrayDepth_;
-    }
-  }
-
-  void endArray() override {
-    if (inWeather_ && arrayDepth_ == weatherDepth_) {
-      inWeather_ = false;
-      weatherDepth_ = -1;
-    }
-    if (inList_ && arrayDepth_ == listDepth_) {
-      inList_ = false;
-      listDepth_ = -1;
-    }
-    arrayDepth_--;
-  }
-
-  void startObject() override { currentParent_ = currentKey_; }
-  void endObject() override {
-    if (currentParent_ == "weather") {
-      weatherItemCounter_++;
-    }
-    currentParent_ = "";
-  }
-
-  void key(String key) override { currentKey_ = key; }
-
-  void value(String value) override {
-    if (!inList_ || !hasToday_) {
-      return;
-    }
-    if (currentKey_ == "dt") {
-      itemTimestamp_ = value.toInt();
-      return;
-    }
-    if (currentParent_ == "main") {
-      if (currentKey_ == "temp_min") {
-        itemTempMin_ = value.toFloat();
-      } else if (currentKey_ == "temp_max") {
-        itemTempMax_ = value.toFloat();
+  const char *icon_code = nullptr;
+  cJSON *weather = cJSON_GetObjectItemCaseSensitive(root, "weather");
+  if (cJSON_IsArray(weather) && cJSON_GetArraySize(weather) > 0) {
+    cJSON *item = cJSON_GetArrayItem(weather, 0);
+    if (cJSON_IsObject(item)) {
+      out.conditionId = json_int_or(item, "id", out.conditionId);
+      const char *main_txt = json_string_or(item, "main");
+      if (main_txt) {
+        out.main = main_txt;
       }
-      return;
-    }
-    if (inWeather_ && weatherItemCounter_ == 0) {
-      if (currentKey_ == "id") {
-        itemWeatherId_ = value.toInt();
-      } else if (currentKey_ == "icon") {
-        itemIconCode_ = value;
+      const char *desc = json_string_or(item, "description");
+      if (desc) {
+        out.description = desc;
       }
-      return;
-    }
-    if (currentKey_ == "dt_txt") {
-      commitItem();
+      icon_code = json_string_or(item, "icon");
     }
   }
 
- private:
-  void resetItems() {
-    for (size_t i = 0; i < count_; ++i) {
-      entries_[i] = ForecastEntry();
-    }
+  out.visibility = static_cast<uint16_t>(json_int_or(root, "visibility", out.visibility));
+  out.observationTime = static_cast<time_t>(json_int_or(root, "dt", out.observationTime));
+  out.timezone = json_int_or(root, "timezone", out.timezone);
+  const char *name = json_string_or(root, "name");
+  if (name) {
+    out.cityName = name;
   }
 
-  void commitItem() {
-    if (itemTimestamp_ == 0) {
-      resetItemFields();
-      return;
-    }
-    struct tm tsInfo;
-    if (!localtime_r(&itemTimestamp_, &tsInfo)) {
-      resetItemFields();
-      return;
-    }
-    int diffDays = tsInfo.tm_yday - todayDayOfYear_;
-    if (diffDays < 1 || diffDays > static_cast<int>(count_)) {
-      resetItemFields();
-      return;
+  out.iconVariant = map_icon_variant(icon_code);
+  if (icon_code) {
+    out.iconId = icon_code;
+  }
+
+  cJSON_Delete(root);
+  return !std::isnan(out.temperature);
+}
+
+static void reset_forecast_entries(ForecastEntry *entries, size_t count) {
+  for (size_t i = 0; i < count; ++i) {
+    entries[i] = ForecastEntry();
+  }
+}
+
+static bool parse_forecast(const char *json, ForecastEntry *entries, size_t count) {
+  time_t now = time(nullptr);
+  struct tm now_info;
+  if (!localtime_r(&now, &now_info)) {
+    return false;
+  }
+
+  cJSON *root = cJSON_Parse(json);
+  if (!root) {
+    return false;
+  }
+
+  cJSON *list = cJSON_GetObjectItemCaseSensitive(root, "list");
+  if (!cJSON_IsArray(list)) {
+    cJSON_Delete(root);
+    return false;
+  }
+
+  reset_forecast_entries(entries, count);
+  int list_size = cJSON_GetArraySize(list);
+  for (int i = 0; i < list_size; ++i) {
+    cJSON *item = cJSON_GetArrayItem(list, i);
+    if (!cJSON_IsObject(item)) {
+      continue;
     }
 
-    ForecastEntry& entry = entries_[diffDays - 1];
+    time_t timestamp = static_cast<time_t>(json_int_or(item, "dt", 0));
+    if (timestamp == 0) {
+      continue;
+    }
+
+    struct tm ts_info;
+    if (!localtime_r(&timestamp, &ts_info)) {
+      continue;
+    }
+
+    int diff_days = ts_info.tm_yday - now_info.tm_yday;
+    if (diff_days < 1 || diff_days > static_cast<int>(count)) {
+      continue;
+    }
+
+    cJSON *main = cJSON_GetObjectItemCaseSensitive(item, "main");
+    float temp_min = NAN;
+    float temp_max = NAN;
+    if (cJSON_IsObject(main)) {
+      temp_min = json_number_or(main, "temp_min", temp_min);
+      temp_max = json_number_or(main, "temp_max", temp_max);
+    }
+
+    int condition = 0;
+    const char *icon_code = nullptr;
+    cJSON *weather = cJSON_GetObjectItemCaseSensitive(item, "weather");
+    if (cJSON_IsArray(weather) && cJSON_GetArraySize(weather) > 0) {
+      cJSON *w0 = cJSON_GetArrayItem(weather, 0);
+      if (cJSON_IsObject(w0)) {
+        condition = json_int_or(w0, "id", 0);
+        icon_code = json_string_or(w0, "icon");
+      }
+    }
+
+    ForecastEntry &entry = entries[diff_days - 1];
     if (!entry.valid) {
-      entry.minTemp = itemTempMin_;
-      entry.maxTemp = itemTempMax_;
-      entry.timestamp = itemTimestamp_;
-      entry.conditionId = itemWeatherId_;
-      entry.iconId = mapIconName(itemIconCode_, entry.conditionId);
+      entry.minTemp = temp_min;
+      entry.maxTemp = temp_max;
+      entry.timestamp = timestamp;
+      entry.conditionId = condition;
+      entry.iconVariant = map_icon_variant(icon_code);
+      if (icon_code) {
+        entry.iconId = icon_code;
+      }
       entry.valid = true;
-      entry.middayOffset = static_cast<uint8_t>(abs(tsInfo.tm_hour - 12));
+      entry.middayOffset = static_cast<uint8_t>(abs(ts_info.tm_hour - 12));
     } else {
-      if (itemTempMin_ < entry.minTemp) {
-        entry.minTemp = itemTempMin_;
+      if (temp_min < entry.minTemp) {
+        entry.minTemp = temp_min;
       }
-      if (itemTempMax_ > entry.maxTemp) {
-        entry.maxTemp = itemTempMax_;
+      if (temp_max > entry.maxTemp) {
+        entry.maxTemp = temp_max;
       }
-      uint8_t offset = static_cast<uint8_t>(abs(tsInfo.tm_hour - 12));
+      uint8_t offset = static_cast<uint8_t>(abs(ts_info.tm_hour - 12));
       if (offset < entry.middayOffset) {
-        entry.timestamp = itemTimestamp_;
-        entry.conditionId = itemWeatherId_;
-        entry.iconId = mapIconName(itemIconCode_, entry.conditionId);
+        entry.timestamp = timestamp;
+        entry.conditionId = condition;
+        entry.iconVariant = map_icon_variant(icon_code);
+        if (icon_code) {
+          entry.iconId = icon_code;
+        }
         entry.middayOffset = offset;
       }
     }
-    resetItemFields();
   }
 
-  void resetItemFields() {
-    itemTimestamp_ = 0;
-    itemTempMin_ = NAN;
-    itemTempMax_ = NAN;
-    itemWeatherId_ = 0;
-    itemIconCode_ = "";
-    weatherItemCounter_ = 0;
-  }
-
-  ForecastEntry* entries_;
-  size_t count_;
-  bool hasToday_ = false;
-  int todayDayOfYear_ = 0;
-
-  String currentKey_;
-  String currentParent_;
-
-  bool inList_ = false;
-  bool inWeather_ = false;
-  int arrayDepth_ = 0;
-  int listDepth_ = -1;
-  int weatherDepth_ = -1;
-  uint8_t weatherItemCounter_ = 0;
-
-  time_t itemTimestamp_ = 0;
-  float itemTempMin_ = NAN;
-  float itemTempMax_ = NAN;
-  int itemWeatherId_ = 0;
-  String itemIconCode_;
-};
-}  // namespace
-
-WeatherFetcher::WeatherFetcher(BearSSL::WiFiClientSecure& client) : client_(client) {}
-
-bool WeatherFetcher::fetchCurrent(const String& url, CurrentWeatherData& out) {
-  lastError_ = "";
-  HTTPClient http;
-  if (!http.begin(client_, url)) {
-    lastError_ = "HTTPClient.begin a echoue";
-    return false;
-  }
-  const int httpCode = http.GET();
-  if (httpCode != HTTP_CODE_OK) {
-    lastError_ = "HTTP code " + String(httpCode);
-    http.end();
-    return false;
-  }
-
-  CurrentWeatherParser listener(out);
-  JsonStreamingParser parser;
-  parser.setListener(&listener);
-  Stream& stream = http.getStream();
-  while (stream.available()) {
-    parser.parse(static_cast<char>(stream.read()));
-    yield();
-  }
-  http.end();
-  if (!listener.ok()) {
-    lastError_ = "Parsing current incomplet";
-    return false;
-  }
-  if (out.iconId.isEmpty()) {
-    out.iconId = mapIconName("", out.conditionId);
-  }
+  cJSON_Delete(root);
   return true;
 }
 
-bool WeatherFetcher::fetchForecast(const String& url, ForecastEntry* out, size_t count) {
-  lastError_ = "";
-  HTTPClient http;
-  if (!http.begin(client_, url)) {
-    lastError_ = "HTTPClient.begin a echoue";
-    return false;
+static void reset_minutely_entries(MinutelyEntry *entries, size_t count) {
+  for (size_t i = 0; i < count; ++i) {
+    entries[i] = MinutelyEntry();
   }
-  const int httpCode = http.GET();
-  if (httpCode != HTTP_CODE_OK) {
-    lastError_ = "HTTP code " + String(httpCode);
-    http.end();
+}
+
+static void reset_hourly_entries(HourlyEntry *entries, size_t count) {
+  for (size_t i = 0; i < count; ++i) {
+    entries[i] = HourlyEntry();
+  }
+}
+
+static bool parse_onecall(const char *json,
+                          CurrentWeatherData &current,
+                          ForecastEntry *daily,
+                          size_t daily_count,
+                          MinutelyEntry *minutely,
+                          size_t minutely_count,
+                          HourlyEntry *hourly,
+                          size_t hourly_count) {
+  cJSON *root = cJSON_Parse(json);
+  if (!root) {
     return false;
   }
 
-  ForecastWeatherParser listener(out, count);
-  JsonStreamingParser parser;
-  parser.setListener(&listener);
-  Stream& stream = http.getStream();
-  while (stream.available()) {
-    parser.parse(static_cast<char>(stream.read()));
-    yield();
+  cJSON *current_obj = cJSON_GetObjectItemCaseSensitive(root, "current");
+  if (cJSON_IsObject(current_obj)) {
+    current.temperature = json_number_or(current_obj, "temp", current.temperature);
+    current.feelsLike = json_number_or(current_obj, "feels_like", current.feelsLike);
+    current.pressure = json_number_or(current_obj, "pressure", current.pressure);
+    current.humidity = static_cast<uint8_t>(json_int_or(current_obj, "humidity", current.humidity));
+    current.observationTime = static_cast<time_t>(json_int_or(current_obj, "dt", current.observationTime));
+    current.sunrise = static_cast<time_t>(json_int_or(current_obj, "sunrise", current.sunrise));
+    current.sunset = static_cast<time_t>(json_int_or(current_obj, "sunset", current.sunset));
+    cJSON *weather = cJSON_GetObjectItemCaseSensitive(current_obj, "weather");
+    parse_weather_item(
+        weather,
+        &current.conditionId,
+        &current.iconId,
+        &current.iconVariant,
+        &current.main,
+        &current.description);
   }
-  http.end();
-  if (!listener.ok()) {
+
+  if (daily && daily_count > 0) {
+    reset_forecast_entries(daily, daily_count);
+    cJSON *daily_arr = cJSON_GetObjectItemCaseSensitive(root, "daily");
+    if (cJSON_IsArray(daily_arr)) {
+      int total = cJSON_GetArraySize(daily_arr);
+      for (int i = 1; i < total && (size_t)(i - 1) < daily_count; ++i) {
+        cJSON *item = cJSON_GetArrayItem(daily_arr, i);
+        if (!cJSON_IsObject(item)) {
+          continue;
+        }
+        ForecastEntry &entry = daily[i - 1];
+        entry.valid = true;
+        entry.timestamp = static_cast<time_t>(json_int_or(item, "dt", 0));
+        cJSON *temp = cJSON_GetObjectItemCaseSensitive(item, "temp");
+        if (cJSON_IsObject(temp)) {
+          entry.minTemp = json_number_or(temp, "min", entry.minTemp);
+          entry.maxTemp = json_number_or(temp, "max", entry.maxTemp);
+        }
+        cJSON *weather = cJSON_GetObjectItemCaseSensitive(item, "weather");
+        parse_weather_item(weather, &entry.conditionId, &entry.iconId, &entry.iconVariant, nullptr, nullptr);
+        entry.middayOffset = 0;
+      }
+    }
+  }
+
+  if (minutely && minutely_count > 0) {
+    reset_minutely_entries(minutely, minutely_count);
+    cJSON *min_arr = cJSON_GetObjectItemCaseSensitive(root, "minutely");
+    if (cJSON_IsArray(min_arr)) {
+      int total = cJSON_GetArraySize(min_arr);
+      for (int i = 0; i < total && (size_t)i < minutely_count; ++i) {
+        cJSON *item = cJSON_GetArrayItem(min_arr, i);
+        if (!cJSON_IsObject(item)) {
+          continue;
+        }
+        MinutelyEntry &entry = minutely[i];
+        entry.valid = true;
+        entry.timestamp = static_cast<time_t>(json_int_or(item, "dt", 0));
+        entry.precipitation = json_number_or(item, "precipitation", entry.precipitation);
+      }
+    }
+  }
+
+  if (hourly && hourly_count > 0) {
+    reset_hourly_entries(hourly, hourly_count);
+    cJSON *hourly_arr = cJSON_GetObjectItemCaseSensitive(root, "hourly");
+    if (cJSON_IsArray(hourly_arr)) {
+      int total = cJSON_GetArraySize(hourly_arr);
+      for (int i = 1; i < total && (size_t)(i - 1) < hourly_count; ++i) {
+        cJSON *item = cJSON_GetArrayItem(hourly_arr, i);
+        if (!cJSON_IsObject(item)) {
+          continue;
+        }
+        HourlyEntry &entry = hourly[i - 1];
+        entry.valid = true;
+        entry.timestamp = static_cast<time_t>(json_int_or(item, "dt", 0));
+        entry.temperature = json_number_or(item, "temp", entry.temperature);
+        entry.feelsLike = json_number_or(item, "feels_like", entry.feelsLike);
+        entry.pop = json_number_or(item, "pop", entry.pop);
+        cJSON *rain = cJSON_GetObjectItemCaseSensitive(item, "rain");
+        if (cJSON_IsObject(rain)) {
+          entry.rain1h = json_number_or(rain, "1h", entry.rain1h);
+        }
+        cJSON *snow = cJSON_GetObjectItemCaseSensitive(item, "snow");
+        if (cJSON_IsObject(snow)) {
+          entry.snow1h = json_number_or(snow, "1h", entry.snow1h);
+        }
+        cJSON *weather = cJSON_GetObjectItemCaseSensitive(item, "weather");
+        parse_weather_item(weather, &entry.conditionId, &entry.iconId, &entry.iconVariant, nullptr, nullptr);
+      }
+    }
+  }
+
+  cJSON_Delete(root);
+  return !std::isnan(current.temperature);
+}
+}  // namespace
+
+WeatherFetcher::WeatherFetcher() = default;
+
+esp_err_t WeatherFetcher::fetchUrl(const char *url, std::string &out) {
+  lastError_.clear();
+  out.clear();
+  if (!url || !*url) {
+    lastError_ = "URL invalide";
+    return ESP_ERR_INVALID_ARG;
+  }
+
+  esp_http_client_config_t config = {};
+  config.url = url;
+  config.timeout_ms = timeout_ms_;
+  config.skip_cert_common_name_check = true;
+#if CONFIG_MBEDTLS_CERTIFICATE_BUNDLE
+  config.crt_bundle_attach = esp_crt_bundle_attach;
+#endif
+
+  esp_http_client_handle_t client = esp_http_client_init(&config);
+  if (!client) {
+    lastError_ = "esp_http_client_init a echoue";
+    return ESP_FAIL;
+  }
+
+  esp_err_t err = esp_http_client_open(client, 0);
+  if (err != ESP_OK) {
+    lastError_ = "esp_http_client_open a echoue";
+    esp_http_client_cleanup(client);
+    return err;
+  }
+
+  int status = esp_http_client_fetch_headers(client);
+  if (status < 0) {
+    lastError_ = "HTTP headers invalides";
+    esp_http_client_close(client);
+    esp_http_client_cleanup(client);
+    return ESP_FAIL;
+  }
+
+  int http_code = esp_http_client_get_status_code(client);
+  if (http_code != 200) {
+    lastError_ = "HTTP code " + std::to_string(http_code);
+    esp_http_client_close(client);
+    esp_http_client_cleanup(client);
+    return ESP_FAIL;
+  }
+
+  char buffer[512];
+  int read_len = 0;
+  while ((read_len = esp_http_client_read(client, buffer, sizeof(buffer))) > 0) {
+    out.append(buffer, static_cast<size_t>(read_len));
+  }
+
+  esp_http_client_close(client);
+  esp_http_client_cleanup(client);
+
+  if (read_len < 0) {
+    lastError_ = "Lecture HTTP incomplete";
+    return ESP_FAIL;
+  }
+
+  return ESP_OK;
+}
+
+esp_err_t WeatherFetcher::fetchCurrent(const char *url, CurrentWeatherData &out) {
+  std::string payload;
+  esp_err_t err = fetchUrl(url, payload);
+  if (err != ESP_OK) {
+    ESP_LOGE("WeatherFetcher", "Fetch current failed: %s", lastError_.c_str());
+    return err;
+  }
+  if (!parse_current(payload.c_str(), out)) {
+    lastError_ = "Parsing current incomplet";
+    return ESP_FAIL;
+  }
+  return ESP_OK;
+}
+
+esp_err_t WeatherFetcher::fetchForecast(const char *url, ForecastEntry *out, size_t count) {
+  if (!out || count == 0) {
+    lastError_ = "Buffer forecast invalide";
+    return ESP_ERR_INVALID_ARG;
+  }
+  std::string payload;
+  esp_err_t err = fetchUrl(url, payload);
+  if (err != ESP_OK) {
+    ESP_LOGE("WeatherFetcher", "Fetch forecast failed: %s", lastError_.c_str());
+    return err;
+  }
+  if (!parse_forecast(payload.c_str(), out, count)) {
     lastError_ = "Parsing forecast incomplet";
-    return false;
+    return ESP_FAIL;
   }
-  return true;
+  return ESP_OK;
+}
+
+esp_err_t WeatherFetcher::fetchOneCall(const char *url,
+                                       CurrentWeatherData &current,
+                                       ForecastEntry *out,
+                                       size_t count,
+                                       MinutelyEntry *minutely,
+                                       size_t minutely_count,
+                                       HourlyEntry *hourly,
+                                       size_t hourly_count) {
+  std::string payload;
+  esp_err_t err = fetchUrl(url, payload);
+  if (err != ESP_OK) {
+    ESP_LOGE("WeatherFetcher", "Fetch onecall failed: %s", lastError_.c_str());
+    return err;
+  }
+  if (!parse_onecall(payload.c_str(), current, out, count, minutely, minutely_count, hourly, hourly_count)) {
+    lastError_ = "Parsing onecall incomplet";
+    return ESP_FAIL;
+  }
+  return ESP_OK;
 }

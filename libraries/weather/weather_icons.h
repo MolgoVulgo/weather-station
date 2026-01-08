@@ -1,16 +1,26 @@
 #pragma once
 
-#include <Arduino.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string>
+#include "esp_err.h"
 
-struct WeatherIconAsset {
-  const char* id;
-  uint16_t width;
-  uint16_t height;
-  const char* filePath;  // Chemin dans LittleFS
-};
+typedef struct {
+  uint16_t code;
+  uint8_t variant;
+} WeatherIconRef;
 
-extern const WeatherIconAsset kWeatherIconAssets[];
-extern const size_t kWeatherIconAssetsCount;
+bool WeatherIconResolve(int condition_id, const char* icon_code, WeatherIconRef* out);
+bool WeatherIconResolve(int condition_id, const std::string& icon_code, WeatherIconRef* out);
 
-const WeatherIconAsset* FindWeatherIconAsset(const String& iconId);
-const WeatherIconAsset* FindWeatherIconAsset(const char* iconId);
+esp_err_t WeatherIconFindOffsetStream(FILE *fp,
+                                      int condition_id,
+                                      const char* icon_code,
+                                      uint32_t *out_offset);
+
+esp_err_t WeatherIconFindOffset(const uint8_t *buffer,
+                                size_t buffer_len,
+                                int condition_id,
+                                const char* icon_code,
+                                uint32_t *out_offset);

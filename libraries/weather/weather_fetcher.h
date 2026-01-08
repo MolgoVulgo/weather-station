@@ -1,8 +1,11 @@
 #pragma once
 
-#include <Arduino.h>
-#include <WiFiClientSecureBearSSL.h>
+#include <math.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <string>
 #include <time.h>
+#include "esp_err.h"
 
 struct CurrentWeatherData {
   float temperature = NAN;
@@ -26,11 +29,12 @@ struct CurrentWeatherData {
   time_t sunrise = 0;
   time_t sunset = 0;
   int32_t timezone = 0;
-  String cityName;
-  String country;
-  String main;
-  String description;
-  String iconId;
+  std::string cityName;
+  std::string country;
+  std::string main;
+  std::string description;
+  std::string iconId;
+  uint8_t iconVariant = 2;
   int conditionId = 0;
 };
 
@@ -38,20 +42,50 @@ struct ForecastEntry {
   time_t timestamp = 0;
   float minTemp = NAN;
   float maxTemp = NAN;
-  String iconId;
+  std::string iconId;
+  uint8_t iconVariant = 2;
   int conditionId = 0;
   bool valid = false;
   uint8_t middayOffset = 255;
 };
 
+struct MinutelyEntry {
+  time_t timestamp = 0;
+  float precipitation = NAN;
+  bool valid = false;
+};
+
+struct HourlyEntry {
+  time_t timestamp = 0;
+  float temperature = NAN;
+  float feelsLike = NAN;
+  float pop = NAN;
+  float rain1h = NAN;
+  float snow1h = NAN;
+  std::string iconId;
+  uint8_t iconVariant = 2;
+  int conditionId = 0;
+  bool valid = false;
+};
+
 class WeatherFetcher {
  public:
-  explicit WeatherFetcher(BearSSL::WiFiClientSecure& client);
-  bool fetchCurrent(const String& url, CurrentWeatherData& out);
-  bool fetchForecast(const String& url, ForecastEntry* out, size_t count);
-  const String& lastError() const { return lastError_; }
+  WeatherFetcher();
+  esp_err_t fetchCurrent(const char* url, CurrentWeatherData& out);
+  esp_err_t fetchForecast(const char* url, ForecastEntry* out, size_t count);
+  esp_err_t fetchOneCall(const char* url,
+                         CurrentWeatherData& current,
+                         ForecastEntry* out,
+                         size_t count,
+                         MinutelyEntry* minutely,
+                         size_t minutely_count,
+                         HourlyEntry* hourly,
+                         size_t hourly_count);
+  const std::string& lastError() const { return lastError_; }
+  void set_timeout_ms(int timeout_ms) { timeout_ms_ = timeout_ms; }
 
  private:
-  BearSSL::WiFiClientSecure& client_;
-  String lastError_;
+  esp_err_t fetchUrl(const char* url, std::string& out);
+  std::string lastError_;
+  int timeout_ms_ = 8000;
 };

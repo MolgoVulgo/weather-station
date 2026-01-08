@@ -12,6 +12,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `src/esp_lcd_touch.c` / `src/esp_lcd_touch.h`: ESP LCD touch abstraction.
 - `src/lv_conf.h`: LVGL compile-time configuration.
 - `src/ui/`: EEZ Studio export (UI, assets, screens). Do not edit manually.
+- `libraries/weather/`: ESP-IDF weather fetcher and OWM icon mapping (uses embedded icon index).
 
 ## UI: EEZ Studio
 - `ui/` (EEZ Studio): generates an `objects` structure (e.g. `objects.ui_screen_label_time`) and an EEZ screen pipeline (`loadScreen`, `tick_screen`).
@@ -81,7 +82,11 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `sdcard_list_dir()` (`src/weatherStation.c`): logs SD contents for debug.
 - `ui_init()` (`src/ui/ui.c`): initializes screens and loads the main screen.
 - `ui_screen_start()` (`src/ui_screen.c`): initializes the clock at 00:00:00 and updates the time label every second.
+- Weather service (`src/weather_service.cpp`): fetches current data at startup and then every `WEATHER_REFRESH_MINUTES`, updates UI text, and loads the icon from `icon_150.bin` using the embedded index.
+- Main function catalog: `docs/MAIN_FUNCTIONS.md`.
 
 ## Build Notes
 - Platform: ESP-IDF via PlatformIO (`platformio.ini`).
 - Default environment: `LVGL-320-480`.
+- Weather fetch requires `esp_http_client`, `esp-tls`, `mbedtls`, `json` (declared in `src/CMakeLists.txt`).
+- Weather service uses `OPENWEATHERMAP_API_KEY_3` (One Call v3) when set; otherwise it falls back to `OPENWEATHERMAP_API_KEY_2` (current weather v2.5).
