@@ -126,7 +126,7 @@ WeatherFetcher::fetchOneCall(url, current, daily[], count, minutely[], mcount, h
   -> pas de cache fichier (RAM uniquement)
 ```
 
-Note: utiliser `OPENWEATHERMAP_API_KEY_3` pour One Call v3 et `OPENWEATHERMAP_API_KEY_2` pour v2.5.
+Note: utiliser `OPENWEATHERMAP_API_KEY_3` pour One Call v3 et `OPENWEATHERMAP_API_KEY_2` pour v2.5. Le mode est exclusif (v3 ou v2.5), jamais hybride.
 
 ### Recherche d'icone
 ```

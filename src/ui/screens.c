@@ -139,7 +139,7 @@ void create_screen_ui_meteo() {
             // ui_meteo_ft1_1
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.ui_meteo_ft1_1 = obj;
-            lv_obj_set_pos(obj, 28, 255);
+            lv_obj_set_pos(obj, 20, 255);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &ui_font_ui_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -149,7 +149,7 @@ void create_screen_ui_meteo() {
             // ui_meteo_ft2_1
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.ui_meteo_ft2_1 = obj;
-            lv_obj_set_pos(obj, 28, 270);
+            lv_obj_set_pos(obj, 20, 270);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &ui_font_ui_16, LV_PART_MAIN | LV_STATE_DEFAULT);

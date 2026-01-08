@@ -1,0 +1,167 @@
+{
+  "200": {
+    "name": "Thunderstorm with light rain"
+  },
+  "201": {
+    "name": "Thunderstorm with rain"
+  },
+  "202": {
+    "name": "Thunderstorm with heavy rain"
+  },
+  "210": {
+    "name": "Light thunderstorm"
+  },
+  "211": {
+    "name": "Thunderstorm"
+  },
+  "212": {
+    "name": "Heavy thunderstorm"
+  },
+  "221": {
+    "name": "Ragged thunderstorm"
+  },
+  "230": {
+    "name": "Thunderstorm with light drizzle"
+  },
+  "231": {
+    "name": "Thunderstorm with drizzle"
+  },
+  "232": {
+    "name": "Thunderstorm with heavy drizzle"
+  },
+  "300": {
+    "name": "Light drizzle"
+  },
+  "301": {
+    "name": "Drizzle"
+  },
+  "302": {
+    "name": "Heavy drizzle"
+  },
+  "310": {
+    "name": "Light drizzle rain"
+  },
+  "311": {
+    "name": "Drizzle rain"
+  },
+  "312": {
+    "name": "Heavy drizzle rain"
+  },
+  "313": {
+    "name": "Shower rain and drizzle"
+  },
+  "314": {
+    "name": "Heavy shower rain and drizzle"
+  },
+  "321": {
+    "name": "Shower drizzle"
+  },
+  "500": {
+    "name": "Light rain"
+  },
+  "501": {
+    "name": "Moderate rain"
+  },
+  "502": {
+    "name": "Heavy intensity rain"
+  },
+  "503": {
+    "name": "Very heavy rain"
+  },
+  "504": {
+    "name": "Extreme rain"
+  },
+  "511": {
+    "name": "Freezing rain"
+  },
+  "520": {
+    "name": "Light intensity shower rain"
+  },
+  "521": {
+    "name": "Shower rain"
+  },
+  "522": {
+    "name": "Heavy intensity shower rain"
+  },
+  "531": {
+    "name": "Ragged shower rain"
+  },
+  "600": {
+    "name": "Light snow"
+  },
+  "601": {
+    "name": "Snow"
+  },
+  "602": {
+    "name": "Heavy snow"
+  },
+  "611": {
+    "name": "Sleet"
+  },
+  "612": {
+    "name": "Light shower sleet"
+  },
+  "613": {
+    "name": "Shower sleet"
+  },
+  "615": {
+    "name": "Light rain and snow"
+  },
+  "616": {
+    "name": "Rain and snow"
+  },
+  "620": {
+    "name": "Light shower snow"
+  },
+  "621": {
+    "name": "Shower snow"
+  },
+  "622": {
+    "name": "Heavy shower snow"
+  },
+  "701": {
+    "name": "Mist"
+  },
+  "711": {
+    "name": "Smoke"
+  },
+  "721": {
+    "name": "Haze"
+  },
+  "731": {
+    "name": "Sand / Dust whirls"
+  },
+  "741": {
+    "name": "Fog"
+  },
+  "751": {
+    "name": "Sand"
+  },
+  "761": {
+    "name": "Dust"
+  },
+  "762": {
+    "name": "Volcanic ash"
+  },
+  "771": {
+    "name": "Squalls"
+  },
+  "781": {
+    "name": "Tornado"
+  },
+  "800": {
+    "name": "Clear sky"
+  },
+  "801": {
+    "name": "Few clouds"
+  },
+  "802": {
+    "name": "Scattered clouds"
+  },
+  "803": {
+    "name": "Broken clouds"
+  },
+  "804": {
+    "name": "Overcast clouds"
+  }
+}

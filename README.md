@@ -90,3 +90,4 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - Default environment: `LVGL-320-480`.
 - Weather fetch requires `esp_http_client`, `esp-tls`, `mbedtls`, `json` (declared in `src/CMakeLists.txt`).
 - Weather service uses `OPENWEATHERMAP_API_KEY_3` (One Call v3) when set; otherwise it falls back to `OPENWEATHERMAP_API_KEY_2` (current weather v2.5).
+- Weather mode is exclusive: full v3 (current + forecast via One Call) or full v2.5 (current + forecast), never mixed.

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "esp_bsp.h"
 #include "esp_err.h"
 #include "esp_log.h"
@@ -23,6 +24,7 @@ static bool s_weather_started;
 static bool s_first_fetch_done;
 static esp_event_handler_instance_t s_ip_handler;
 static TaskHandle_t s_weather_task;
+static const char *kWeekdaysShort[7] = {"DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"};
 
 static bool weather_netif_ready(void)
 {
@@ -59,6 +61,92 @@ static void weather_apply_ui(const CurrentWeatherData *current)
     bsp_display_unlock();
 }
 
+static void weather_apply_forecast(const ForecastEntry *entries, size_t count)
+{
+    if (!entries || count == 0) {
+        return;
+    }
+    bsp_display_lock(0);
+    for (size_t i = 0; i < 6 && i < count; ++i) {
+        const ForecastEntry *entry = &entries[i];
+        if (!entry->valid || entry->timestamp == 0) {
+            continue;
+        }
+        struct tm day_tm;
+        if (localtime_r(&entry->timestamp, &day_tm)) {
+            const char *day = "";
+            if (day_tm.tm_wday >= 0 && day_tm.tm_wday < 7) {
+                day = kWeekdaysShort[day_tm.tm_wday];
+            }
+            switch (i) {
+            case 0:
+                set_var_ui_meteo_fd1(day);
+                break;
+            case 1:
+                set_var_ui_meteo_fd2(day);
+                break;
+            case 2:
+                set_var_ui_meteo_fd3(day);
+                break;
+            case 3:
+                set_var_ui_meteo_fd4(day);
+                break;
+            case 4:
+                set_var_ui_meteo_fd5(day);
+                break;
+            case 5:
+                set_var_ui_meteo_fd6(day);
+                break;
+            default:
+                break;
+            }
+        }
+
+        char temp_min[16];
+        char temp_max[16];
+        snprintf(temp_min, sizeof(temp_min), "%.0f", entry->minTemp);
+        snprintf(temp_max, sizeof(temp_max), "%.0f", entry->maxTemp);
+        switch (i) {
+        case 0:
+            set_var_ui_meteo_ft1_1(temp_min);
+            set_var_ui_meteo_ft2_1(temp_max);
+            break;
+        case 1:
+            set_var_ui_meteo_ft1_2(temp_min);
+            set_var_ui_meteo_ft2_2(temp_max);
+            break;
+        case 2:
+            set_var_ui_meteo_ft1_3(temp_min);
+            set_var_ui_meteo_ft2_3(temp_max);
+            break;
+        case 3:
+            set_var_ui_meteo_ft1_4(temp_min);
+            set_var_ui_meteo_ft2_4(temp_max);
+            break;
+        case 4:
+            set_var_ui_meteo_ft1_5(temp_min);
+            set_var_ui_meteo_ft2_5(temp_max);
+            break;
+        case 5:
+            set_var_ui_meteo_ft1_6(temp_min);
+            set_var_ui_meteo_ft2_6(temp_max);
+            break;
+        default:
+            break;
+        }
+
+        lv_obj_t *icon = ui_weather_forecast_icon(i);
+        if (icon && entry->conditionId != 0) {
+            weather_icons_set_object(
+                icon,
+                "icon_50.bin",
+                (uint16_t)entry->conditionId,
+                entry->iconVariant);
+        }
+    }
+    bsp_display_unlock();
+}
+
 static void weather_fetch_once(void)
 {
     if (!weather_netif_ready()) {
@@ -67,6 +155,7 @@ static void weather_fetch_once(void)
     }
     WeatherFetcher fetcher;
     CurrentWeatherData current;
+    ForecastEntry daily[6];
     char url[256];
     esp_err_t weather_ret = ESP_FAIL;
     if (strlen(OPENWEATHERMAP_API_KEY_3) > 0) {
@@ -83,7 +172,7 @@ static void weather_fetch_once(void)
             ESP_LOGE(TAG, "Weather URL overflow");
             return;
         }
-        weather_ret = fetcher.fetchOneCall(url, current, NULL, 0, NULL, 0, NULL, 0);
+        weather_ret = fetcher.fetchOneCall(url, current, daily, 6, NULL, 0, NULL, 0);
     } else {
         int written = snprintf(
             url,
@@ -105,6 +194,30 @@ static void weather_fetch_once(void)
         return;
     }
     weather_apply_ui(&current);
+    if (strlen(OPENWEATHERMAP_API_KEY_3) > 0) {
+        weather_apply_forecast(daily, 6);
+    } else {
+        ForecastEntry forecast[6];
+        int written = snprintf(
+            url,
+            sizeof(url),
+            "%s?lat=%.6f&lon=%.6f&appid=%s&units=metric&lang=%s",
+            OPENWEATHERMAP_FORECAST_URL,
+            LOCATION_LATITUDE,
+            LOCATION_LONGITUDE,
+            OPENWEATHERMAP_API_KEY_2,
+            OPENWEATHERMAP_LANGUAGE);
+        if (written <= 0 || (size_t)written >= sizeof(url)) {
+            ESP_LOGE(TAG, "Forecast URL overflow");
+            return;
+        }
+        esp_err_t forecast_ret = fetcher.fetchForecast(url, forecast, 6);
+        if (forecast_ret == ESP_OK) {
+            weather_apply_forecast(forecast, 6);
+        } else {
+            ESP_LOGW(TAG, "Forecast fetch failed: %s", fetcher.lastError().c_str());
+        }
+    }
     s_first_fetch_done = true;
 }
 

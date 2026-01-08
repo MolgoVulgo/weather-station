@@ -16,7 +16,27 @@ typedef struct {
     lv_obj_t *target;
 } weather_icon_ctx_t;
 
-static weather_icon_ctx_t s_icon_ctx;
+static weather_icon_ctx_t s_icon_slots[8];
+
+static weather_icon_ctx_t *weather_icon_ctx_for_target(lv_obj_t *target)
+{
+    if (!target) {
+        return NULL;
+    }
+    for (size_t i = 0; i < sizeof(s_icon_slots) / sizeof(s_icon_slots[0]); ++i) {
+        if (s_icon_slots[i].target == target) {
+            return &s_icon_slots[i];
+        }
+    }
+    for (size_t i = 0; i < sizeof(s_icon_slots) / sizeof(s_icon_slots[0]); ++i) {
+        if (s_icon_slots[i].target == NULL) {
+            s_icon_slots[i].target = target;
+            return &s_icon_slots[i];
+        }
+    }
+    s_icon_slots[0].target = target;
+    return &s_icon_slots[0];
+}
 
 static void rgb565_swap(uint8_t *buf, size_t len)
 {
@@ -67,6 +87,44 @@ static esp_err_t weather_icon_draw_cb(
     return ESP_OK;
 }
 
+static uint16_t weather_icon_group_fallback(uint16_t code)
+{
+    if (code >= 200 && code <= 232) {
+        return 200;
+    }
+    if (code >= 300 && code <= 321) {
+        return 300;
+    }
+    if (code >= 500 && code <= 531) {
+        return 500;
+    }
+    if (code >= 600 && code <= 622) {
+        return 600;
+    }
+    if (code >= 700 && code <= 781) {
+        return 701;
+    }
+    if (code == 800) {
+        return 800;
+    }
+    if (code >= 801 && code <= 804) {
+        return 801;
+    }
+    return 0;
+}
+
+static esp_err_t weather_icon_find_offset(FILE *fp,
+                                          uint16_t code,
+                                          uint8_t variant,
+                                          uint32_t *out_offset)
+{
+    esp_err_t rc = svg2bin_find_entry_offset_stream(fp, code, variant, out_offset);
+    if (rc == ESP_ERR_NOT_FOUND && variant != SVG2BIN_VARIANT_NEUTRAL) {
+        rc = svg2bin_find_entry_offset_stream(fp, code, SVG2BIN_VARIANT_NEUTRAL, out_offset);
+    }
+    return rc;
+}
+
 static FILE *open_weather_bin(const char *filename)
 {
     static const char *paths[] = {
@@ -91,21 +149,34 @@ static FILE *open_weather_bin(const char *filename)
     return NULL;
 }
 
-esp_err_t weather_icons_set_main(uint16_t code, uint8_t variant)
+esp_err_t weather_icons_set_object(lv_obj_t *target,
+                                   const char *bin_name,
+                                   uint16_t code,
+                                   uint8_t variant)
 {
-    lv_obj_t *target = ui_weather_image();
     if (!target) {
-        ESP_LOGE(TAG, "ui_meteo_img not ready.");
+        ESP_LOGE(TAG, "Weather target not ready.");
         return ESP_ERR_INVALID_STATE;
     }
 
-    FILE *fp = open_weather_bin("icon_150.bin");
+    const char *bin = bin_name ? bin_name : "icon_150.bin";
+    FILE *fp = open_weather_bin(bin);
     if (!fp) {
         return ESP_ERR_NOT_FOUND;
     }
 
     uint32_t offset = 0;
-    esp_err_t rc = svg2bin_find_entry_offset_stream(fp, code, variant, &offset);
+    esp_err_t rc = weather_icon_find_offset(fp, code, variant, &offset);
+    if (rc == ESP_ERR_NOT_FOUND) {
+        uint16_t fallback = weather_icon_group_fallback(code);
+        if (fallback != 0 && fallback != code) {
+            ESP_LOGW(TAG, "Icon fallback: code=%u -> %u", (unsigned)code, (unsigned)fallback);
+            rc = weather_icon_find_offset(fp, fallback, variant, &offset);
+            if (rc == ESP_OK) {
+                code = fallback;
+            }
+        }
+    }
     if (rc != ESP_OK) {
         ESP_LOGE(TAG, "Index lookup failed (code=%u, variant=%u): %s",
                  (unsigned)code, (unsigned)variant, esp_err_to_name(rc));
@@ -113,8 +184,12 @@ esp_err_t weather_icons_set_main(uint16_t code, uint8_t variant)
         return rc;
     }
 
-    s_icon_ctx.target = target;
-    rc = svg2bin_decode_entry_at_offset(fp, offset, weather_icon_draw_cb, &s_icon_ctx);
+    weather_icon_ctx_t *ctx = weather_icon_ctx_for_target(target);
+    if (!ctx) {
+        fclose(fp);
+        return ESP_ERR_NO_MEM;
+    }
+    rc = svg2bin_decode_entry_at_offset(fp, offset, weather_icon_draw_cb, ctx);
     fclose(fp);
     if (rc != ESP_OK) {
         ESP_LOGE(TAG, "Decode failed: %s", esp_err_to_name(rc));
@@ -123,4 +198,9 @@ esp_err_t weather_icons_set_main(uint16_t code, uint8_t variant)
 
     ESP_LOGI(TAG, "Icon set: code=%u variant=%u", (unsigned)code, (unsigned)variant);
     return ESP_OK;
+}
+
+esp_err_t weather_icons_set_main(uint16_t code, uint8_t variant)
+{
+    return weather_icons_set_object(ui_weather_image(), "icon_150.bin", code, variant);
 }

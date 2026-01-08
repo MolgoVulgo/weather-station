@@ -90,3 +90,4 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - Environnement par defaut: `LVGL-320-480`.
 - La meteo requiert `esp_http_client`, `esp-tls`, `mbedtls`, `json` (declares dans `src/CMakeLists.txt`).
 - Le service meteo utilise `OPENWEATHERMAP_API_KEY_3` (One Call v3) si renseigne, sinon `OPENWEATHERMAP_API_KEY_2` (meteo courante v2.5).
+- Le mode meteo est exclusif: soit full v3 (courant + previsions via One Call), soit full v2.5, jamais hybride.
