@@ -13,6 +13,7 @@ typedef struct {
 
 esp_err_t wifi_manager_init(void);
 const wifi_manager_credentials_t *wifi_manager_get_credentials(void);
+bool wifi_manager_is_portal_active(void);
 
 /* Pour future configuration Web/écran. */
 esp_err_t wifi_manager_set_credentials(const char *ssid, const char *password);

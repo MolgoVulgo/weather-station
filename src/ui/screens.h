@@ -2,6 +2,13 @@
 #define EEZ_LVGL_UI_SCREENS_H
 
 #include <lvgl.h>
+#if LV_USE_QRCODE
+#include "extra/libs/qrcode/lv_qrcode.h"
+#endif
+
+#ifndef _
+#define _(s) (s)
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,6 +17,8 @@ extern "C" {
 typedef struct _objects_t {
     lv_obj_t *ui_start;
     lv_obj_t *ui_meteo;
+    lv_obj_t *ui_setup;
+    lv_obj_t *ui_wifi;
     lv_obj_t *ui_start_bar;
     lv_obj_t *ui_start_bar_texte;
     lv_obj_t *obj0;
@@ -44,6 +53,10 @@ typedef struct _objects_t {
     lv_obj_t *ui_meteo_fd4;
     lv_obj_t *ui_meteo_fd5;
     lv_obj_t *ui_meteo_fd6;
+    lv_obj_t *obj3;
+    lv_obj_t *obj4;
+    lv_obj_t *obj5;
+    lv_obj_t *obj6;
 } objects_t;
 
 extern objects_t objects;
@@ -51,6 +64,8 @@ extern objects_t objects;
 enum ScreensEnum {
     SCREEN_ID_UI_START = 1,
     SCREEN_ID_UI_METEO = 2,
+    SCREEN_ID_UI_SETUP = 3,
+    SCREEN_ID_UI_WIFI = 4,
 };
 
 void create_screen_ui_start();
@@ -58,6 +73,12 @@ void tick_screen_ui_start();
 
 void create_screen_ui_meteo();
 void tick_screen_ui_meteo();
+
+void create_screen_ui_setup();
+void tick_screen_ui_setup();
+
+void create_screen_ui_wifi();
+void tick_screen_ui_wifi();
 
 void tick_screen_by_id(enum ScreensEnum screenId);
 void tick_screen(int screen_index);

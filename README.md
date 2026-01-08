@@ -31,11 +31,15 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
    - init backlight PWM.
    - init QSPI LCD + AXS15231B panel.
    - init I2C touch and register LVGL input.
-5. Wi-Fi init (STA) with NVS credentials (defaults from `include/secrets.h`).
-6. NVS init + NTP sync (configurable pool, offset in seconds).
-7. SD mount (`/sdcard`) and list files.
-8. `ui_init()` creates the LVGL UI (EEZ Studio).
-9. `ui_screen_start()` starts the local clock (LVGL timer).
+5. `ui_init()` creates the LVGL UI and shows `ui_start` with progress.
+6. Wi-Fi init (STA) with NVS credentials (defaults from `include/secrets.h`), wait for IP.
+   - If no credentials or repeated failures, start captive portal AP `StationMeteo` (password `stationmeteo`) and show `ui_wifi`.
+   - The portal scan endpoint logs the SSID list (with RSSI) and the UI offers a refresh button to re-run the scan.
+7. NTP sync (3 attempts); logs error if it fails.
+8. SPIFFS mount + LVGL FS driver registration.
+9. SD mount (`/sdcard`) and list files.
+10. `ui_screen_start()` starts the local clock (LVGL timer).
+11. Weather service runs current + forecast, then switches to `ui_meteo`.
 
 ## Display Pipeline
 - `bsp_display_new()` configures the QSPI bus and the AXS15231B panel.
@@ -56,6 +60,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - QSPI/I2C pins: `src/esp_bsp.h`.
 - NTP: pool and offset (seconds) in NVS, namespace `time_cfg` (`src/time_sync.c`).
 - Wi-Fi: SSID + password in NVS, namespace `wifi_cfg` (`src/wifi_manager.c`).
+- Wi-Fi reset: set `WIFI_RESET_NVS=1` in `include/secrets.h` to clear stored credentials.
 
 ## Extension Points
 - Use `bsp_display_lock()` / `bsp_display_unlock()` to protect LVGL calls from other tasks.
@@ -84,6 +89,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `ui_screen_start()` (`src/ui_screen.c`): initializes the clock at 00:00:00 and updates the time label every second.
 - Weather service (`src/weather_service.cpp`): fetches current data at startup and then every `WEATHER_REFRESH_MINUTES`, updates UI text, and loads the icon from `icon_150.bin` using the embedded index.
 - Boot progress (`src/boot_progress.c`): updates `ui_start_bar`/`ui_start_bar_texte` and switches to `ui_meteo` when ready.
+- Captive portal (`src/wifi_portal.c`): AP + web UI for Wi-Fi setup, save to NVS, reboot. Scan returns up to 50 SSIDs and is refreshable in the UI; scan results are logged.
 - Main function catalog: `docs/MAIN_FUNCTIONS.md`.
 
 ## Build Notes

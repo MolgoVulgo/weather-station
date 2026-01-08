@@ -31,11 +31,15 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
    - init backlight PWM.
    - init LCD QSPI + panneau AXS15231B.
    - init tactile I2C et enregistrement LVGL input.
-5. Init Wi-Fi (STA) avec credentials NVS (valeurs par defaut via `include/secrets.h`).
-6. Init NVS + synchro NTP (pool configurable, offset en secondes).
-7. Montage SD (/sdcard) et listing des fichiers.
-8. `ui_init()` cree l'interface LVGL (EEZ Studio).
-9. `ui_screen_start()` demarre l'horloge locale (timer LVGL).
+5. `ui_init()` cree l'interface LVGL et affiche `ui_start` avec la progression.
+6. Init Wi-Fi (STA) avec credentials NVS (valeurs par defaut via `include/secrets.h`), attente IP.
+   - Si aucun credential ou echec repete, demarrer le portail captif AP `StationMeteo` (mot de passe `stationmeteo`) et afficher `ui_wifi`.
+   - Le scan du portail logge la liste des SSID (avec RSSI) et l'UI propose un bouton de rafraichissement.
+7. Synchro NTP (3 essais); log erreur si echec.
+8. Montage SPIFFS + driver LVGL FS.
+9. Montage SD (/sdcard) et listing des fichiers.
+10. `ui_screen_start()` demarre l'horloge locale (timer LVGL).
+11. Service meteo (courant + forecast) puis bascule vers `ui_meteo`.
 
 ## Pipeline d'affichage
 - `bsp_display_new()` configure le bus QSPI et le panneau AXS15231B.
@@ -56,6 +60,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - Pins QSPI/I2C: `src/esp_bsp.h`.
 - NTP: pool et décalage (secondes) en NVS, namespace `time_cfg` (`src/time_sync.c`).
 - Wi-Fi: SSID + mot de passe en NVS, namespace `wifi_cfg` (`src/wifi_manager.c`).
+- Reset Wi-Fi: mettre `WIFI_RESET_NVS=1` dans `include/secrets.h` pour effacer les credentials.
 
 ## Points d'extension
 - Utiliser `bsp_display_lock()` / `bsp_display_unlock()` pour proteger les appels LVGL depuis d'autres tasks.
@@ -84,6 +89,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - `ui_screen_start()` (`src/ui_screen.c`): initialise l'horloge a 00:00:00 et met a jour le label d'heure chaque seconde.
 - Service meteo (`src/weather_service.cpp`): recupere les donnees au demarrage puis toutes les `WEATHER_REFRESH_MINUTES`, met a jour les textes UI et charge l'icone depuis `icon_150.bin` via l'index integre.
 - Demarrage (`src/boot_progress.c`): met a jour `ui_start_bar`/`ui_start_bar_texte` et bascule vers `ui_meteo` une fois pret.
+- Portail captif (`src/wifi_portal.c`): AP + UI web de configuration, sauvegarde NVS, reboot. Le scan retourne jusqu'a 50 SSID et est relancable via le bouton; les resultats sont logges.
 - Recueil des fonctions principales: `docs/MAIN_FUNCTIONS.md`.
 
 ## Notes build

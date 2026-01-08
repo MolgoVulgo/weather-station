@@ -8,6 +8,7 @@
 #include "nvs.h"
 #include "nvs_flash.h"
 #include "secrets.h"
+#include "wifi_portal.h"
 
 static const char *TAG = "WiFi";
 
@@ -19,6 +20,9 @@ static wifi_manager_credentials_t wifi_cfg = {
     .ssid = WIFI_SSID,
     .password = WIFI_PASSWORD,
 };
+static bool wifi_missing_credentials = false;
+static int wifi_retry_count = 0;
+static const char *ap_password = "stationmeteo";
 
 static void wifi_event_handler(void *arg,
                                esp_event_base_t event_base,
@@ -32,10 +36,20 @@ static void wifi_event_handler(void *arg,
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         ESP_LOGW(TAG, "WiFi deconnecte, reconnexion");
+        if (wifi_portal_is_active()) {
+            return;
+        }
+        wifi_retry_count++;
+        if (wifi_retry_count >= 5) {
+            ESP_LOGW(TAG, "Echec connexion, passage en AP");
+            wifi_portal_start("StationMeteo", ap_password);
+            return;
+        }
         esp_wifi_connect();
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
         ESP_LOGI(TAG, "WiFi IP: " IPSTR, IP2STR(&event->ip_info.ip));
+        wifi_retry_count = 0;
     }
 }
 
@@ -74,6 +88,7 @@ static esp_err_t wifi_manager_nvs_load(bool *out_missing)
     if (out_missing) {
         *out_missing = missing;
     }
+    wifi_missing_credentials = missing;
     return ESP_OK;
 }
 
@@ -131,6 +146,17 @@ esp_err_t wifi_manager_init(void)
         return ret;
     }
 
+    if (WIFI_RESET_NVS) {
+        ESP_LOGW(TAG, "WIFI_RESET_NVS=1, effacement credentials WiFi");
+        nvs_handle_t nvs = 0;
+        if (nvs_open(WIFI_NVS_NAMESPACE, NVS_READWRITE, &nvs) == ESP_OK) {
+            nvs_erase_key(nvs, WIFI_NVS_KEY_SSID);
+            nvs_erase_key(nvs, WIFI_NVS_KEY_PASS);
+            nvs_commit(nvs);
+            nvs_close(nvs);
+        }
+    }
+
     ret = esp_netif_init();
     if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
         ESP_LOGE(TAG, "esp_netif_init failed: %s", esp_err_to_name(ret));
@@ -149,8 +175,8 @@ esp_err_t wifi_manager_init(void)
         return ret;
     }
     if (missing) {
-        ESP_LOGI(TAG, "NVS wifi_cfg absent, sauvegarde des valeurs par defaut");
-        wifi_manager_save_credentials();
+        ESP_LOGI(TAG, "NVS wifi_cfg absent, portail captif requis");
+        wifi_missing_credentials = true;
     }
 
     esp_netif_create_default_wifi_sta();
@@ -179,10 +205,19 @@ esp_err_t wifi_manager_init(void)
     ESP_ERROR_CHECK(esp_wifi_start());
 
     ESP_LOGI(TAG, "WiFi init avec SSID: %s", wifi_cfg.ssid);
+    if (wifi_missing_credentials) {
+        ESP_LOGW(TAG, "Aucun credential, activation portail captif");
+        wifi_portal_start("StationMeteo", ap_password);
+    }
     return ESP_OK;
 }
 
 const wifi_manager_credentials_t *wifi_manager_get_credentials(void)
 {
     return &wifi_cfg;
+}
+
+bool wifi_manager_is_portal_active(void)
+{
+    return wifi_portal_is_active();
 }

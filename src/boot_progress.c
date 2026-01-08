@@ -59,3 +59,18 @@ void boot_progress_show_meteo(void)
     tick_screen_by_id(SCREEN_ID_UI_METEO);
     bsp_display_unlock();
 }
+
+void boot_progress_show_wifi(void)
+{
+    if (!objects.ui_wifi) {
+        ESP_LOGW(TAG, "UI wifi non prete, boot_progress_show_wifi ignore");
+        return;
+    }
+    if (!bsp_display_lock(0)) {
+        ESP_LOGW(TAG, "UI lock echoue, boot_progress_show_wifi ignore");
+        return;
+    }
+    loadScreen(SCREEN_ID_UI_WIFI);
+    tick_screen_by_id(SCREEN_ID_UI_WIFI);
+    bsp_display_unlock();
+}

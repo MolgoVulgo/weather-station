@@ -252,6 +252,15 @@ static void weather_request_fetch(void)
     }
 }
 
+void weather_service_request_update(void)
+{
+    if (!s_weather_started) {
+        ESP_LOGW(TAG, "Weather service non demarre");
+        return;
+    }
+    weather_request_fetch();
+}
+
 static void weather_timer_cb(void *arg)
 {
     (void)arg;

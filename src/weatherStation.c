@@ -10,6 +10,7 @@
 #include <esp_system.h>
 #include <esp_heap_caps.h>
 #include <esp_err.h>
+#include <esp_netif.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include "wifi_manager.h"
@@ -82,6 +83,23 @@ static void sdcard_list_dir(const char *path)
   closedir(dir);
 }
 
+static bool wait_for_wifi_ip(uint32_t timeout_ms)
+{
+  uint32_t elapsed = 0;
+  while (elapsed < timeout_ms) {
+    esp_netif_t *netif = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+    if (netif) {
+      esp_netif_ip_info_t ip_info;
+      if (esp_netif_get_ip_info(netif, &ip_info) == ESP_OK && ip_info.ip.addr != 0) {
+        return true;
+      }
+    }
+    vTaskDelay(pdMS_TO_TICKS(200));
+    elapsed += 200;
+  }
+  return false;
+}
+
 /**
  * To use the built-in demos of LVGL uncomment the include below.
  * You also need to copy `lvgl/demos` to `lvgl/src/demos`.
@@ -94,6 +112,7 @@ static void sdcard_list_dir(const char *path)
 #include "lv_fs_spiffs.h"
 #include "weather_service.h"
 #include "boot_progress.h"
+#include "wifi_manager.h"
 
 void setup();
 
@@ -168,14 +187,36 @@ void setup()
   if (wifi_ret != ESP_OK) {
     ESP_LOGE(TAG, "WiFi init failed: %s", esp_err_to_name(wifi_ret));
   }
-  boot_progress_set(25, "WiFi");
+  boot_progress_set(10, "WiFi...");
+  if (wait_for_wifi_ip(15000)) {
+    boot_progress_set(25, "WiFi OK");
+  } else {
+    boot_progress_set(25, "WiFi ERR");
+    ESP_LOGW(TAG, "WiFi non connecte, mode AP a implementer");
+    if (wifi_manager_is_portal_active()) {
+      boot_progress_set(25, "AP MODE");
+      boot_progress_show_wifi();
+      for (;;) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+      }
+    }
+  }
 
   logSection("Time sync");
   esp_err_t time_ret = time_sync_init();
   if (time_ret != ESP_OK) {
     ESP_LOGE(TAG, "Time sync init failed: %s", esp_err_to_name(time_ret));
   }
-  boot_progress_set(50, "NTP");
+  bool ntp_ok = false;
+  for (int attempt = 0; attempt < 3; attempt++) {
+    struct tm timeinfo;
+    if (time_sync_get_local_time(&timeinfo, NULL)) {
+      ntp_ok = true;
+      break;
+    }
+    vTaskDelay(pdMS_TO_TICKS(2000));
+  }
+  boot_progress_set(50, ntp_ok ? "NTP OK" : "NTP ERR");
 
   logSection("SPIFFS");
   esp_err_t spiffs_ret = svg2bin_fs_init_spiffs();
