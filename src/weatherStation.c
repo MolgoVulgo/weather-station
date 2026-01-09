@@ -11,9 +11,9 @@
 #include <esp_heap_caps.h>
 #include <esp_err.h>
 #include <esp_netif.h>
+#include <nvs.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
-#include "wifi_manager.h"
 #include <driver/sdmmc_host.h>
 #include <esp_vfs_fat.h>
 #include <sdmmc_cmd.h>
@@ -37,6 +37,36 @@ static const char *TAG = "WeatherStation";
  *
  */
 #define LVGL_PORT_ROTATION_DEGREE (90)
+
+static bool weather_keys_missing_in_nvs(void)
+{
+  nvs_handle_t nvs = 0;
+  esp_err_t ret = nvs_open("weather_cfg", NVS_READONLY, &nvs);
+  if (ret != ESP_OK) {
+    ESP_LOGW(TAG, "NVS open weather failed: %s", esp_err_to_name(ret));
+    return true;
+  }
+
+  bool have_key = false;
+  size_t len = 0;
+  ret = nvs_get_str(nvs, "api_key_2", NULL, &len);
+  if (ret == ESP_OK && len > 1) {
+    have_key = true;
+  } else if (ret != ESP_ERR_NVS_NOT_FOUND && ret != ESP_OK) {
+    ESP_LOGW(TAG, "NVS read api_key_2 failed: %s", esp_err_to_name(ret));
+  }
+
+  len = 0;
+  ret = nvs_get_str(nvs, "api_key_3", NULL, &len);
+  if (ret == ESP_OK && len > 1) {
+    have_key = true;
+  } else if (ret != ESP_ERR_NVS_NOT_FOUND && ret != ESP_OK) {
+    ESP_LOGW(TAG, "NVS read api_key_3 failed: %s", esp_err_to_name(ret));
+  }
+
+  nvs_close(nvs);
+  return !have_key;
+}
 
 static esp_err_t sdcard_mount(void)
 {
@@ -107,6 +137,7 @@ static bool wait_for_wifi_ip(uint32_t timeout_ms)
 // #include <demos/lv_demos.h>
 #include "ui_backend.h"
 #include "ui.h"
+#include "ui/screens.h"
 #include "weather_icons.h"
 #include "svg2bin_decoder.h"
 #include "lv_fs_spiffs.h"
@@ -188,7 +219,8 @@ void setup()
     ESP_LOGE(TAG, "WiFi init failed: %s", esp_err_to_name(wifi_ret));
   }
   boot_progress_set(10, "WiFi...");
-  if (wait_for_wifi_ip(15000)) {
+  bool wifi_connected = wait_for_wifi_ip(15000);
+  if (wifi_connected) {
     boot_progress_set(25, "WiFi OK");
   } else {
     boot_progress_set(25, "WiFi ERR");
@@ -198,6 +230,26 @@ void setup()
       boot_progress_show_wifi();
       for (;;) {
         vTaskDelay(pdMS_TO_TICKS(1000));
+      }
+    }
+  }
+
+  if (weather_keys_missing_in_nvs()) {
+    ESP_LOGW(TAG, "Aucune cle API en NVS, passage en mode config");
+    boot_progress_set(30, "API KEY");
+    bsp_display_lock(0);
+    loadScreen(SCREEN_ID_UI_CONFIG);
+    tick_screen_by_id(SCREEN_ID_UI_CONFIG);
+    bsp_display_unlock();
+    if (!wifi_connected) {
+      esp_err_t portal_ret = wifi_manager_start_portal();
+      if (portal_ret != ESP_OK) {
+        ESP_LOGE(TAG, "Portail config failed: %s", esp_err_to_name(portal_ret));
+      }
+    } else {
+      esp_err_t portal_ret = wifi_manager_start_portal_sta();
+      if (portal_ret != ESP_OK) {
+        ESP_LOGE(TAG, "Portail STA failed: %s", esp_err_to_name(portal_ret));
       }
     }
   }

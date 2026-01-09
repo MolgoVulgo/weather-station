@@ -5,6 +5,7 @@
 #include "esp_netif.h"
 #include "esp_wifi.h"
 #include "esp_http_server.h"
+#include "nvs.h"
 #include "lwip/inet.h"
 #include "lwip/sockets.h"
 #include "wifi_manager.h"
@@ -28,6 +29,12 @@ static const char *kPortalHtml =
     "<label>Mot de passe</label><input id='pass' type='password'/>"
     "<button onclick='save()'>Enregistrer</button>"
     "<p id='status'></p>"
+    "<hr><h2>Cle API OpenWeatherMap</h2>"
+    "<label>Version</label>"
+    "<select id='ver'><option value='2'>API 2.5</option><option value='3'>API 3.0</option></select>"
+    "<label>Cle API</label><input id='key' type='text'/>"
+    "<button onclick='saveKey()'>Enregistrer</button>"
+    "<p id='key_status'></p>"
     "<script>"
     "function scan(){"
     "fetch('/scan').then(r=>r.json()).then(d=>{"
@@ -43,6 +50,13 @@ static const char *kPortalHtml =
     "fetch('/save',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},"
     "body:'ssid='+encodeURIComponent(ssid)+'&pass='+encodeURIComponent(pass)})"
     ".then(r=>r.text()).then(t=>{document.getElementById('status').textContent=t;});"
+    "}"
+    "function saveKey(){"
+    "const ver=document.getElementById('ver').value;"
+    "const key=document.getElementById('key').value;"
+    "fetch('/save_key',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},"
+    "body:'ver='+encodeURIComponent(ver)+'&key='+encodeURIComponent(key)})"
+    ".then(r=>r.text()).then(t=>{document.getElementById('key_status').textContent=t;});"
     "}"
     "</script></body></html>";
 
@@ -177,6 +191,98 @@ static esp_err_t portal_save_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+static esp_err_t portal_save_key(const char *key_id, const char *value)
+{
+    nvs_handle_t nvs = 0;
+    esp_err_t ret = nvs_open("weather_cfg", NVS_READWRITE, &nvs);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "NVS open weather failed: %s", esp_err_to_name(ret));
+        return ret;
+    }
+    if (!value || value[0] == '\0') {
+        ret = nvs_erase_key(nvs, key_id);
+        if (ret != ESP_OK && ret != ESP_ERR_NVS_NOT_FOUND) {
+            ESP_LOGE(TAG, "NVS erase %s failed: %s", key_id, esp_err_to_name(ret));
+            nvs_close(nvs);
+            return ret;
+        }
+    } else {
+        ret = nvs_set_str(nvs, key_id, value);
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "NVS set %s failed: %s", key_id, esp_err_to_name(ret));
+            nvs_close(nvs);
+            return ret;
+        }
+    }
+    ret = nvs_commit(nvs);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "NVS commit failed: %s", esp_err_to_name(ret));
+    }
+    nvs_close(nvs);
+    return ret;
+}
+
+static esp_err_t portal_save_key_handler(httpd_req_t *req)
+{
+    char body[256];
+    int read = httpd_req_recv(req, body, sizeof(body) - 1);
+    if (read <= 0) {
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid body");
+        return ESP_FAIL;
+    }
+    body[read] = '\0';
+
+    char ver[8] = {0};
+    char key[64] = {0};
+
+    const char *ver_ptr = strstr(body, "ver=");
+    const char *key_ptr = strstr(body, "key=");
+    if (ver_ptr) {
+        ver_ptr += 4;
+        const char *end = strchr(ver_ptr, '&');
+        char raw[16] = {0};
+        size_t n = end ? (size_t)(end - ver_ptr) : strlen(ver_ptr);
+        if (n >= sizeof(raw)) {
+            n = sizeof(raw) - 1;
+        }
+        memcpy(raw, ver_ptr, n);
+        raw[n] = '\0';
+        url_decode(ver, raw, sizeof(ver));
+    }
+    if (key_ptr) {
+        key_ptr += 4;
+        const char *end = strchr(key_ptr, '&');
+        char raw[96] = {0};
+        size_t n = end ? (size_t)(end - key_ptr) : strlen(key_ptr);
+        if (n >= sizeof(raw)) {
+            n = sizeof(raw) - 1;
+        }
+        memcpy(raw, key_ptr, n);
+        raw[n] = '\0';
+        url_decode(key, raw, sizeof(key));
+    }
+
+    const char *nvs_key = NULL;
+    if (strcmp(ver, "3") == 0) {
+        nvs_key = "api_key_3";
+    } else if (strcmp(ver, "2") == 0) {
+        nvs_key = "api_key_2";
+    } else {
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Version invalide");
+        return ESP_FAIL;
+    }
+
+    esp_err_t ret = portal_save_key(nvs_key, key);
+    if (ret != ESP_OK) {
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Sauvegarde failed");
+        return ESP_FAIL;
+    }
+    httpd_resp_sendstr(req, "Cle sauvegardee. Redemarrage...");
+    vTaskDelay(pdMS_TO_TICKS(500));
+    esp_restart();
+    return ESP_OK;
+}
+
 static esp_err_t portal_captive_handler(httpd_req_t *req)
 {
     return portal_get_handler(req);
@@ -269,6 +375,12 @@ static esp_err_t portal_start_http(void)
         .handler = portal_save_handler,
         .user_ctx = NULL,
     };
+    httpd_uri_t save_key = {
+        .uri = "/save_key",
+        .method = HTTP_POST,
+        .handler = portal_save_key_handler,
+        .user_ctx = NULL,
+    };
     httpd_uri_t captive = root;
     captive.uri = "/generate_204";
     captive.handler = portal_captive_handler;
@@ -289,12 +401,43 @@ static esp_err_t portal_start_http(void)
     httpd_register_uri_handler(s_http, &root);
     httpd_register_uri_handler(s_http, &scan);
     httpd_register_uri_handler(s_http, &save);
+    httpd_register_uri_handler(s_http, &save_key);
     httpd_register_uri_handler(s_http, &captive);
     httpd_register_uri_handler(s_http, &captive_short);
     httpd_register_uri_handler(s_http, &captive_ios);
     httpd_register_uri_handler(s_http, &captive_win);
     httpd_register_uri_handler(s_http, &captive_ms);
     httpd_register_uri_handler(s_http, &wildcard);
+    return ESP_OK;
+}
+
+static void portal_log_sta_ip(void)
+{
+    esp_netif_t *netif = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+    if (!netif) {
+        ESP_LOGW(TAG, "Netif STA introuvable");
+        return;
+    }
+    esp_netif_ip_info_t ip_info;
+    if (esp_netif_get_ip_info(netif, &ip_info) != ESP_OK) {
+        ESP_LOGW(TAG, "IP STA non disponible");
+        return;
+    }
+    ESP_LOGI(TAG, "Portail STA: http://" IPSTR "/", IP2STR(&ip_info.ip));
+}
+
+esp_err_t wifi_portal_start_sta(void)
+{
+    if (s_portal_active) {
+        return ESP_OK;
+    }
+    s_portal_active = true;
+    if (portal_start_http() != ESP_OK) {
+        s_portal_active = false;
+        ESP_LOGE(TAG, "HTTP server start failed");
+        return ESP_FAIL;
+    }
+    portal_log_sta_ip();
     return ESP_OK;
 }
 

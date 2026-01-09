@@ -221,3 +221,19 @@ bool wifi_manager_is_portal_active(void)
 {
     return wifi_portal_is_active();
 }
+
+esp_err_t wifi_manager_start_portal(void)
+{
+    if (wifi_portal_is_active()) {
+        return ESP_OK;
+    }
+    return wifi_portal_start("StationMeteo", ap_password);
+}
+
+esp_err_t wifi_manager_start_portal_sta(void)
+{
+    if (wifi_portal_is_active()) {
+        return ESP_OK;
+    }
+    return wifi_portal_start_sta();
+}

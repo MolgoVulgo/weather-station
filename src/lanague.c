@@ -82,8 +82,18 @@ esp_err_t lanague_init(void)
     if (ret == ESP_ERR_NVS_NOT_FOUND) {
         current_lang = LANAGUE_FR;
         ESP_LOGI(TAG, "NVS langue absente, defaut FR");
-        nvs_set_i32(nvs, LANG_NVS_KEY_ID, (int32_t)current_lang);
-        nvs_commit(nvs);
+        ret = nvs_set_i32(nvs, LANG_NVS_KEY_ID, (int32_t)current_lang);
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "NVS set langue failed: %s", esp_err_to_name(ret));
+            nvs_close(nvs);
+            return ret;
+        }
+        ret = nvs_commit(nvs);
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "NVS commit failed: %s", esp_err_to_name(ret));
+            nvs_close(nvs);
+            return ret;
+        }
     } else if (ret == ESP_OK) {
         current_lang = (lang_value == (int32_t)LANAGUE_EN) ? LANAGUE_EN : LANAGUE_FR;
     } else {
@@ -92,7 +102,7 @@ esp_err_t lanague_init(void)
     }
 
     nvs_close(nvs);
-    return ESP_OK;
+    return ret;
 }
 
 lanague_id_t lanague_get_current(void)

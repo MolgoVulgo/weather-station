@@ -595,9 +595,9 @@ void tick_screen_ui_meteo() {
     }
 }
 
-void create_screen_ui_setup() {
+void create_screen_ui_config() {
     lv_obj_t *obj = lv_obj_create(0);
-    objects.ui_setup = obj;
+    objects.ui_config = obj;
     lv_obj_set_pos(obj, 0, 0);
     lv_obj_set_size(obj, 480, 320);
     lv_obj_set_style_bg_color(obj, lv_color_hex(0xff000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -629,10 +629,10 @@ void create_screen_ui_setup() {
         }
     }
     
-    tick_screen_ui_setup();
+    tick_screen_ui_config();
 }
 
-void tick_screen_ui_setup() {
+void tick_screen_ui_config() {
 }
 
 void create_screen_ui_wifi() {
@@ -683,7 +683,7 @@ typedef void (*tick_screen_func_t)();
 tick_screen_func_t tick_screen_funcs[] = {
     tick_screen_ui_start,
     tick_screen_ui_meteo,
-    tick_screen_ui_setup,
+    tick_screen_ui_config,
     tick_screen_ui_wifi,
 };
 void tick_screen(int screen_index) {
@@ -700,6 +700,6 @@ void create_screens() {
     
     create_screen_ui_start();
     create_screen_ui_meteo();
-    create_screen_ui_setup();
+    create_screen_ui_config();
     create_screen_ui_wifi();
 }

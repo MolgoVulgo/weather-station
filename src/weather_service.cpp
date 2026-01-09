@@ -9,6 +9,7 @@
 #include "esp_netif.h"
 #include "esp_event.h"
 #include "esp_timer.h"
+#include "nvs.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "secrets.h"
@@ -28,6 +29,62 @@ static esp_event_handler_instance_t s_ip_handler;
 static TaskHandle_t s_weather_task;
 static const char *kWeekdaysShort[7] = {"DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"};
 static bool s_boot_done;
+static bool s_keys_loaded;
+static char s_api_key_2[64];
+static char s_api_key_3[64];
+
+#define WEATHER_NVS_NAMESPACE "weather_cfg"
+#define WEATHER_NVS_KEY_API2 "api_key_2"
+#define WEATHER_NVS_KEY_API3 "api_key_3"
+
+static void weather_load_api_keys(void)
+{
+    if (s_keys_loaded) {
+        return;
+    }
+    s_keys_loaded = true;
+    s_api_key_2[0] = '\0';
+    s_api_key_3[0] = '\0';
+
+    nvs_handle_t nvs = 0;
+    esp_err_t ret = nvs_open(WEATHER_NVS_NAMESPACE, NVS_READONLY, &nvs);
+    if (ret != ESP_OK) {
+        ESP_LOGW(TAG, "NVS open weather failed: %s", esp_err_to_name(ret));
+        return;
+    }
+
+    size_t len = sizeof(s_api_key_2);
+    ret = nvs_get_str(nvs, WEATHER_NVS_KEY_API2, s_api_key_2, &len);
+    if (ret == ESP_ERR_NVS_NOT_FOUND) {
+        s_api_key_2[0] = '\0';
+    } else if (ret != ESP_OK) {
+        ESP_LOGW(TAG, "NVS read api_key_2 failed: %s", esp_err_to_name(ret));
+        s_api_key_2[0] = '\0';
+    }
+
+    len = sizeof(s_api_key_3);
+    ret = nvs_get_str(nvs, WEATHER_NVS_KEY_API3, s_api_key_3, &len);
+    if (ret == ESP_ERR_NVS_NOT_FOUND) {
+        s_api_key_3[0] = '\0';
+    } else if (ret != ESP_OK) {
+        ESP_LOGW(TAG, "NVS read api_key_3 failed: %s", esp_err_to_name(ret));
+        s_api_key_3[0] = '\0';
+    }
+
+    nvs_close(nvs);
+}
+
+static const char *weather_api_key_2(void)
+{
+    weather_load_api_keys();
+    return (s_api_key_2[0] != '\0') ? s_api_key_2 : OPENWEATHERMAP_API_KEY_2;
+}
+
+static const char *weather_api_key_3(void)
+{
+    weather_load_api_keys();
+    return (s_api_key_3[0] != '\0') ? s_api_key_3 : OPENWEATHERMAP_API_KEY_3;
+}
 
 static bool weather_netif_ready(void)
 {
@@ -162,7 +219,9 @@ static void weather_fetch_once(void)
     ForecastEntry daily[6];
     char url[256];
     esp_err_t weather_ret = ESP_FAIL;
-    if (strlen(OPENWEATHERMAP_API_KEY_3) > 0) {
+    const char *api_key_3 = weather_api_key_3();
+    const char *api_key_2 = weather_api_key_2();
+    if (strlen(api_key_3) > 0) {
         int written = snprintf(
             url,
             sizeof(url),
@@ -170,7 +229,7 @@ static void weather_fetch_once(void)
             OPENWEATHERMAP_ONECALL_URL,
             LOCATION_LATITUDE,
             LOCATION_LONGITUDE,
-            OPENWEATHERMAP_API_KEY_3,
+            api_key_3,
             OPENWEATHERMAP_LANGUAGE);
         if (written <= 0 || (size_t)written >= sizeof(url)) {
             ESP_LOGE(TAG, "Weather URL overflow");
@@ -185,7 +244,7 @@ static void weather_fetch_once(void)
             OPENWEATHERMAP_CURRENT_URL,
             LOCATION_LATITUDE,
             LOCATION_LONGITUDE,
-            OPENWEATHERMAP_API_KEY_2,
+            api_key_2,
             OPENWEATHERMAP_LANGUAGE);
         if (written <= 0 || (size_t)written >= sizeof(url)) {
             ESP_LOGE(TAG, "Weather URL overflow");
@@ -199,7 +258,7 @@ static void weather_fetch_once(void)
     }
     boot_progress_set(75, "Meteo");
     weather_apply_ui(&current);
-    if (strlen(OPENWEATHERMAP_API_KEY_3) > 0) {
+    if (strlen(api_key_3) > 0) {
         weather_apply_forecast(daily, 6);
         if (!s_boot_done) {
             boot_progress_set(100, "Forecast");
@@ -215,7 +274,7 @@ static void weather_fetch_once(void)
             OPENWEATHERMAP_FORECAST_URL,
             LOCATION_LATITUDE,
             LOCATION_LONGITUDE,
-            OPENWEATHERMAP_API_KEY_2,
+            api_key_2,
             OPENWEATHERMAP_LANGUAGE);
         if (written <= 0 || (size_t)written >= sizeof(url)) {
             ESP_LOGE(TAG, "Forecast URL overflow");

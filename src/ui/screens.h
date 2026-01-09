@@ -17,7 +17,7 @@ extern "C" {
 typedef struct _objects_t {
     lv_obj_t *ui_start;
     lv_obj_t *ui_meteo;
-    lv_obj_t *ui_setup;
+    lv_obj_t *ui_config;
     lv_obj_t *ui_wifi;
     lv_obj_t *ui_start_bar;
     lv_obj_t *ui_start_bar_texte;
@@ -64,7 +64,7 @@ extern objects_t objects;
 enum ScreensEnum {
     SCREEN_ID_UI_START = 1,
     SCREEN_ID_UI_METEO = 2,
-    SCREEN_ID_UI_SETUP = 3,
+    SCREEN_ID_UI_CONFIG = 3,
     SCREEN_ID_UI_WIFI = 4,
 };
 
@@ -74,8 +74,8 @@ void tick_screen_ui_start();
 void create_screen_ui_meteo();
 void tick_screen_ui_meteo();
 
-void create_screen_ui_setup();
-void tick_screen_ui_setup();
+void create_screen_ui_config();
+void tick_screen_ui_config();
 
 void create_screen_ui_wifi();
 void tick_screen_ui_wifi();
