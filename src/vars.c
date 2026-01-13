@@ -25,6 +25,8 @@ char ui_meteo_ft2_5[16] = { 0 };
 char ui_meteo_ft2_6[16] = { 0 };
 char ui_start_bar_texte[64] = { 0 };
 int32_t ui_start_bar = 0;
+int32_t ui_setting_gmt = 0;
+bool ui_setting_hour = false;
 
 const char *get_var_ui_meteo_date(void)
 {
@@ -287,4 +289,24 @@ void set_var_ui_start_bar_texte(const char *value)
 {
     strncpy(ui_start_bar_texte, value, sizeof(ui_start_bar_texte) / sizeof(char));
     ui_start_bar_texte[sizeof(ui_start_bar_texte) / sizeof(char) - 1] = 0;
+}
+
+int32_t get_var_ui_setting_gmt(void)
+{
+    return ui_setting_gmt;
+}
+
+void set_var_ui_setting_gmt(int32_t value)
+{
+    ui_setting_gmt = value;
+}
+
+bool get_var_ui_setting_hour(void)
+{
+    return ui_setting_hour;
+}
+
+void set_var_ui_setting_hour(bool value)
+{
+    ui_setting_hour = value;
 }

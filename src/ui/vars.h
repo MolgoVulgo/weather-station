@@ -38,7 +38,10 @@ enum FlowGlobalVariables {
     FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_5 = 20,
     FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_6 = 21,
     FLOW_GLOBAL_VARIABLE_UI_START_BAR = 22,
-    FLOW_GLOBAL_VARIABLE_UI_START_BAR_TEXTE = 23
+    FLOW_GLOBAL_VARIABLE_UI_START_BAR_TEXTE = 23,
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT = 24,
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_HOUR = 25,
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT_TXT = 26
 };
 
 // Native global variables
@@ -91,6 +94,12 @@ extern int32_t get_var_ui_start_bar();
 extern void set_var_ui_start_bar(int32_t value);
 extern const char *get_var_ui_start_bar_texte();
 extern void set_var_ui_start_bar_texte(const char *value);
+extern int32_t get_var_ui_setting_gmt();
+extern void set_var_ui_setting_gmt(int32_t value);
+extern bool get_var_ui_setting_hour();
+extern void set_var_ui_setting_hour(bool value);
+extern const char *get_var_ui_setting_gmt_txt();
+extern void set_var_ui_setting_gmt_txt(const char *value);
 
 
 #ifdef __cplusplus

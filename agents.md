@@ -66,6 +66,8 @@ Ce fichier définit le cadre de fonctionnement d’un **agent Codex (extension V
 * **Exécuter immédiatement** la solution la plus probable.
 * **Aucune discussion** tant que le code compile et tourne.
 * Adapter le code au framework actif (Arduino **ou** ESP-IDF, jamais hybride).
+* **Interdiction absolue** de modifier les fichiers dans `src/ui/` (générés).
+* Si un problème est détecté dans `src/ui/`, **l’expliquer clairement** sans modifier ces fichiers.
 
 ---
 

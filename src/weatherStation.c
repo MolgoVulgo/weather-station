@@ -160,7 +160,7 @@ void setup()
 {
   //  String title = "WeatherStation";
 
-  vTaskDelay(pdMS_TO_TICKS(10000));
+  //vTaskDelay(pdMS_TO_TICKS(10000));
   logSection("WeatherStation start");
   esp_chip_info_t chip_info;
   uint32_t flash_size;
@@ -238,8 +238,8 @@ void setup()
     ESP_LOGW(TAG, "Aucune cle API en NVS, passage en mode config");
     boot_progress_set(30, "API KEY");
     bsp_display_lock(0);
-    loadScreen(SCREEN_ID_UI_CONFIG);
-    tick_screen_by_id(SCREEN_ID_UI_CONFIG);
+    loadScreen(SCREEN_ID_UI_SETTING);
+    tick_screen_by_id(SCREEN_ID_UI_SETTING);
     bsp_display_unlock();
     if (!wifi_connected) {
       esp_err_t portal_ret = wifi_manager_start_portal();
