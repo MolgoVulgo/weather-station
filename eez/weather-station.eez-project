@@ -317,6 +317,14 @@
       "localVariables": [],
       "userProperties": [],
       "name": "go_ui_meteo"
+    },
+    {
+      "objID": "15601fa9-ab02-4fe3-b9cd-85e4091aafc1",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "userProperties": [],
+      "name": "ui_swipe"
     }
   ],
   "userPages": [
@@ -548,7 +556,15 @@
             "childStyles": []
           },
           "timeline": [],
-          "eventHandlers": [],
+          "eventHandlers": [
+            {
+              "objID": "5d25b678-c46c-49a6-e188-fb60048a75e8",
+              "eventName": "GESTURE",
+              "handlerType": "action",
+              "action": "ui_swipe",
+              "userData": 0
+            }
+          ],
           "leftUnit": "px",
           "topUnit": "px",
           "widthUnit": "px",

@@ -512,3 +512,22 @@ esp_err_t WeatherFetcher::fetchOneCall(const char *url,
   }
   return ESP_OK;
 }
+
+bool WeatherFetcher::parseCurrentJson(const char* json, CurrentWeatherData& out) {
+  return parse_current(json, out);
+}
+
+bool WeatherFetcher::parseForecastJson(const char* json, ForecastEntry* out, size_t count) {
+  return parse_forecast(json, out, count);
+}
+
+bool WeatherFetcher::parseOneCallJson(const char* json,
+                                      CurrentWeatherData& current,
+                                      ForecastEntry* out,
+                                      size_t count,
+                                      MinutelyEntry* minutely,
+                                      size_t minutely_count,
+                                      HourlyEntry* hourly,
+                                      size_t hourly_count) {
+  return parse_onecall(json, current, out, count, minutely, minutely_count, hourly, hourly_count);
+}

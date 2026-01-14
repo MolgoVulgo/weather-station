@@ -81,6 +81,16 @@ class WeatherFetcher {
                          size_t minutely_count,
                          HourlyEntry* hourly,
                          size_t hourly_count);
+  static bool parseCurrentJson(const char* json, CurrentWeatherData& out);
+  static bool parseForecastJson(const char* json, ForecastEntry* out, size_t count);
+  static bool parseOneCallJson(const char* json,
+                               CurrentWeatherData& current,
+                               ForecastEntry* out,
+                               size_t count,
+                               MinutelyEntry* minutely,
+                               size_t minutely_count,
+                               HourlyEntry* hourly,
+                               size_t hourly_count);
   const std::string& lastError() const { return lastError_; }
   void set_timeout_ms(int timeout_ms) { timeout_ms_ = timeout_ms; }
 

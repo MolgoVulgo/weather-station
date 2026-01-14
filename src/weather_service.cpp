@@ -9,6 +9,8 @@
 #include "esp_netif.h"
 #include "esp_event.h"
 #include "esp_timer.h"
+#include "esp_http_client.h"
+#include "esp_crt_bundle.h"
 #include "nvs.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -18,6 +20,7 @@
 #include "boot_progress.h"
 #include "ui/screens.h"
 #include "temp_unit.h"
+#include "weather_cache.h"
 #include "weather_fetcher.h"
 #include "weather_icons.h"
 
@@ -36,6 +39,102 @@ static char s_api_key_3[64];
 static ForecastEntry s_last_forecast[6];
 static size_t s_last_forecast_count;
 static bool s_last_forecast_valid;
+static bool s_cache_ready;
+
+#define WEATHER_JSON_MAX_BYTES (100 * 1024)
+
+static esp_err_t weather_fetch_json_cached(const char *url, std::string &fallback, const char **out_json)
+{
+    *out_json = NULL;
+    if (!url || !*url) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (!s_cache_ready) {
+        s_cache_ready = weather_cache_init(WEATHER_JSON_MAX_BYTES);
+        if (!s_cache_ready) {
+            ESP_LOGW(TAG, "PSRAM cache indisponible, fallback heap");
+        }
+    }
+
+    if (s_cache_ready) {
+        weather_cache_reset();
+    }
+    fallback.clear();
+
+    esp_http_client_config_t config = {};
+    config.url = url;
+    config.timeout_ms = 8000;
+    config.skip_cert_common_name_check = true;
+#if CONFIG_MBEDTLS_CERTIFICATE_BUNDLE
+    config.crt_bundle_attach = esp_crt_bundle_attach;
+#endif
+
+    esp_http_client_handle_t client = esp_http_client_init(&config);
+    if (!client) {
+        ESP_LOGE(TAG, "HTTP init failed");
+        return ESP_FAIL;
+    }
+
+    esp_err_t err = esp_http_client_open(client, 0);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "HTTP open failed: %s", esp_err_to_name(err));
+        esp_http_client_cleanup(client);
+        return err;
+    }
+
+    int status = esp_http_client_fetch_headers(client);
+    if (status < 0) {
+        ESP_LOGE(TAG, "HTTP headers invalides");
+        esp_http_client_close(client);
+        esp_http_client_cleanup(client);
+        return ESP_FAIL;
+    }
+
+    int http_code = esp_http_client_get_status_code(client);
+    if (http_code != 200) {
+        ESP_LOGE(TAG, "HTTP code %d", http_code);
+        esp_http_client_close(client);
+        esp_http_client_cleanup(client);
+        return ESP_FAIL;
+    }
+
+    char buffer[512];
+    int read_len = 0;
+    bool overflowed = false;
+    while ((read_len = esp_http_client_read(client, buffer, sizeof(buffer))) > 0) {
+        if (s_cache_ready && !overflowed) {
+            if (!weather_cache_write(buffer, (size_t)read_len)) {
+                overflowed = true;
+                size_t cached_len = 0;
+                const char *cached = weather_cache_data(&cached_len);
+                if (cached && cached_len > 0) {
+                    fallback.assign(cached, cached_len);
+                }
+                fallback.append(buffer, (size_t)read_len);
+            }
+        } else {
+            fallback.append(buffer, (size_t)read_len);
+        }
+    }
+
+    esp_http_client_close(client);
+    esp_http_client_cleanup(client);
+
+    if (read_len < 0) {
+        ESP_LOGE(TAG, "Lecture HTTP incomplete");
+        return ESP_FAIL;
+    }
+
+    if (overflowed || !s_cache_ready) {
+        if (overflowed) {
+            ESP_LOGW(TAG, "JSON OWM > %u bytes, fallback heap", (unsigned)WEATHER_JSON_MAX_BYTES);
+        }
+        *out_json = fallback.c_str();
+    } else {
+        *out_json = weather_cache_data(NULL);
+    }
+    return ESP_OK;
+}
 
 #define WEATHER_NVS_NAMESPACE "weather_cfg"
 #define WEATHER_NVS_KEY_API2 "api_key_2"
@@ -226,11 +325,12 @@ static void weather_fetch_once(void)
     if (!weather_netif_ready()) {
         return;
     }
-    WeatherFetcher fetcher;
     CurrentWeatherData current;
     ForecastEntry daily[6];
     char url[256];
     esp_err_t weather_ret = ESP_FAIL;
+    std::string json_fallback;
+    const char *json = NULL;
     const char *api_key_3 = weather_api_key_3();
     const char *api_key_2 = weather_api_key_2();
     if (strlen(api_key_3) > 0) {
@@ -247,7 +347,13 @@ static void weather_fetch_once(void)
             ESP_LOGE(TAG, "Weather URL overflow");
             return;
         }
-        weather_ret = fetcher.fetchOneCall(url, current, daily, 6, NULL, 0, NULL, 0);
+        weather_ret = weather_fetch_json_cached(url, json_fallback, &json);
+        if (weather_ret == ESP_OK) {
+            if (!WeatherFetcher::parseOneCallJson(json, current, daily, 6, NULL, 0, NULL, 0)) {
+                ESP_LOGE(TAG, "Parsing onecall incomplet");
+                weather_ret = ESP_FAIL;
+            }
+        }
     } else {
         int written = snprintf(
             url,
@@ -262,10 +368,16 @@ static void weather_fetch_once(void)
             ESP_LOGE(TAG, "Weather URL overflow");
             return;
         }
-        weather_ret = fetcher.fetchCurrent(url, current);
+        weather_ret = weather_fetch_json_cached(url, json_fallback, &json);
+        if (weather_ret == ESP_OK) {
+            if (!WeatherFetcher::parseCurrentJson(json, current)) {
+                ESP_LOGE(TAG, "Parsing current incomplet");
+                weather_ret = ESP_FAIL;
+            }
+        }
     }
     if (weather_ret != ESP_OK) {
-        ESP_LOGE(TAG, "Weather fetch failed: %s", fetcher.lastError().c_str());
+        ESP_LOGE(TAG, "Weather fetch failed");
         return;
     }
     boot_progress_set(75, "Meteo");
@@ -292,7 +404,15 @@ static void weather_fetch_once(void)
             ESP_LOGE(TAG, "Forecast URL overflow");
             return;
         }
-        esp_err_t forecast_ret = fetcher.fetchForecast(url, forecast, 6);
+        json_fallback.clear();
+        json = NULL;
+        esp_err_t forecast_ret = weather_fetch_json_cached(url, json_fallback, &json);
+        if (forecast_ret == ESP_OK) {
+            if (!WeatherFetcher::parseForecastJson(json, forecast, 6)) {
+                ESP_LOGE(TAG, "Parsing forecast incomplet");
+                forecast_ret = ESP_FAIL;
+            }
+        }
         if (forecast_ret == ESP_OK) {
             weather_apply_forecast(forecast, 6);
             if (!s_boot_done) {
@@ -301,7 +421,7 @@ static void weather_fetch_once(void)
                 s_boot_done = true;
             }
         } else {
-            ESP_LOGW(TAG, "Forecast fetch failed: %s", fetcher.lastError().c_str());
+            ESP_LOGW(TAG, "Forecast fetch failed");
         }
     }
     s_first_fetch_done = true;
