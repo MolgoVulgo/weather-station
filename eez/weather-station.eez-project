@@ -187,7 +187,7 @@
       },
       {
         "objID": "c5973722-f901-442a-b8fc-e884c8d46333",
-        "name": "ui_meteo_ft1_1",
+        "name": "ui_meteo_ft1",
         "type": "string",
         "defaultValue": "\"\"",
         "persistent": false,
@@ -195,7 +195,7 @@
       },
       {
         "objID": "d4f0f775-6c89-43fd-a83d-b3c626670714",
-        "name": "ui_meteo_ft1_2",
+        "name": "ui_meteo_ft2",
         "type": "string",
         "defaultValue": "\"\"",
         "persistent": false,
@@ -203,7 +203,7 @@
       },
       {
         "objID": "43f7bdf8-55bd-46ec-d108-afb5b7efcde7",
-        "name": "ui_meteo_ft1_3",
+        "name": "ui_meteo_ft3",
         "type": "string",
         "defaultValue": "\"\"",
         "persistent": false,
@@ -211,7 +211,7 @@
       },
       {
         "objID": "0da609e2-8139-4ff4-bc92-afa6d06b10c3",
-        "name": "ui_meteo_ft1_4",
+        "name": "ui_meteo_ft4",
         "type": "string",
         "defaultValue": "\"\"",
         "persistent": false,
@@ -219,7 +219,7 @@
       },
       {
         "objID": "ae9644c5-eb4e-428d-b2a2-0bba5d782dd9",
-        "name": "ui_meteo_ft1_5",
+        "name": "ui_meteo_ft5",
         "type": "string",
         "defaultValue": "\"\"",
         "persistent": false,
@@ -227,55 +227,7 @@
       },
       {
         "objID": "ee22c99d-e032-42fc-c1e7-e744b2cdde44",
-        "name": "ui_meteo_ft1_6",
-        "type": "string",
-        "defaultValue": "\"\"",
-        "persistent": false,
-        "native": false
-      },
-      {
-        "objID": "af16e287-3c2a-48fb-c2ef-25f1c9bf5fad",
-        "name": "ui_meteo_ft2_1",
-        "type": "string",
-        "defaultValue": "\"\"",
-        "persistent": false,
-        "native": false
-      },
-      {
-        "objID": "e6f112c1-40a1-49b6-dd6d-eb7b7b05b51b",
-        "name": "ui_meteo_ft2_2",
-        "type": "string",
-        "defaultValue": "\"\"",
-        "persistent": false,
-        "native": false
-      },
-      {
-        "objID": "3b336e57-864a-4c94-ac9e-2ae0ed5b0a51",
-        "name": "ui_meteo_ft2_3",
-        "type": "string",
-        "defaultValue": "\"\"",
-        "persistent": false,
-        "native": false
-      },
-      {
-        "objID": "8b89b0bc-4312-4366-f74e-3ce3fb23f7b1",
-        "name": "ui_meteo_ft2_4",
-        "type": "string",
-        "defaultValue": "\"\"",
-        "persistent": false,
-        "native": false
-      },
-      {
-        "objID": "316ea22b-5ee3-4d26-f062-982a92749ffa",
-        "name": "ui_meteo_ft2_5",
-        "type": "string",
-        "defaultValue": "\"\"",
-        "persistent": false,
-        "native": false
-      },
-      {
-        "objID": "392ce831-a86b-4f8d-924d-c935fb146af3",
-        "name": "ui_meteo_ft2_6",
+        "name": "ui_meteo_ft6",
         "type": "string",
         "defaultValue": "\"\"",
         "persistent": false,
@@ -320,12 +272,53 @@
         "defaultValue": "\"\"",
         "persistent": false,
         "native": false
+      },
+      {
+        "objID": "b6319dba-755c-4115-956c-d54fcc3e8d69",
+        "name": "ui_setting_temp",
+        "type": "boolean",
+        "defaultValue": "false",
+        "persistent": false,
+        "native": false
       }
     ],
     "structures": [],
     "enums": []
   },
-  "actions": [],
+  "actions": [
+    {
+      "objID": "7b8588d4-dcfa-4a8e-a6f4-feb7123f1e02",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "userProperties": [],
+      "name": "checked"
+    },
+    {
+      "objID": "c0a2ba91-ce9c-41aa-cea0-8393f85a5f2f",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "userProperties": [],
+      "name": "go_setting"
+    },
+    {
+      "objID": "36505d1f-011f-466a-bf2f-3673cd1f4400",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "userProperties": [],
+      "name": "check_unit"
+    },
+    {
+      "objID": "82448a0e-4a09-45ca-ca5d-14f68383c2ac",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "userProperties": [],
+      "name": "go_ui_meteo"
+    }
+  ],
   "userPages": [
     {
       "objID": "85f86ea1-547f-4647-fd54-11031d92e47b",
@@ -567,7 +560,7 @@
               "left": 235,
               "top": 15,
               "width": 200,
-              "height": 39,
+              "height": 48,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -596,7 +589,6 @@
                 "definition": {
                   "MAIN": {
                     "DEFAULT": {
-                      "text_color": "#ffffff",
                       "text_font": "ui-50"
                     },
                     "EDITED": {
@@ -702,7 +694,6 @@
                 "definition": {
                   "MAIN": {
                     "DEFAULT": {
-                      "text_color": "#ffffff",
                       "text_font": "ui_18",
                       "text_align": "CENTER"
                     }
@@ -757,7 +748,6 @@
                 "definition": {
                   "MAIN": {
                     "DEFAULT": {
-                      "text_color": "#ffffff",
                       "text_font": "ui_40",
                       "text_align": "CENTER"
                     }
@@ -778,7 +768,7 @@
               "left": 185,
               "top": 150,
               "width": 300,
-              "height": 16,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -812,8 +802,6 @@
                 "definition": {
                   "MAIN": {
                     "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16",
                       "text_align": "CENTER"
                     }
                   }
@@ -823,7 +811,7 @@
               "groupIndex": 0,
               "text": "ui_meteo_condition",
               "textType": "expression",
-              "longMode": "WRAP",
+              "longMode": "DOT",
               "recolor": false,
               "previewValue": "Orages avec pluie forte et bruine"
             },
@@ -1161,10 +1149,10 @@
             {
               "objID": "72570696-8798-42cf-c1cc-cf6d874ee594",
               "type": "LVGLLabelWidget",
-              "left": 20,
-              "top": 255,
-              "width": 64,
-              "height": 16,
+              "left": 16,
+              "top": 256,
+              "width": 72,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -1179,7 +1167,7 @@
               "identifier": "ui_meteo_ft1_1",
               "leftUnit": "px",
               "topUnit": "px",
-              "widthUnit": "content",
+              "widthUnit": "px",
               "heightUnit": "content",
               "children": [],
               "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
@@ -1197,608 +1185,24 @@
                 "definition": {
                   "MAIN": {
                     "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
+                      "text_align": "CENTER"
                     }
                   }
                 }
               },
               "group": "",
               "groupIndex": 0,
-              "text": "ui_meteo_ft1_1",
+              "text": "ui_meteo_ft1",
               "textType": "expression",
               "longMode": "WRAP",
               "recolor": false,
-              "previewValue": "min -99°"
-            },
-            {
-              "objID": "10504839-c32d-483c-c58b-bbf5e37d965b",
-              "type": "LVGLLabelWidget",
-              "left": 20,
-              "top": 270,
-              "width": 64,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "e73faeca-8376-48a6-9acf-465366df8538",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft2_1",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "b556c9c3-e49d-4fa6-bce9-311c763ae810",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft2_1",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "max -99°"
-            },
-            {
-              "objID": "4afd09e3-776c-4093-eb46-b2b6d6b67c84",
-              "type": "LVGLLabelWidget",
-              "left": 103,
-              "top": 255,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "dff81f87-f4b1-4b8f-aab7-d3a2a6ed552b",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft1_2",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "03dfc920-63ec-4877-a58e-1e5d3310e6b1",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft1_2",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "09aa0188-5f54-4fdb-e5e3-16b89a14f573",
-              "type": "LVGLLabelWidget",
-              "left": 103,
-              "top": 270,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "2f0b9e13-d8ba-4ba3-d7ba-c718e85bd7fe",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft2_2",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "75e1b264-2f3e-42c8-ace5-0ee803e162cf",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft2_2",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "2d7d4095-726b-4af1-92e8-68b9d72c40db",
-              "type": "LVGLLabelWidget",
-              "left": 178,
-              "top": 255,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "be6f1b44-3ce0-4ef5-a4dd-0947aa9edcbd",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft1_3",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "998d0a55-f43c-44f0-aa06-ae13915af672",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft1_3",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "a9bd7ffd-f5ba-4b44-a99b-bc4fe4f307f1",
-              "type": "LVGLLabelWidget",
-              "left": 178,
-              "top": 270,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "7f2fd830-2e70-453c-b96a-e6ad25c83c8d",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft2_3",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "fb2a3dd4-71e8-4bd3-8eb3-793ec8ee3ff9",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft2_3",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "b0a2dda5-3742-4aa4-dc1d-8c1f2da0df94",
-              "type": "LVGLLabelWidget",
-              "left": 253,
-              "top": 255,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "2752be7f-4792-4fb3-eb63-dd60a6c718d3",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft1_4",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "09a2388f-123b-4155-e271-0554a8522939",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft1_4",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "29d22943-5069-443a-b2b3-33dd5317df9f",
-              "type": "LVGLLabelWidget",
-              "left": 253,
-              "top": 270,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "8c8e032a-fd89-4af1-fac7-226010a6059e",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft2_4",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "4bb5e1e9-feb7-4b1b-c9ec-d9b21546ee60",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft2_4",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "21ffc80f-d262-4f16-a5f8-3c267aba1d8c",
-              "type": "LVGLLabelWidget",
-              "left": 328,
-              "top": 255,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "f8d10f6f-9cdd-495d-8217-9bfa829bebd5",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft1_5",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "1cb2d26b-455e-4d3e-82c4-c15d8a04f6da",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft1_5",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "fc64b1dd-b8ac-47ad-ba17-dd3d76b0f0e9",
-              "type": "LVGLLabelWidget",
-              "left": 328,
-              "top": 270,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "f37ede28-f9c6-4271-ea06-d2cf06730f5d",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft2_5",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "f2b82966-573b-4959-effb-d0cc56969512",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft2_5",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "0c1fc17b-5650-40b8-99b8-d2bbeaf711c4",
-              "type": "LVGLLabelWidget",
-              "left": 403,
-              "top": 255,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "cfb9b61e-b9aa-4dec-e999-aed62e1764d2",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft1_6",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "e6ccffec-5f32-4022-e2fa-73781bc9484c",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft1_6",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
-            },
-            {
-              "objID": "906ae154-d601-4e92-981a-030f912ee418",
-              "type": "LVGLLabelWidget",
-              "left": 403,
-              "top": 270,
-              "width": 48,
-              "height": 16,
-              "customInputs": [],
-              "customOutputs": [],
-              "style": {
-                "objID": "3fdb58e1-1d67-4a04-bc22-42fb62344a9e",
-                "useStyle": "default",
-                "conditionalStyles": [],
-                "childStyles": []
-              },
-              "locked": false,
-              "timeline": [],
-              "eventHandlers": [],
-              "identifier": "ui_meteo_ft2_6",
-              "leftUnit": "px",
-              "topUnit": "px",
-              "widthUnit": "content",
-              "heightUnit": "content",
-              "children": [],
-              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
-              "hiddenFlagType": "literal",
-              "clickableFlagType": "literal",
-              "flagScrollbarMode": "",
-              "flagScrollDirection": "",
-              "scrollSnapX": "",
-              "scrollSnapY": "",
-              "checkedStateType": "literal",
-              "disabledStateType": "literal",
-              "states": "",
-              "localStyles": {
-                "objID": "c7670191-c78c-4065-91ec-7256826b4b8a",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
-              },
-              "group": "",
-              "groupIndex": 0,
-              "text": "ui_meteo_ft2_6",
-              "textType": "expression",
-              "longMode": "WRAP",
-              "recolor": false,
-              "previewValue": "-99.1°"
+              "previewValue": "-99/-99°C"
             },
             {
               "objID": "0f4e9cfb-e106-4cfd-8ee4-ef3621d8f493",
               "type": "LVGLLineWidget",
               "left": 24,
-              "top": 292,
+              "top": 282,
               "width": 430,
               "height": 1,
               "customInputs": [],
@@ -1848,7 +1252,7 @@
               "left": 40,
               "top": 190,
               "width": 24,
-              "height": 16,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -1876,15 +1280,7 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "6dc4c741-fe1b-40e2-c4c4-136547d1895b",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
+                "objID": "6dc4c741-fe1b-40e2-c4c4-136547d1895b"
               },
               "group": "",
               "groupIndex": 0,
@@ -1900,7 +1296,7 @@
               "left": 115,
               "top": 190,
               "width": 24,
-              "height": 16,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -1928,15 +1324,7 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "7b119f3f-42d2-4341-ef1c-e0ed48b3f861",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
+                "objID": "7b119f3f-42d2-4341-ef1c-e0ed48b3f861"
               },
               "group": "",
               "groupIndex": 0,
@@ -1952,7 +1340,7 @@
               "left": 190,
               "top": 190,
               "width": 24,
-              "height": 16,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -1980,15 +1368,7 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "3ec576f1-82bf-47c1-e431-e2fe243e7a3c",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
+                "objID": "3ec576f1-82bf-47c1-e431-e2fe243e7a3c"
               },
               "group": "",
               "groupIndex": 0,
@@ -2004,7 +1384,7 @@
               "left": 265,
               "top": 190,
               "width": 24,
-              "height": 16,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -2032,15 +1412,7 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "7e6abf40-0b1c-416c-df23-9237dc19f5bf",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
+                "objID": "7e6abf40-0b1c-416c-df23-9237dc19f5bf"
               },
               "group": "",
               "groupIndex": 0,
@@ -2056,7 +1428,7 @@
               "left": 340,
               "top": 190,
               "width": 24,
-              "height": 16,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -2084,15 +1456,7 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "85c3cfe9-92d4-4f23-f616-ac0c8f7f8f0e",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
+                "objID": "85c3cfe9-92d4-4f23-f616-ac0c8f7f8f0e"
               },
               "group": "",
               "groupIndex": 0,
@@ -2108,7 +1472,7 @@
               "left": 415,
               "top": 190,
               "width": 24,
-              "height": 16,
+              "height": 17,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -2136,15 +1500,7 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "5304881d-2691-450a-f767-fa9161d711ec",
-                "definition": {
-                  "MAIN": {
-                    "DEFAULT": {
-                      "text_color": "#ffffff",
-                      "text_font": "ui_16"
-                    }
-                  }
-                }
+                "objID": "5304881d-2691-450a-f767-fa9161d711ec"
               },
               "group": "",
               "groupIndex": 0,
@@ -2153,6 +1509,685 @@
               "longMode": "WRAP",
               "recolor": false,
               "previewValue": "LUN"
+            },
+            {
+              "objID": "8f3d7088-9c52-45b4-c1c8-f51f1f2c2cae",
+              "type": "LVGLImageWidget",
+              "left": 0,
+              "top": 0,
+              "width": 25,
+              "height": 25,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "e4017257-d3b7-4bb4-f5ba-1fea37c16e5c",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [
+                {
+                  "objID": "f9e9f4ed-3757-470a-e826-6a810c3b27ee",
+                  "eventName": "PRESSED",
+                  "handlerType": "action",
+                  "action": "go_setting",
+                  "userData": 0
+                }
+              ],
+              "identifier": "ui_meteo_setting",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [],
+              "widgetFlags": "ADV_HITTEST|CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "f772295f-78d6-4518-ed10-38f1e90081fd"
+              },
+              "group": "",
+              "groupIndex": 0,
+              "image": "gear",
+              "setPivot": false,
+              "pivotX": 0,
+              "pivotY": 0,
+              "zoom": 256,
+              "angle": 0,
+              "innerAlign": "CENTER"
+            },
+            {
+              "objID": "86a1db79-2c89-44df-d515-a1b096ba0a6c",
+              "type": "LVGLLineWidget",
+              "left": 88,
+              "top": 188,
+              "width": 1,
+              "height": 91,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "c3970997-c7eb-4908-a9f2-b443376fc52d",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "6f4370d8-307e-41c4-b255-b3a8869cb82f",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "line_color": "#767676",
+                      "line_opa": 125
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "points": "0,0  0,90"
+            },
+            {
+              "objID": "8eec112d-5851-4d85-ca85-177122ccd796",
+              "type": "LVGLLineWidget",
+              "left": 163,
+              "top": 188,
+              "width": 1,
+              "height": 91,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "4ce92f49-c5d0-4f1f-d0a3-11b594825eb4",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "31eb7bd7-ba84-4a14-9fd6-42a75772f508",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "line_color": "#767676",
+                      "line_opa": 125
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "points": "0,0  0,90"
+            },
+            {
+              "objID": "c7ee275f-0b76-48a1-c617-5eb4cb1ac61e",
+              "type": "LVGLLineWidget",
+              "left": 239,
+              "top": 188,
+              "width": 1,
+              "height": 91,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "14f40c95-64bd-407d-c895-7ee7ddc84a8d",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "55cf9470-4540-47d2-c77a-575a71d953be",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "line_color": "#767676",
+                      "line_opa": 125
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "points": "0,0  0,90"
+            },
+            {
+              "objID": "eb753752-6abe-418d-ad5c-e6190d0856c5",
+              "type": "LVGLLineWidget",
+              "left": 313,
+              "top": 188,
+              "width": 1,
+              "height": 91,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "936332dc-d8c9-4680-88d0-5f52a96a2612",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "52045890-7e6a-4fd3-f207-020d866e3134",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "line_color": "#767676",
+                      "line_opa": 125
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "points": "0,0  0,90"
+            },
+            {
+              "objID": "da6f04e2-0036-42a0-9d75-cb4f38cd7f05",
+              "type": "LVGLLineWidget",
+              "left": 388,
+              "top": 188,
+              "width": 1,
+              "height": 91,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "f7673776-d382-4eb4-9b13-1ad346bc1ab3",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "9f253850-f9ae-4f4d-c0a6-04522d253d8f",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "line_color": "#767676",
+                      "line_opa": 125
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "points": "0,0  0,90"
+            },
+            {
+              "objID": "1140aa9c-f2cd-4258-c2c7-0eef150eecb5",
+              "type": "LVGLLabelWidget",
+              "left": 91,
+              "top": 256,
+              "width": 72,
+              "height": 17,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "fef2ba27-89d4-4127-c6a6-602000e479fd",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "locked": false,
+              "timeline": [],
+              "eventHandlers": [],
+              "identifier": "ui_meteo_ft1_2",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "6fe510ca-3053-4d60-928a-59d9642aabde",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "CENTER"
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "ui_meteo_ft2",
+              "textType": "expression",
+              "longMode": "WRAP",
+              "recolor": false,
+              "previewValue": "-99/-99°C"
+            },
+            {
+              "objID": "49a3c551-7413-42d7-f1fa-df06c0ec429c",
+              "type": "LVGLLabelWidget",
+              "left": 166,
+              "top": 256,
+              "width": 72,
+              "height": 17,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "480567e6-aab7-4592-891f-6a7112757c40",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "locked": false,
+              "timeline": [],
+              "eventHandlers": [],
+              "identifier": "ui_meteo_ft1_3",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "2c2d763e-605d-459d-bf04-a2cc037a5c88",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "CENTER"
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "ui_meteo_ft3",
+              "textType": "expression",
+              "longMode": "WRAP",
+              "recolor": false,
+              "previewValue": "-99/-99°C"
+            },
+            {
+              "objID": "5fcbcb2e-e57a-4a52-af49-4000da17aeed",
+              "type": "LVGLLabelWidget",
+              "left": 241,
+              "top": 256,
+              "width": 72,
+              "height": 17,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "9c1fd374-d1e0-4627-93ba-356792877021",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "locked": false,
+              "timeline": [],
+              "eventHandlers": [],
+              "identifier": "ui_meteo_ft1_4",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "5d39d741-a3a6-42d7-9210-9419e7333316",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "CENTER"
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "ui_meteo_ft4",
+              "textType": "expression",
+              "longMode": "WRAP",
+              "recolor": false,
+              "previewValue": "-99/-99°C"
+            },
+            {
+              "objID": "d1ebd3f0-3a71-454a-b605-e1b70abed01f",
+              "type": "LVGLLabelWidget",
+              "left": 316,
+              "top": 256,
+              "width": 72,
+              "height": 17,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "c3e9a9c8-95ed-4e65-ef48-0d789618b2cb",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "locked": false,
+              "timeline": [],
+              "eventHandlers": [],
+              "identifier": "ui_meteo_ft1_5",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "82b1dcc4-fd3b-4a39-f2c0-0a62061103a9",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "CENTER"
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "ui_meteo_ft5",
+              "textType": "expression",
+              "longMode": "WRAP",
+              "recolor": false,
+              "previewValue": "-99/-99°C"
+            },
+            {
+              "objID": "fb91d794-0eda-4b78-abff-e29aabd47f35",
+              "type": "LVGLLabelWidget",
+              "left": 391,
+              "top": 256,
+              "width": 72,
+              "height": 17,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "6e56a85f-15d1-4e42-e5e1-aa437f69ead4",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "locked": false,
+              "timeline": [],
+              "eventHandlers": [],
+              "identifier": "ui_meteo_ft1_6",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "61d2b964-9df3-4ecb-8238-424e3397787d",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "CENTER"
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "ui_meteo_ft5",
+              "textType": "expression",
+              "longMode": "WRAP",
+              "recolor": false,
+              "previewValue": "-99/-99°C"
+            },
+            {
+              "objID": "f26d1af6-8008-4e76-8b93-4f1a19f74b71",
+              "type": "LVGLLedWidget",
+              "left": 230,
+              "top": 293,
+              "width": 18,
+              "height": 16,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "987ff5f1-4125-41d4-e2a5-dbbc2f063a62",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "83af0f08-b9cf-454c-e9d2-c51d90521105"
+              },
+              "group": "",
+              "groupIndex": 0,
+              "color": "#ffffff",
+              "colorType": "literal",
+              "brightness": 0,
+              "brightnessType": "literal"
+            },
+            {
+              "objID": "9d7a7b51-4080-4184-b813-10701dafafb5",
+              "type": "LVGLLedWidget",
+              "left": 268,
+              "top": 293,
+              "width": 18,
+              "height": 16,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "78249771-7c8c-4516-e268-e21d3fd8940f",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "2f17d64a-4432-4a4f-87f0-ce5ec102432d"
+              },
+              "group": "",
+              "groupIndex": 0,
+              "color": "#ffffff",
+              "colorType": "literal",
+              "brightness": 0,
+              "brightnessType": "literal"
+            },
+            {
+              "objID": "49d854b3-0114-4a09-deca-1479ad7549b3",
+              "type": "LVGLLedWidget",
+              "left": 193,
+              "top": 293,
+              "width": 18,
+              "height": 16,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "8b7a36fa-727b-48c4-a449-1d07f24c5449",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "889bfd19-357a-4693-b16c-55b40fd701e1"
+              },
+              "group": "",
+              "groupIndex": 0,
+              "color": "#ffffff",
+              "colorType": "literal",
+              "brightness": 255,
+              "brightnessType": "literal"
             }
           ],
           "widgetFlags": "CLICKABLE|PRESS_LOCK|CLICK_FOCUSABLE|GESTURE_BUBBLE|SNAPPABLE|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER",
@@ -2167,7 +2202,9 @@
             "definition": {
               "MAIN": {
                 "DEFAULT": {
-                  "bg_color": "#000000"
+                  "bg_color": "#000000",
+                  "text_color": "#ffffff",
+                  "text_font": "ui_16"
                 }
               }
             }
@@ -2216,7 +2253,7 @@
               "type": "LVGLLabelWidget",
               "left": 218,
               "top": 35,
-              "width": 18,
+              "width": 23,
               "height": 19,
               "customInputs": [],
               "customOutputs": [],
@@ -2249,7 +2286,8 @@
                   "MAIN": {
                     "DEFAULT": {
                       "text_color": "#ffffff",
-                      "text_font": "ui_18"
+                      "text_font": "ui_18",
+                      "pad_right": 5
                     }
                   }
                 }
@@ -2264,7 +2302,7 @@
             {
               "objID": "72d16ff8-1ee0-4e95-8bf4-711c7c17e2e0",
               "type": "LVGLSwitchWidget",
-              "left": 245,
+              "left": 241,
               "top": 34,
               "width": 39,
               "height": 20,
@@ -2277,7 +2315,15 @@
                 "childStyles": []
               },
               "timeline": [],
-              "eventHandlers": [],
+              "eventHandlers": [
+                {
+                  "objID": "cc4b539b-df83-486b-b225-3692faffe254",
+                  "eventName": "VALUE_CHANGED",
+                  "handlerType": "action",
+                  "action": "checked",
+                  "userData": 0
+                }
+              ],
               "identifier": "ui_setting_hour",
               "leftUnit": "px",
               "topUnit": "px",
@@ -2315,9 +2361,9 @@
             {
               "objID": "07987acc-74ff-4525-c1b7-456bda127d1f",
               "type": "LVGLLabelWidget",
-              "left": 296,
+              "left": 280,
               "top": 35,
-              "width": 18,
+              "width": 23,
               "height": 19,
               "customInputs": [],
               "customOutputs": [],
@@ -2350,7 +2396,8 @@
                   "MAIN": {
                     "DEFAULT": {
                       "text_color": "#ffffff",
-                      "text_font": "ui_18"
+                      "text_font": "ui_18",
+                      "pad_left": 5
                     }
                   }
                 }
@@ -2408,7 +2455,7 @@
               "objID": "7d326743-956f-4848-8f14-3629aed7db6d",
               "type": "LVGLLabelWidget",
               "left": 42,
-              "top": 54,
+              "top": 59,
               "width": 162,
               "height": 19,
               "customInputs": [],
@@ -2450,8 +2497,8 @@
             {
               "objID": "8354ee9f-035c-4f10-bf1f-13f446eaa8fc",
               "type": "LVGLSliderWidget",
-              "left": 42,
-              "top": 84,
+              "left": 108,
+              "top": 110,
               "width": 263,
               "height": 10,
               "customInputs": [],
@@ -2503,7 +2550,7 @@
               "objID": "93d605a1-88a8-4606-a6b9-4dadbc684480",
               "type": "LVGLLabelWidget",
               "left": 218,
-              "top": 54,
+              "top": 59,
               "width": 9,
               "height": 19,
               "customInputs": [],
@@ -2542,6 +2589,575 @@
               "longMode": "WRAP",
               "recolor": false,
               "previewValue": "0"
+            },
+            {
+              "objID": "fde2a517-a7f2-41db-cfe7-f3f0a5f04f34",
+              "type": "LVGLLabelWidget",
+              "left": 94,
+              "top": 87,
+              "width": 27,
+              "height": 19,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "88377900-50ed-4540-d7d8-6858c137a2e7",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "21a1b68c-66e3-4ccf-819d-5337daa1196f"
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "-12",
+              "textType": "literal",
+              "longMode": "WRAP",
+              "recolor": false
+            },
+            {
+              "objID": "0b6d6edd-3ce7-4416-c8f1-26ebdd16ad7c",
+              "type": "LVGLLabelWidget",
+              "left": 225,
+              "top": 87,
+              "width": 9,
+              "height": 19,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "257d7eb2-c677-4367-fecb-51991c260825",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "76a18c81-d48d-4306-d6cc-d62828405be5"
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "0",
+              "textType": "literal",
+              "longMode": "WRAP",
+              "recolor": false
+            },
+            {
+              "objID": "9bf69261-e374-41e3-997b-a9b1e015f15d",
+              "type": "LVGLLabelWidget",
+              "left": 357,
+              "top": 87,
+              "width": 27,
+              "height": 19,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "854e4004-1f23-4db5-b476-1a6ccbb6ecca",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "152a1867-6a48-4cfd-f7c2-9c594949fd34"
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "+12",
+              "textType": "literal",
+              "longMode": "WRAP",
+              "recolor": false
+            },
+            {
+              "objID": "12d3f912-65ba-430f-f2ef-f781100c68eb",
+              "type": "LVGLButtonWidget",
+              "left": 65,
+              "top": 103,
+              "width": 29,
+              "height": 25,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "fc9d83e4-149b-4c86-8951-1796342584f2",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "identifier": "ui_setting_gmt_switch1",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [
+                {
+                  "objID": "69677d56-c43e-428e-a7cc-cc4f7bb606f4",
+                  "type": "LVGLLabelWidget",
+                  "left": -1,
+                  "top": 3,
+                  "width": 9,
+                  "height": 19,
+                  "customInputs": [],
+                  "customOutputs": [],
+                  "style": {
+                    "objID": "f622e2b3-26bf-48d1-9cff-77758f826617",
+                    "useStyle": "default",
+                    "conditionalStyles": [],
+                    "childStyles": []
+                  },
+                  "timeline": [],
+                  "eventHandlers": [],
+                  "leftUnit": "px",
+                  "topUnit": "px",
+                  "widthUnit": "content",
+                  "heightUnit": "content",
+                  "children": [],
+                  "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+                  "hiddenFlagType": "literal",
+                  "clickableFlagType": "literal",
+                  "flagScrollbarMode": "",
+                  "flagScrollDirection": "",
+                  "scrollSnapX": "",
+                  "scrollSnapY": "",
+                  "checkedStateType": "literal",
+                  "disabledStateType": "literal",
+                  "states": "",
+                  "localStyles": {
+                    "objID": "3aae5c88-e67f-493b-bdea-817b62258543",
+                    "definition": {
+                      "MAIN": {
+                        "DEFAULT": {
+                          "align": "CENTER"
+                        }
+                      }
+                    }
+                  },
+                  "group": "",
+                  "groupIndex": 0,
+                  "text": "-",
+                  "textType": "literal",
+                  "longMode": "WRAP",
+                  "recolor": false
+                }
+              ],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_ON_FOCUS|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "f365ebeb-bf93-4bab-fbb1-8a68558c545b"
+              },
+              "group": "",
+              "groupIndex": 0
+            },
+            {
+              "objID": "71f243a9-de58-4869-d6ed-643aa68bfda0",
+              "type": "LVGLButtonWidget",
+              "left": 387,
+              "top": 103,
+              "width": 29,
+              "height": 25,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "edb63001-7521-4a6a-c0a2-28e5ce25c63d",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "identifier": "ui_setting_gmt_switch2",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [
+                {
+                  "objID": "bda699fb-6d30-4d72-b599-c2befd2558c9",
+                  "type": "LVGLLabelWidget",
+                  "left": 0,
+                  "top": 2,
+                  "width": 9,
+                  "height": 19,
+                  "customInputs": [],
+                  "customOutputs": [],
+                  "style": {
+                    "objID": "54554f2b-47ba-4ae7-aad2-9404a1990fa7",
+                    "useStyle": "default",
+                    "conditionalStyles": [],
+                    "childStyles": []
+                  },
+                  "timeline": [],
+                  "eventHandlers": [],
+                  "leftUnit": "px",
+                  "topUnit": "px",
+                  "widthUnit": "content",
+                  "heightUnit": "content",
+                  "children": [],
+                  "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+                  "hiddenFlagType": "literal",
+                  "clickableFlagType": "literal",
+                  "flagScrollbarMode": "",
+                  "flagScrollDirection": "",
+                  "scrollSnapX": "",
+                  "scrollSnapY": "",
+                  "checkedStateType": "literal",
+                  "disabledStateType": "literal",
+                  "states": "",
+                  "localStyles": {
+                    "objID": "5b552bef-47a8-44b9-9639-3e6ccc7cf0cf",
+                    "definition": {
+                      "MAIN": {
+                        "DEFAULT": {
+                          "align": "CENTER"
+                        }
+                      }
+                    }
+                  },
+                  "group": "",
+                  "groupIndex": 0,
+                  "text": "+",
+                  "textType": "literal",
+                  "longMode": "WRAP",
+                  "recolor": false
+                }
+              ],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_ON_FOCUS|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "532dca7a-5b67-4c6a-94c8-4d43766659bf"
+              },
+              "group": "",
+              "groupIndex": 0
+            },
+            {
+              "objID": "aaa981d1-e170-4a4a-bf7b-a8c1a9a9337e",
+              "type": "LVGLLabelWidget",
+              "left": 42,
+              "top": 141,
+              "width": 95,
+              "height": 19,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "a411499f-282a-4332-888f-18f4f48ad5af",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "6f459b51-9361-4fd1-8fc3-b6a0cbf7542e",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "pad_right": 5
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "Unité : °C",
+              "textType": "literal",
+              "longMode": "WRAP",
+              "recolor": false
+            },
+            {
+              "objID": "b80fd6f9-2599-4ed3-f506-2ae9d62270b0",
+              "type": "LVGLSwitchWidget",
+              "left": 137,
+              "top": 140,
+              "width": 39,
+              "height": 20,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "f5400830-5be1-4c36-9868-0c5c4cae1f01",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [
+                {
+                  "objID": "e99d9d2e-c93b-4671-fa7c-987ec8b82028",
+                  "eventName": "VALUE_CHANGED",
+                  "handlerType": "action",
+                  "action": "check_unit",
+                  "userData": 0
+                }
+              ],
+              "identifier": "ui_setting_unit",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [],
+              "widgetFlags": "CHECKABLE|CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_ON_FOCUS|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedState": "ui_setting_temp",
+              "checkedStateType": "expression",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "bac6a10c-c289-4e13-d773-54297a35fbb8",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "bg_color": "#007cff"
+                    },
+                    "CHECKED": {
+                      "bg_color": "#007cff"
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0
+            },
+            {
+              "objID": "b7d0afb7-9b1e-44b8-fcee-444917920ed5",
+              "type": "LVGLLabelWidget",
+              "left": 176,
+              "top": 141,
+              "width": 23,
+              "height": 19,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "d1222ae5-7863-4c04-f6c7-58bf39a7bb62",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [],
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "content",
+              "heightUnit": "content",
+              "children": [],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "2513779f-fa11-437b-ec57-ebdd8d65177c",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "pad_left": 5
+                    }
+                  }
+                }
+              },
+              "group": "",
+              "groupIndex": 0,
+              "text": "°F",
+              "textType": "literal",
+              "longMode": "WRAP",
+              "recolor": false
+            },
+            {
+              "objID": "a9c3bd5e-ae2b-4dde-f1e0-0b49a84cfc6e",
+              "type": "LVGLButtonWidget",
+              "left": 352,
+              "top": 247,
+              "width": 100,
+              "height": 50,
+              "customInputs": [],
+              "customOutputs": [],
+              "style": {
+                "objID": "9f59093a-591a-457f-8635-eec66a371eca",
+                "useStyle": "default",
+                "conditionalStyles": [],
+                "childStyles": []
+              },
+              "timeline": [],
+              "eventHandlers": [
+                {
+                  "objID": "157c9d88-b4cf-46ee-ca46-b069b56f5a25",
+                  "eventName": "PRESSED",
+                  "handlerType": "action",
+                  "action": "go_ui_meteo",
+                  "userData": 0
+                }
+              ],
+              "identifier": "ui_setting_bt",
+              "leftUnit": "px",
+              "topUnit": "px",
+              "widthUnit": "px",
+              "heightUnit": "px",
+              "children": [
+                {
+                  "objID": "b1e46798-6bbc-477f-d5ed-b31a472fabea",
+                  "type": "LVGLLabelWidget",
+                  "left": 0,
+                  "top": 0,
+                  "width": 54,
+                  "height": 19,
+                  "customInputs": [],
+                  "customOutputs": [],
+                  "style": {
+                    "objID": "23f3e9ad-501e-4e78-dbda-1d593b117195",
+                    "useStyle": "default",
+                    "conditionalStyles": [],
+                    "childStyles": []
+                  },
+                  "timeline": [],
+                  "eventHandlers": [
+                    {
+                      "objID": "f8d41f94-dbc3-41fc-80f1-35c450079d75",
+                      "eventName": "PRESSED",
+                      "handlerType": "action",
+                      "action": "go_ui_meteo",
+                      "userData": 0
+                    }
+                  ],
+                  "leftUnit": "px",
+                  "topUnit": "px",
+                  "widthUnit": "content",
+                  "heightUnit": "content",
+                  "children": [],
+                  "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLLABLE|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_WITH_ARROW|SNAPPABLE",
+                  "hiddenFlagType": "literal",
+                  "clickableFlagType": "literal",
+                  "flagScrollbarMode": "",
+                  "flagScrollDirection": "",
+                  "scrollSnapX": "",
+                  "scrollSnapY": "",
+                  "checkedStateType": "literal",
+                  "disabledStateType": "literal",
+                  "states": "",
+                  "localStyles": {
+                    "objID": "4f076ea3-8505-4086-eea6-27fd00abb8d4",
+                    "definition": {
+                      "MAIN": {
+                        "DEFAULT": {
+                          "align": "CENTER"
+                        }
+                      }
+                    }
+                  },
+                  "group": "",
+                  "groupIndex": 0,
+                  "text": "return",
+                  "textType": "literal",
+                  "longMode": "WRAP",
+                  "recolor": false
+                }
+              ],
+              "widgetFlags": "CLICK_FOCUSABLE|GESTURE_BUBBLE|PRESS_LOCK|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_ON_FOCUS|SCROLL_WITH_ARROW|SNAPPABLE",
+              "hiddenFlagType": "literal",
+              "clickableFlag": true,
+              "clickableFlagType": "literal",
+              "flagScrollbarMode": "",
+              "flagScrollDirection": "",
+              "scrollSnapX": "",
+              "scrollSnapY": "",
+              "checkedStateType": "literal",
+              "disabledStateType": "literal",
+              "states": "",
+              "localStyles": {
+                "objID": "e1581794-303a-4a77-ae6b-4e960bef947f"
+              },
+              "group": "",
+              "groupIndex": 0
             }
           ],
           "widgetFlags": "CLICKABLE|PRESS_LOCK|CLICK_FOCUSABLE|GESTURE_BUBBLE|SNAPPABLE|SCROLLABLE|SCROLL_ELASTIC|SCROLL_MOMENTUM|SCROLL_CHAIN_HOR|SCROLL_CHAIN_VER",
@@ -2748,7 +3364,7 @@
               "group": "",
               "groupIndex": 0,
               "text": "Configuration Wifi",
-              "textType": "translated-literal",
+              "textType": "literal",
               "longMode": "WRAP",
               "recolor": false
             }
@@ -2862,8 +3478,8 @@
       "descent": 1,
       "glyphs": [],
       "lvglRanges": "",
-      "lvglSymbols": " 0123456789.-°:CF",
-      "lvglBinFile": "MAAAAGhlYWQBAAAAAwAyACYA//8mAPT/CgD//yYAGQAQAAAAAAgGBgAAAAABAAAAQAAAAGNtYXABAAAAHAAAACAAAACRAAEAEQADAAAADQAOABAAEQASABMAFAAVABYAFwAYABkAGgAjACYAkAAAADAAAABsb2NhEgAAAAgACAALAHQAyACdA44FmgjhC4EPyBI1FosZ+BxOICkhXyRrJ2AoAABnbHlmAAAAEQRGHXd3d3d3d3d3d3d3d3d3dxg/////////////////////Mz////////////////////8zP////////////////////zM/////////////////////Mz////////////////////8zI/JJAAAPXIZhFAAAACXd////4ysAALf//////70ADf////////8OKv////////8qDf////////8OALf//////70AACLW////3SgAAAAJTHNQDQAAD/TmAAAAA0yVxeXy/PHkxJRLAgAAAAAAO97//////////////906AAAAQfv/////////////////+z8AB+b////////////////////kBlv//////////////////////1mj///////5ikcyR4v5//////+h0///////ggAAAAAAhP//////0uz//////y4AAAAAAC///////+v5//////8YAAAAAAAZ///////4////////DAAAAAAADP///////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC/////////7//////w8AAAAAABD///////3y//////8iAAAAAAAk///////x5P//////TQAAAAAATv//////47z//////8gVAAAAFcn//////7qH////////8cKuwvH///////+FKf//////////////////////JwCg////////////////////ngAACrj/////////////////twoAAAABZM7////////////NYwEAAAAAAAAAF0hnc3xzZ0cXAAAAAAAQA2YAAAAAAAAAAAAAAAk5AAAAAAAAAAAAAVnilwAAAAAAAAAAN8f//5cAAAAAAAAco/7///+XAAAAAAp/9f//////lwAAAVrj/////////5cAOMj///////////+XC/7/////////////lwv//////////////5cL//////////////+XC//////0p///////lwv///+qHD///////5cL/9hEAAA///////+XCXcFAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwgFZQAAAAAAGXe24vX138B8LQAAAAAAAAAAAAaN+P///////////qsfAAAAAAAADMf////////////////qOgAAAAABr///////////////////7yEAAABR/////////////////////8QAAADN////////0aWr1v////////9BACL///////5hAAAAAFbz//////+jAGj//////68AAAAAAAB+///////kAJX//////1EAAAAAAAAb////////Ea///////y4AAAAAAAAB+f//////JXGTk5OTkwwAAAAAAAAA9P//////LQAAAAAAAAAAAAAAAAAY////////GwAAAAAAAAAAAAAAAAA8///////5BgAAAAAAAAAAAAAAAACD///////LAAAAAAAAAAAAAAAAAAXn//////+HAAAAAAAAAAAAAAAAAFj///////4iAAAAAAAAAAAAAAAAA9f//////7cAAAAAAAAAAAAAAAAAZv///////04AAAAAAAAAAAAAAAAL5v//////0gIAAAAAAAAAAAAAAAB9////////RgAAAAAAAAAAAAAAABXy//////+3AAAAAAAAAAAAAAAAAJP///////wsAAAAAAAAAAAAAAAAI/r//////5oAAAAAAAAAAAAAAAAAqf//////8xgAAAAAAAAAAAAAAAA1/v//////fAAAAAAAAAAAAAAAAAC////////kCgAAAAAAAAAAAAAAAEv///////9fAAAAAAAAAAAAAAAAAtP//////88CAAAAAAAAAAAAAAAAYf///////0MAAAAAAAAAAAAAAAAI4///////swAAAAAAAAAAAAAAAAB3////////ZTs7Ozs7Ozs7AgAAABLw////////////////////CwAAAI7/////////////////////CwAAIPj/////////////////////CwAApP//////////////////////CwAw/v//////////////////////CwC6////////////////////////Cwv1pgAAAAAAFG+v3vH34ceHPAAAAAAAAAAAAAAHivb////////////DNgAAAAAAAAAVzv////////////////phAAAAAAAIyP///////////////////1YAAAAAfP/////////////////////yHgAAD/P////////mu6zQ/P///////5QAAF3///////5wAgAAADDR///////2CQCn//////+kAAAAAAAAKfv//////0UAz///////UwAAAAAAAACw//////92AHV/f39/fx0AAAAAAAAAiv//////iwAAAAAAAAAAAAAAAAAAAHD//////4oAAAAAAAAAAAAAAAAAAACJ//////9uAAAAAAAAAAAAAAAAAAAAsf//////QgAAAAAAAAAAAAAAAAAALv3/////5gIAAAAAAAAAAAAAAAAASt///////3cAAAAAAAAAAAAAAI/P8v///////8QDAAAAAAAAAAAAAAC//////////78TAAAAAAAAAAAAAAAAv/////////QqAAAAAAAAAAAAAAAAAL//////////9WcAAAAAAAAAAAAAAAC////////////+TAAAAAAAAAAAAAAAAA46nP///////+4SAAAAAAAAAAAAAAAAAABu////////ZwAAAAAAAAAAAAAAAAAAA9r//////8EAAAAAAAAAAAAAAAAAAAB9///////vAAAAAAAAAAAAAAAAAAAAXP///////wkAAAAAAAAAAAAAAAAAAD////////8gAAAAAAAAAAAAAAAAAABI////////GVxjY2NjYxIAAAAAAAAAZf///////wbT//////9JAAAAAAAAAJH//////+oArf//////iwAAAAAAAA7w//////+uAHD///////ctAAAAAASd////////bQAf////////9n9CL1/B////////8xAAAK///////////////////////4wAAAAn+P///////////////////9QKAAAAAFf+/////////////////+InAAAAAAAAU/D//////////////8UaAAAAAAAAAAAbje/////////8xFEAAAAAAAAAAAAAAAADMmFzeGRLEQAAAAAAAAAAAAZlAAAAAAAAAAAAAAAAqv///////+cAAAAAAAAAAAAAAAAAAAAAL/7////////nAAAAAAAAAAAAAAAAAAAAALL/////////5wAAAAAAAAAAAAAAAAAAADf//////////+cAAAAAAAAAAAAAAAAAAAC7///////////nAAAAAAAAAAAAAAAAAAA/////////////5wAAAAAAAAAAAAAAAAAAw////////////+cAAAAAAAAAAAAAAAAAR//////////////nAAAAAAAAAAAAAAAAAMv/////////////5wAAAAAAAAAAAAAAAFD//////9///////+cAAAAAAAAAAAAAAAHS/////9iE///////nAAAAAAAAAAAAAABY//////9Sf///////5wAAAAAAAAAAAAAD2f/////JAH///////+cAAAAAAAAAAAAAYf//////QAB////////nAAAAAAAAAAAABd//////tgAAf///////5wAAAAAAAAAAAGn//////i8AAH///////+cAAAAAAAAAAAjl/////6QAAAB////////nAAAAAAAAAABx//////khAAAAf///////5wAAAAAAAAAM6v////+RAAAAAH///////+cAAAAAAAAAev/////yFQAAAAB////////nAAAAAAAAD+7/////fgAAAAAAf///////5wAAAAAAAIL/////6QwAAAAAAH///////+cAAAAAABDy/////2wAAAAAAAB////////nAAAAAAAn//////////////////////////////8nJ///////////////////////////////Jyf//////////////////////////////ycn//////////////////////////////8nJ///////////////////////////////Jyf//////////////////////////////ycINzc3Nzc3Nzc3Nzc3m///////7Tc3NzcIAAAAAAAAAAAAAAAAAH///////+cAAAAAAAAAAAAAAAAAAAAAAAB////////nAAAAAAAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAAAAAAH///////+cAAAAAAAAAAAAAAAAAAAAAAAB////////nAAAAAAAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAAAAAAH///////+cAAAAAAAv1pgCG//////////////////////+LAAAAk///////////////////////iwAAAKD//////////////////////4sAAACt//////////////////////+LAAAAuv//////////////////////iwAAAMf//////////////////////4sAAADU//////9IOzs7Ozs7Ozs7OzsgAAAA4f/////9AgAAAAAAAAAAAAAAAAAAAO7/////7AAAAAAAAAAAAAAAAAAAAAD7/////9kAAAAAAAAAAAAAAAAAAAAI///////FAAAAAAAAAAAAAAAAAAAAFf//////sgAAAAAAAAAAAAAAAAAAACL//////58AAAAAAAAAAAAAAAAAAAAv//////+MACpfe5SGbCsAAAAAAAAAPP//////q8v/////////1UoAAAAAAEn/////////////////////kwEAAABW//////////////////////+NAAAAY////////////////////////j4AAHD////////////////////////HAAB9///////7kTIOGEW5/////////y0Aiv/////8SQAAAAAAApr///////99AFiXl5eXaAAAAAAAAAAX+P//////sgAAAAAAAAAAAAAAAAAAAKr//////+AAAAAAAAAAAAAAAAAAAACH///////yAAAAAAAAAAAAAAAAAAAAbP///////wQAAAAAAAAAAAAAAAAAAGD///////8DAAAAAAAAAAAAAAAAAAB4///////yAFRbW1tbWxAAAAAAAAAAk///////4ADP//////9HAAAAAAAAAMf//////7MApP//////iAAAAAAAADP///////98AF7///////UpAAAAAA/C////////NgAN9///////9Hk+M2bW////////0AAAAIr//////////////////////1oAAAAO4v///////////////////7QAAAAAACzv/////////////////9AVAAAAAAAAKdP//////////////7kRAAAAAAAAAAAHaNj////////9xVEAAAAAAAAAAAAAAAAAH1duemhQFwAAAAAAAAAAB/XmAAAAAAAAAAAAAAAj+v//////+yYAAAAAAAAAAAAAAAAAAKn///////+VAAAAAAAAAAAAAAAAAAA1/v//////8xYAAAAAAAAAAAAAAAAAAL////////99AAAAAAAAAAAAAAAAAABK////////5wsAAAAAAAAAAAAAAAAAAtL///////9lAAAAAAAAAAAAAAAAAABg////////1gMAAAAAAAAAAAAAAAAACOP///////9NAAAAAAAAAAAAAAAAAAB3////////wgAAAAAAAAAAAAAAAAAAEu////////83AAAAAAAAAAAAAAAAAACN////////qQAAAAAAAAAAAAAAAAAAH/j///////okAAAAAAAAAAAAAAAAAACj////////kQAAAAAAAAAAAAAAAAAAL/7///////EUAAAAAAAAAAAAAAAAAAC0////////exMXBAAAAAAAAAAAAAAAOv/////////4///93o0kAAAAAAAAAAC///////////////////d2AAAAAAAANv////////////////////+KAAAAAACl//////////////////////9RAAAAGPr//////////////////////+UGAABo/////////5Y5DjmW/////////1oAAK////////9xAAAAAABy////////tgAC8f//////1wEAAAAAAALY///////uARf///////9uAAAAAAAAAG////////8gLv///////0QAAAAAAAAARf///////zRE////////JQAAAAAAAAAm////////Rj////////8oAAAAAAAAACn///////89Lf///////0gAAAAAAAAASf///////ysT////////dwAAAAAAAAB4///////+EADY///////iBQAAAAAABeL//////9MAAJj///////+MAQAAAAGN////////kwAAMf////////+zWC1Ys/////////8rAAAAu///////////////////////tAAAAAAg8P///////////////////+0bAAAAAABJ9v/////////////////zQwAAAAAAAAA54f//////////////3DIAAAAAAAAAAAAIddj/////////024FAAAAAAAAAAAAAAAAACNUanpoUh4AAAAAAAAAAAQF5Rf///////////////////////////+HF////////////////////////////zEX///////////////////////////cABf//////////////////////////4UAF///////////////////////////LwAX/////////////////////////9oAAAU7Ozs7Ozs7Ozs7Ozt1////////gwAAAAAAAAAAAAAAAAAAAJz///////8sAAAAAAAAAAAAAAAAAAAI8P//////1wAAAAAAAAAAAAAAAAAAAFX///////+AAAAAAAAAAAAAAAAAAAAAsf///////yoAAAAAAAAAAAAAAAAAABP6///////VAAAAAAAAAAAAAAAAAAAAav///////34AAAAAAAAAAAAAAAAAAADG////////KAAAAAAAAAAAAAAAAAAAJP///////9EAAAAAAAAAAAAAAAAAAAB/////////ewAAAAAAAAAAAAAAAAAAANv///////8mAAAAAAAAAAAAAAAAAAA4////////zwAAAAAAAAAAAAAAAAAAAJT///////95AAAAAAAAAAAAAAAAAAAF6////////yMAAAAAAAAAAAAAAAAAAE3////////MAAAAAAAAAAAAAAAAAAAAqf///////3YAAAAAAAAAAAAAAAAAAA73////////IQAAAAAAAAAAAAAAAAAAYf///////8oAAAAAAAAAAAAAAAAAAAC+////////dAAAAAAAAAAAAAAAAAAAHP3///////8fAAAAAAAAAAAAAAAAAAB2////////xwAAAAAAAAAAAAAAAAAAANP///////9xAAAAAAAAAAAAAAAAAAAv/////////h0AAAAAAAAAAAAAAAAAAIv////////FAAAAAAAAAAAAAAAAAAAC5f///////28AAAAAAAAAAAAAAAAAAET////////+GwAAAAAAAAAAAAAAAAAAoP///////8IAAAAAAAAAAAAAAAAAAAry////////bAAAAAAAAAAAAAAAAAAAWf////////0ZAAAAAAAAAAAAAAAAAAC1////////wAAAAAAAAAAAAAAAAAAAFvv///////9qAAAAAAAAAAAAAAAAB/XmAAAAAAAAEGOl1ur66takYxAAAAAAAAAAAAAABoLx////////////8YEFAAAAAAAAABbG/////////////////8UWAAAAAAAFxP///////////////////8QFAAAAAH7//////////////////////30AAAAO7/////////zTrNP8////////7g4AAFj////////dMwAAADTd////////VgAAm////////jEAAAAAADL+//////+YAAC8//////+2AAAAAAAAALf//////7oAAND//////4gAAAAAAAAAif//////0AAAyP//////cQAAAAAAAABx///////HAACw//////+OAAAAAAAAAJD//////64AAIX//////8YAAAAAAAAAx///////gwAAMv///////0kAAAAAAEr///////8wAAAAxv//////814GAAZe8///////xgAAAAAq+f////////rb+v////////kqAAAAAABL9f/////////////////0SgAAAAAAAAGX/////////////////5YAAAAAAAAHtf///////////////////7UHAAAAAI7//////////////////////4wAAAAx/v///////5Q5DjmV/////////jEAAIz///////9uAAAAAABv////////iwAA4f//////1gEAAAAAAAHX///////gABD///////9tAAAAAAAAAG7///////8OKP///////0QAAAAAAAAARf///////yZA////////JQAAAAAAAAAm////////P0P///////8oAAAAAAAAACn///////9BMf///////0cAAAAAAAAASf///////y8a////////dgAAAAAAAAB3////////GADj///////hBAAAAAAABeL//////+AAAKX///////+LAQAAAAGL////////owAAQv////////+yWC1Ysv////////9AAAAAzf//////////////////////zAAAAAAu9/////////////////////ctAAAAAABb+//////////////////7WgAAAAAAAABH6f//////////////6UUAAAAAAAAAAAAMfd3/////////3H0MAAAAAAAAAAAAAAAAACVVanpqVSQAAAAAAAAAAAQF5QAAAAAAAA9do9Tp+ujToVgNAAAAAAAAAAAAAAZ67v///////////+puAwAAAAAAAAAVw/////////////////+0CwAAAAAACM7///////////////////+9AgAAAACV//////////////////////94AAAAIfv////////806zT/P////////MPAACO////////1CgAAAAp1f///////3QAANb///////IVAAAAAAAV8///////wQAU////////hQAAAAAAAACG///////3Bi////////9IAAAAAAAAAEn///////8mQ////////yUAAAAAAAAAJv///////zhC////////LAAAAAAAAAAu////////RjD///////9QAAAAAAAAAFL///////8zEf7//////6MAAAAAAAAApP///////xsA1P///////TcAAAAAADf9///////7BQCE////////9moZABlq9v///////8IAABr5///////////0////////////egAAAHX///////////////////////8tAAAAAqP/////////////////////wQAAAAAAAXz1//////////////////9QAAAAAAAAABp4w+b669L1////////2QIAAAAAAAAAAAAAAAAAKfz///////9WAAAAAAAAAAAAAAAAAACu////////zgEAAAAAAAAAAAAAAAAAN/////////9HAAAAAAAAAAAAAAAAAAC/////////uwAAAAAAAAAAAAAAAAAAR/////////0wAAAAAAAAAAAAAAAAAAHO////////oAAAAAAAAAAAAAAAAAAAWP////////cdAAAAAAAAAAAAAAAAAAXb////////hgAAAAAAAAAAAAAAAAAAaf///////+sOAAAAAAAAAAAAAAAAAArn////////bAAAAAAAAAAAAAAAAAAAev///////9oFAAAAAAAAAAAAAAAAABLw////////UgAAAAAAAAAAAAAAAAAAiv///////8UAAAAAAAAAAAAAAAAAABz3////////OQAAAAAAAAAAAAAAAAAAm////////6sAAAAAAAAAAAAAAAAAACf8///////6JAAAAAAAAAAAAAAAIFJYAABYyPLNYwAAAGL//////2sAAeb//////+kBHf////////8dI/////////8kA/L///////QEAHr//////4IAAAF04P/kfwIAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAABo2P3dcwAAAG7//////3YAAuz//////+4CIP////////8gIf////////8hAu3///////ADAG3//////3YAAABgzPPQawAAC/VnAAAAAAAAACBSZ3puWykBAAAAAAAAAAAAAAZz1f/////////ofxIAAAAAAAAAMt7//////////////+U8AAAAAAA58f/////////////////3NgAAAA7j////////////////////5AsAAJH//////////////////////3kACvH///////+8VSxLmP7//////+QAWv///////6UDAAAAAF3///////8zlf///////B8AAAAAAADG//////9uyP//////twAAAAAAAACH//////+U5P//////hgAAAAAAAAAgS0tLS0sz8///////cQAAAAAAAAAAAAAAAAAA////////aAAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////aAAAAAAAAAAAAAAAAAAA8///////cQAAAAAAAAAAAAAAAAAA5P//////hgAAAAAAAAAgS0tLS0szyf//////tgAAAAAAAACH//////+Ulf///////B8AAAAAAADF//////9uW////////6MDAAAAAF3///////8zC/L///////+7UyxKl/7//////+QBAJL//////////////////////3oAAA/k////////////////////5QsAAAA78v/////////////////3NwAAAAAANOD//////////////+Y+AAAAAAAAAAd11//////////pgRMAAAAAAAAAAAAAACJTaHtvXCsBAAAAAAAACAVlf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf///////7Ts7Ozs7Ozs7Ozs7Ozsqf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf/////////v7+/v7+/v7+/v7+4kAf////////////////////////4sAf////////////////////////4sAf////////////////////////4sAf////////////////////////4sAf////////////////////////4sAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAFWPQAAAAAVay6PnosVUBAAAAAAAVwv////////++EgAAAAjO////////////yQYAAIP///+fSipLov///3kACfD//3IAAAAAAHf//+kERP//4AUAAAAAAAbi//83d///pAAAAAAAAACm//9qjP//hQAAAAAAAACG//9/kP//gAAAAAAAAACB//+DfP//nwAAAAAAAACi//9vT///2AIAAAAAAAPa//9CEPj//2gAAAAAAG3///MIAJX///+fUTVRov///4oAABHc////////////2A0AAAAasv////////+uGAAAAAAAAFWm0/TTplMAAAAAAAA=",
+      "lvglSymbols": " 0123456789.-°:CFapm",
+      "lvglBinFile": "MAAAAGhlYWQBAAAAAwAyACYA9v8mAPT/CgD2/yYAGQAQAAAAAAgGBgAAAAABAAAARAAAAGNtYXABAAAAHAAAACAAAACRAAEAFAADAAAADQAOABAAEQASABMAFAAVABYAFwAYABkAGgAjACYAQQBNAFAAkAA4AAAAbG9jYRUAAAAIAAgACwB0AMgAnQOOBZoI4QuBD8gSNRaLGfgcTiApIV8kayfAKRksNC8AACgwAABnbHlmAAAAEQRGHXd3d3d3d3d3d3d3d3d3dxg/////////////////////Mz////////////////////8zP////////////////////zM/////////////////////Mz////////////////////8zI/JJAAAPXIZhFAAAACXd////4ysAALf//////70ADf////////8OKv////////8qDf////////8OALf//////70AACLW////3SgAAAAJTHNQDQAAD/TmAAAAA0yVxeXy/PHkxJRLAgAAAAAAO97//////////////906AAAAQfv/////////////////+z8AB+b////////////////////kBlv//////////////////////1mj///////5ikcyR4v5//////+h0///////ggAAAAAAhP//////0uz//////y4AAAAAAC///////+v5//////8YAAAAAAAZ///////4////////DAAAAAAADP///////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC////////////////wsAAAAAAAv///////////////8LAAAAAAAL////////////////CwAAAAAAC/////////7//////w8AAAAAABD///////3y//////8iAAAAAAAk///////x5P//////TQAAAAAATv//////47z//////8gVAAAAFcn//////7qH////////8cKuwvH///////+FKf//////////////////////JwCg////////////////////ngAACrj/////////////////twoAAAABZM7////////////NYwEAAAAAAAAAF0hnc3xzZ0cXAAAAAAAQA2YAAAAAAAAAAAAAAAk5AAAAAAAAAAAAAVnilwAAAAAAAAAAN8f//5cAAAAAAAAco/7///+XAAAAAAp/9f//////lwAAAVrj/////////5cAOMj///////////+XC/7/////////////lwv//////////////5cL//////////////+XC//////0p///////lwv///+qHD///////5cL/9hEAAA///////+XCXcFAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwAAAAAAAD///////5cAAAAAAAA///////+XAAAAAAAAP///////lwgFZQAAAAAAGXe24vX138B8LQAAAAAAAAAAAAaN+P///////////qsfAAAAAAAADMf////////////////qOgAAAAABr///////////////////7yEAAABR/////////////////////8QAAADN////////0aWr1v////////9BACL///////5hAAAAAFbz//////+jAGj//////68AAAAAAAB+///////kAJX//////1EAAAAAAAAb////////Ea///////y4AAAAAAAAB+f//////JXGTk5OTkwwAAAAAAAAA9P//////LQAAAAAAAAAAAAAAAAAY////////GwAAAAAAAAAAAAAAAAA8///////5BgAAAAAAAAAAAAAAAACD///////LAAAAAAAAAAAAAAAAAAXn//////+HAAAAAAAAAAAAAAAAAFj///////4iAAAAAAAAAAAAAAAAA9f//////7cAAAAAAAAAAAAAAAAAZv///////04AAAAAAAAAAAAAAAAL5v//////0gIAAAAAAAAAAAAAAAB9////////RgAAAAAAAAAAAAAAABXy//////+3AAAAAAAAAAAAAAAAAJP///////wsAAAAAAAAAAAAAAAAI/r//////5oAAAAAAAAAAAAAAAAAqf//////8xgAAAAAAAAAAAAAAAA1/v//////fAAAAAAAAAAAAAAAAAC////////kCgAAAAAAAAAAAAAAAEv///////9fAAAAAAAAAAAAAAAAAtP//////88CAAAAAAAAAAAAAAAAYf///////0MAAAAAAAAAAAAAAAAI4///////swAAAAAAAAAAAAAAAAB3////////ZTs7Ozs7Ozs7AgAAABLw////////////////////CwAAAI7/////////////////////CwAAIPj/////////////////////CwAApP//////////////////////CwAw/v//////////////////////CwC6////////////////////////Cwv1pgAAAAAAFG+v3vH34ceHPAAAAAAAAAAAAAAHivb////////////DNgAAAAAAAAAVzv////////////////phAAAAAAAIyP///////////////////1YAAAAAfP/////////////////////yHgAAD/P////////mu6zQ/P///////5QAAF3///////5wAgAAADDR///////2CQCn//////+kAAAAAAAAKfv//////0UAz///////UwAAAAAAAACw//////92AHV/f39/fx0AAAAAAAAAiv//////iwAAAAAAAAAAAAAAAAAAAHD//////4oAAAAAAAAAAAAAAAAAAACJ//////9uAAAAAAAAAAAAAAAAAAAAsf//////QgAAAAAAAAAAAAAAAAAALv3/////5gIAAAAAAAAAAAAAAAAASt///////3cAAAAAAAAAAAAAAI/P8v///////8QDAAAAAAAAAAAAAAC//////////78TAAAAAAAAAAAAAAAAv/////////QqAAAAAAAAAAAAAAAAAL//////////9WcAAAAAAAAAAAAAAAC////////////+TAAAAAAAAAAAAAAAAA46nP///////+4SAAAAAAAAAAAAAAAAAABu////////ZwAAAAAAAAAAAAAAAAAAA9r//////8EAAAAAAAAAAAAAAAAAAAB9///////vAAAAAAAAAAAAAAAAAAAAXP///////wkAAAAAAAAAAAAAAAAAAD////////8gAAAAAAAAAAAAAAAAAABI////////GVxjY2NjYxIAAAAAAAAAZf///////wbT//////9JAAAAAAAAAJH//////+oArf//////iwAAAAAAAA7w//////+uAHD///////ctAAAAAASd////////bQAf////////9n9CL1/B////////8xAAAK///////////////////////4wAAAAn+P///////////////////9QKAAAAAFf+/////////////////+InAAAAAAAAU/D//////////////8UaAAAAAAAAAAAbje/////////8xFEAAAAAAAAAAAAAAAADMmFzeGRLEQAAAAAAAAAAAAZlAAAAAAAAAAAAAAAAqv///////+cAAAAAAAAAAAAAAAAAAAAAL/7////////nAAAAAAAAAAAAAAAAAAAAALL/////////5wAAAAAAAAAAAAAAAAAAADf//////////+cAAAAAAAAAAAAAAAAAAAC7///////////nAAAAAAAAAAAAAAAAAAA/////////////5wAAAAAAAAAAAAAAAAAAw////////////+cAAAAAAAAAAAAAAAAAR//////////////nAAAAAAAAAAAAAAAAAMv/////////////5wAAAAAAAAAAAAAAAFD//////9///////+cAAAAAAAAAAAAAAAHS/////9iE///////nAAAAAAAAAAAAAABY//////9Sf///////5wAAAAAAAAAAAAAD2f/////JAH///////+cAAAAAAAAAAAAAYf//////QAB////////nAAAAAAAAAAAABd//////tgAAf///////5wAAAAAAAAAAAGn//////i8AAH///////+cAAAAAAAAAAAjl/////6QAAAB////////nAAAAAAAAAABx//////khAAAAf///////5wAAAAAAAAAM6v////+RAAAAAH///////+cAAAAAAAAAev/////yFQAAAAB////////nAAAAAAAAD+7/////fgAAAAAAf///////5wAAAAAAAIL/////6QwAAAAAAH///////+cAAAAAABDy/////2wAAAAAAAB////////nAAAAAAAn//////////////////////////////8nJ///////////////////////////////Jyf//////////////////////////////ycn//////////////////////////////8nJ///////////////////////////////Jyf//////////////////////////////ycINzc3Nzc3Nzc3Nzc3m///////7Tc3NzcIAAAAAAAAAAAAAAAAAH///////+cAAAAAAAAAAAAAAAAAAAAAAAB////////nAAAAAAAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAAAAAAH///////+cAAAAAAAAAAAAAAAAAAAAAAAB////////nAAAAAAAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAAAAAAH///////+cAAAAAAAv1pgCG//////////////////////+LAAAAk///////////////////////iwAAAKD//////////////////////4sAAACt//////////////////////+LAAAAuv//////////////////////iwAAAMf//////////////////////4sAAADU//////9IOzs7Ozs7Ozs7OzsgAAAA4f/////9AgAAAAAAAAAAAAAAAAAAAO7/////7AAAAAAAAAAAAAAAAAAAAAD7/////9kAAAAAAAAAAAAAAAAAAAAI///////FAAAAAAAAAAAAAAAAAAAAFf//////sgAAAAAAAAAAAAAAAAAAACL//////58AAAAAAAAAAAAAAAAAAAAv//////+MACpfe5SGbCsAAAAAAAAAPP//////q8v/////////1UoAAAAAAEn/////////////////////kwEAAABW//////////////////////+NAAAAY////////////////////////j4AAHD////////////////////////HAAB9///////7kTIOGEW5/////////y0Aiv/////8SQAAAAAAApr///////99AFiXl5eXaAAAAAAAAAAX+P//////sgAAAAAAAAAAAAAAAAAAAKr//////+AAAAAAAAAAAAAAAAAAAACH///////yAAAAAAAAAAAAAAAAAAAAbP///////wQAAAAAAAAAAAAAAAAAAGD///////8DAAAAAAAAAAAAAAAAAAB4///////yAFRbW1tbWxAAAAAAAAAAk///////4ADP//////9HAAAAAAAAAMf//////7MApP//////iAAAAAAAADP///////98AF7///////UpAAAAAA/C////////NgAN9///////9Hk+M2bW////////0AAAAIr//////////////////////1oAAAAO4v///////////////////7QAAAAAACzv/////////////////9AVAAAAAAAAKdP//////////////7kRAAAAAAAAAAAHaNj////////9xVEAAAAAAAAAAAAAAAAAH1duemhQFwAAAAAAAAAAB/XmAAAAAAAAAAAAAAAj+v//////+yYAAAAAAAAAAAAAAAAAAKn///////+VAAAAAAAAAAAAAAAAAAA1/v//////8xYAAAAAAAAAAAAAAAAAAL////////99AAAAAAAAAAAAAAAAAABK////////5wsAAAAAAAAAAAAAAAAAAtL///////9lAAAAAAAAAAAAAAAAAABg////////1gMAAAAAAAAAAAAAAAAACOP///////9NAAAAAAAAAAAAAAAAAAB3////////wgAAAAAAAAAAAAAAAAAAEu////////83AAAAAAAAAAAAAAAAAACN////////qQAAAAAAAAAAAAAAAAAAH/j///////okAAAAAAAAAAAAAAAAAACj////////kQAAAAAAAAAAAAAAAAAAL/7///////EUAAAAAAAAAAAAAAAAAAC0////////exMXBAAAAAAAAAAAAAAAOv/////////4///93o0kAAAAAAAAAAC///////////////////d2AAAAAAAANv////////////////////+KAAAAAACl//////////////////////9RAAAAGPr//////////////////////+UGAABo/////////5Y5DjmW/////////1oAAK////////9xAAAAAABy////////tgAC8f//////1wEAAAAAAALY///////uARf///////9uAAAAAAAAAG////////8gLv///////0QAAAAAAAAARf///////zRE////////JQAAAAAAAAAm////////Rj////////8oAAAAAAAAACn///////89Lf///////0gAAAAAAAAASf///////ysT////////dwAAAAAAAAB4///////+EADY///////iBQAAAAAABeL//////9MAAJj///////+MAQAAAAGN////////kwAAMf////////+zWC1Ys/////////8rAAAAu///////////////////////tAAAAAAg8P///////////////////+0bAAAAAABJ9v/////////////////zQwAAAAAAAAA54f//////////////3DIAAAAAAAAAAAAIddj/////////024FAAAAAAAAAAAAAAAAACNUanpoUh4AAAAAAAAAAAQF5Rf///////////////////////////+HF////////////////////////////zEX///////////////////////////cABf//////////////////////////4UAF///////////////////////////LwAX/////////////////////////9oAAAU7Ozs7Ozs7Ozs7Ozt1////////gwAAAAAAAAAAAAAAAAAAAJz///////8sAAAAAAAAAAAAAAAAAAAI8P//////1wAAAAAAAAAAAAAAAAAAAFX///////+AAAAAAAAAAAAAAAAAAAAAsf///////yoAAAAAAAAAAAAAAAAAABP6///////VAAAAAAAAAAAAAAAAAAAAav///////34AAAAAAAAAAAAAAAAAAADG////////KAAAAAAAAAAAAAAAAAAAJP///////9EAAAAAAAAAAAAAAAAAAAB/////////ewAAAAAAAAAAAAAAAAAAANv///////8mAAAAAAAAAAAAAAAAAAA4////////zwAAAAAAAAAAAAAAAAAAAJT///////95AAAAAAAAAAAAAAAAAAAF6////////yMAAAAAAAAAAAAAAAAAAE3////////MAAAAAAAAAAAAAAAAAAAAqf///////3YAAAAAAAAAAAAAAAAAAA73////////IQAAAAAAAAAAAAAAAAAAYf///////8oAAAAAAAAAAAAAAAAAAAC+////////dAAAAAAAAAAAAAAAAAAAHP3///////8fAAAAAAAAAAAAAAAAAAB2////////xwAAAAAAAAAAAAAAAAAAANP///////9xAAAAAAAAAAAAAAAAAAAv/////////h0AAAAAAAAAAAAAAAAAAIv////////FAAAAAAAAAAAAAAAAAAAC5f///////28AAAAAAAAAAAAAAAAAAET////////+GwAAAAAAAAAAAAAAAAAAoP///////8IAAAAAAAAAAAAAAAAAAAry////////bAAAAAAAAAAAAAAAAAAAWf////////0ZAAAAAAAAAAAAAAAAAAC1////////wAAAAAAAAAAAAAAAAAAAFvv///////9qAAAAAAAAAAAAAAAAB/XmAAAAAAAAEGOl1ur66takYxAAAAAAAAAAAAAABoLx////////////8YEFAAAAAAAAABbG/////////////////8UWAAAAAAAFxP///////////////////8QFAAAAAH7//////////////////////30AAAAO7/////////zTrNP8////////7g4AAFj////////dMwAAADTd////////VgAAm////////jEAAAAAADL+//////+YAAC8//////+2AAAAAAAAALf//////7oAAND//////4gAAAAAAAAAif//////0AAAyP//////cQAAAAAAAABx///////HAACw//////+OAAAAAAAAAJD//////64AAIX//////8YAAAAAAAAAx///////gwAAMv///////0kAAAAAAEr///////8wAAAAxv//////814GAAZe8///////xgAAAAAq+f////////rb+v////////kqAAAAAABL9f/////////////////0SgAAAAAAAAGX/////////////////5YAAAAAAAAHtf///////////////////7UHAAAAAI7//////////////////////4wAAAAx/v///////5Q5DjmV/////////jEAAIz///////9uAAAAAABv////////iwAA4f//////1gEAAAAAAAHX///////gABD///////9tAAAAAAAAAG7///////8OKP///////0QAAAAAAAAARf///////yZA////////JQAAAAAAAAAm////////P0P///////8oAAAAAAAAACn///////9BMf///////0cAAAAAAAAASf///////y8a////////dgAAAAAAAAB3////////GADj///////hBAAAAAAABeL//////+AAAKX///////+LAQAAAAGL////////owAAQv////////+yWC1Ysv////////9AAAAAzf//////////////////////zAAAAAAu9/////////////////////ctAAAAAABb+//////////////////7WgAAAAAAAABH6f//////////////6UUAAAAAAAAAAAAMfd3/////////3H0MAAAAAAAAAAAAAAAAACVVanpqVSQAAAAAAAAAAAQF5QAAAAAAAA9do9Tp+ujToVgNAAAAAAAAAAAAAAZ67v///////////+puAwAAAAAAAAAVw/////////////////+0CwAAAAAACM7///////////////////+9AgAAAACV//////////////////////94AAAAIfv////////806zT/P////////MPAACO////////1CgAAAAp1f///////3QAANb///////IVAAAAAAAV8///////wQAU////////hQAAAAAAAACG///////3Bi////////9IAAAAAAAAAEn///////8mQ////////yUAAAAAAAAAJv///////zhC////////LAAAAAAAAAAu////////RjD///////9QAAAAAAAAAFL///////8zEf7//////6MAAAAAAAAApP///////xsA1P///////TcAAAAAADf9///////7BQCE////////9moZABlq9v///////8IAABr5///////////0////////////egAAAHX///////////////////////8tAAAAAqP/////////////////////wQAAAAAAAXz1//////////////////9QAAAAAAAAABp4w+b669L1////////2QIAAAAAAAAAAAAAAAAAKfz///////9WAAAAAAAAAAAAAAAAAACu////////zgEAAAAAAAAAAAAAAAAAN/////////9HAAAAAAAAAAAAAAAAAAC/////////uwAAAAAAAAAAAAAAAAAAR/////////0wAAAAAAAAAAAAAAAAAAHO////////oAAAAAAAAAAAAAAAAAAAWP////////cdAAAAAAAAAAAAAAAAAAXb////////hgAAAAAAAAAAAAAAAAAAaf///////+sOAAAAAAAAAAAAAAAAAArn////////bAAAAAAAAAAAAAAAAAAAev///////9oFAAAAAAAAAAAAAAAAABLw////////UgAAAAAAAAAAAAAAAAAAiv///////8UAAAAAAAAAAAAAAAAAABz3////////OQAAAAAAAAAAAAAAAAAAm////////6sAAAAAAAAAAAAAAAAAACf8///////6JAAAAAAAAAAAAAAAIFJYAABYyPLNYwAAAGL//////2sAAeb//////+kBHf////////8dI/////////8kA/L///////QEAHr//////4IAAAF04P/kfwIAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAABo2P3dcwAAAG7//////3YAAuz//////+4CIP////////8gIf////////8hAu3///////ADAG3//////3YAAABgzPPQawAAC/VnAAAAAAAAACBSZ3puWykBAAAAAAAAAAAAAAZz1f/////////ofxIAAAAAAAAAMt7//////////////+U8AAAAAAA58f/////////////////3NgAAAA7j////////////////////5AsAAJH//////////////////////3kACvH///////+8VSxLmP7//////+QAWv///////6UDAAAAAF3///////8zlf///////B8AAAAAAADG//////9uyP//////twAAAAAAAACH//////+U5P//////hgAAAAAAAAAgS0tLS0sz8///////cQAAAAAAAAAAAAAAAAAA////////aAAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////ZwAAAAAAAAAAAAAAAAAA////////aAAAAAAAAAAAAAAAAAAA8///////cQAAAAAAAAAAAAAAAAAA5P//////hgAAAAAAAAAgS0tLS0szyf//////tgAAAAAAAACH//////+Ulf///////B8AAAAAAADF//////9uW////////6MDAAAAAF3///////8zC/L///////+7UyxKl/7//////+QBAJL//////////////////////3oAAA/k////////////////////5QsAAAA78v/////////////////3NwAAAAAANOD//////////////+Y+AAAAAAAAAAd11//////////pgRMAAAAAAAAAAAAAACJTaHtvXCsBAAAAAAAACAVlf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf/////////////////////////+zf///////7Ts7Ozs7Ozs7Ozs7Ozsqf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf/////////v7+/v7+/v7+/v7+4kAf////////////////////////4sAf////////////////////////4sAf////////////////////////4sAf////////////////////////4sAf////////////////////////4sAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAf///////5wAAAAAAAAAAAAAAAAAAB/WbAAAAAAAAAAAROVRwd2RHDgAAAAAAAAAAAAAABVKw+v////////y9SgAAAAAAAAAAI8z///////////////+qDgAAAAAATvH//////////////////8EFAAAAJfT/////////////////////hAAABMr///////////////////////MTAApx2//////mhkkzSIDs////////XQAAAAFJtf64EAAAAAAAH+3//////50AAAAAAAAkDAAAAAAAAACF//////+3AAAAAAAAAAAAAAAAAAAAV///////ygAAAAAAAAAABBQVAQAAAEv//////8sAAAAAA1Sm4f////riwXtn///////LAAAAPN3/////////////////////ywAAUvz//////////////////////8sAI/f////////////////////////LAKP///////WJMRAQMFOZ8v//////ywXz//////5IAAAAAAAAAE///////8sv///////OAAAAAAAAAABL///////LRP//////twAAAAAAAAAAdf//////yz3//////+oIAAAAAAAAUvr//////8sf////////rxcAAAAtn//////////LANz////////4zsLi////////////ywBv/////////////////////////8sAB8n////////////////64v/////LAAAXx//////////////5X7P/////ywAAAAVu3/////////q0LACz/////8sAAAAAAAAnXHB6ZEoQAAAAAAAAAAAABAXaAAAAAAAAAAAMRHBYAgAAAA9FbmUzAADL/////78AXuj///+jAAJ48P////+UAMv/////v3H///////8tof////////88y//////h+v///////8j//////////5XL////////////////////////////scv///////vE0v//////67bv///////Iy///////RQAD3f///9ULAEb//////8vL//////8LAACt////pwAAEf//////y8v//////wsAAKf///+nAAAL///////Ly///////CwAAp////6cAAAv//////8vL//////8LAACn////pwAAC///////y8v//////wsAAKf///+nAAAL///////Ly///////CwAAp////6cAAAv//////8vL//////8LAACn////pwAAC///////y8v//////wsAAKf///+nAAAL///////Ly///////CwAAp////6cAAAv//////8vL//////8LAACn////pwAAC///////y8v//////wsAAKf///+nAAAL///////Ly///////CwAAp////6cAAAv//////8vL//////8LAACn////pwAAC///////y8v//////wsAAKf///+nAAAL///////Ly///////CwAAp////6cAAAv//////8vL//////8LAACn////pwAAC///////y8v//////wsAAKf///+nAAAL///////Ly///////CwAAp////6cAAAv//////8vL//////8LAACn////pwAAC///////ywtlpAAAAAAAAAAAAAQ8YnhpTRIAAAAAAAB///////9nEIfw///////4pRgAAAAAf///////id7////////////nNAAAAH///////////////////////+MUAAB/////////////////////////nQAAf////////////dS37v////////kYAH//////////vi0AAAJ6////////cAB/////////pwQAAAAAAL7//////7MAf///////2QkAAAAAAABX///////uAH///////5cAAAAAAAAAF////////xB///////+XAAAAAAAAAADu//////8yf///////lwAAAAAAAAAA1P//////Qn///////5cAAAAAAAAAAMj//////0x///////+XAAAAAAAAAADC//////9Vf///////lwAAAAAAAAAAx///////TX///////5cAAAAAAAAAANL//////0J///////+XAAAAAAAAAADs//////8zf///////lwAAAAAAAAAU////////EX///////9EHAAAAAAAAUv//////7wB/////////oQIAAAAAALb//////7UAf/////////+zHwAAAG3///////9yAH////////////nCq+T////////6GwB/////////////////////////oAAAf///////////////////////5RYAAH///////73c////////////6jgAAAB///////+XEIfw///////5qRsAAAAAf///////lwAABjxoeWtPFAAAAAAAAH///////5cAAAAAAAAAAAAAAAAAAAB///////+XAAAAAAAAAAAAAAAAAAAAf///////lwAAAAAAAAAAAAAAAAAAAH///////5cAAAAAAAAAAAAAAAAAAAB///////+XAAAAAAAAAAAAAAAAAAAAf///////lwAAAAAAAAAAAAAAAAAAAH///////5cAAAAAAAAAAAAAAAAAAAB///////+XAAAAAAAAAAAAAAAAAAAAf///////lwAAAAAAAAAAAAAAAAAAABVj0AAAAAFWsuj56LFVAQAAAAAAFcL/////////vhIAAAAIzv///////////8kGAACD////n0oqS6L///95AAnw//9yAAAAAAB3///pBET//+AFAAAAAAAG4v//N3f//6QAAAAAAAAApv//aoz//4UAAAAAAAAAhv//f5D//4AAAAAAAAAAgf//g3z//58AAAAAAAAAov//b0///9gCAAAAAAAD2v//QhD4//9oAAAAAABt///zCACV////n1E1UaL///+KAAAR3P///////////9gNAAAAGrL/////////rhgAAAAAAABVptP006ZTAAAAAAA=",
       "lvglGlyphs": {
         "encodings": [],
         "symbols": " 0123456789.-°:CF"
@@ -2886,8 +3502,8 @@
       "descent": 5,
       "glyphs": [],
       "lvglRanges": "",
-      "lvglSymbols": " abcdefghijklmnopqrstuvwxyzàâäæçéèêëîïôœùûüÿßáíóúñöABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,:'",
-      "lvglBinFile": "MAAAAGhlYWQBAAAAAwASAA4A+/8OAPz/BAD7/w4ACQAQAAAAAAgFBQAAAAAAAAAAlAAAAGNtYXAFAAAAXAAAACAAAAANAAEAAwADAGQAAAAwAAAACwAEAAsAAgBkAAAAQQAAABoADwAaAAIAZAAAAGEAAAAaACkAGgACAGQAAADfAAAAdQBDABgAAwAAAAcADAAAAAAAAQACAAMABQAHAAgACQAKAAsADAAOAA8AEAASABQAFQAXABoAGwAcAB0AIAB0AMQAAABsb2NhWwAAAAgACAALAB0AOACWANoARQG9ATUCrQIlA50DFQSNBKgEIAWYBRAGiAbmBl4H1gdOCKwIFwmPCQcKfwr3Cm8L5wtxDOkMYQ3ZDVEOyQ5BD7kPMRCpEP0QdRHJEUESlRINE4UT/RNbFNUUTRWeFfIVRhaaFhIXihfVFxcYchjGGBoZbhnCGToajhoGG4cbCByJHAEdVR3WHVce2B5ZH9EfNiCpIBQhjCENIo4iBiOHIwgkiSQBJZ0lAAD0JQAAZ2x5ZgAAABoGVf/2df/2df/2df/2dBr0cBdIYAa4EsALf/VwDW/RIA9cYAFf99AAQ9HAAAgO0TnuL44p4TnP/92v3/m9j/XgBf/9fr/0QARP/r6/9DAEP/6+v/QwBD/+vr/0MAQ//r6/9DAEP/6+v/QwBD/+vr/0QARP/r2f9dAF7/2J3//dn9/5wUoOT55KAUAICtAAAAMrUAIKT+9yr4///3N/6z//ceNB//9wAAH//3AAAf//cAAB//9wAAH//3AAAf//cAAB//9wAAH//3AAAf//cAAQ0ACITe9MxYAACQ///7//9ZBPj/SAyb/8wYr6QAAEL/8QAAAAAAX//bAAAAAADF/5UAAAAAUP/7JwAAAATZ/5MAAAAAbP/vFAAAAA/r/3IAAAAAiP/pLiclAB/3/////+8ApP//////7wABLQAKhdz0zGUAAACj///7//94ABT+/0cIdf/yARJPTwEAFP//FgAAAAAATP/oAAAAAACy+fxTAAAAAADz//NCAAAAAAASiP/3BwAAAAAABv3/ORZnZgIAGf//PQ/9/2IEe//6EgCe///8//+JAAAKh9/10G4CAAABLQAAAAC8//8nAAAAAEX///8nAAAAAcz///8nAAAAVv/W//8nAAAE2vxP//8nAABn/5kj//8nAArl9Bgj//8nAHj/fgAj//8nAK//////////r6//////////rxsnJydG//9JGwAAAAAj//8nAAAAAAAj//8nAAABLQDD///////DAADQ///////DAADd/10nJyceAADr/y4AAAAAAAD4/xwAAAAAAAX//7r045YMABP////+//+pABfDuCoQhv//FwAAAAAADv//PRFLSgAAEf//MhD8/1sDff/3DACX///7//+EAAAGe9r10nEBAAABLQAAAACM//MZAAAAACP5/3YAAAAAAK7/2wYAAAAAP///SwAAAAABzv+2AAAAAABS///476oUAADP//rS+v/CAB7//1kAWv//Lk7/+wwADfv/VU7//hUAFv7/SSD+/3cCeP/8GwCc///7//+SAAAEe9T00XUCAAABLU//////////Wk/////////2DAwnJycn1/+qAAAAAAAn//9SAAAAAACF//IIAAAAAAHh/6EAAAAAAEL//0kAAAAAAKD/7AQAAAAAC/P/mAAAAAAAXf//QAAAAAAAvP/mAgAAAAAc/f+PAAAAAAB4//83AAAAAAABLQAIgNb11oAIAACf///9//+eAA///4UNhv//Div//x0AHf//Kwb5/08AUP/5BgB0//rC+v9yAABd/v////5cABL9/4EOgv/9EUf//hQAFf7/RVL//BAAEPz/USX//3MCdP//JACk///7//+jAAAGgNX11X8GAAABLQADeNL00nkDAACa///7//+bACH+/3QCdv/9IE///BEAEvz/TVL//RMAFP3/TSP+/4ANgf//HACY///////QAAABXp/E//9SAAAAAADB/80BAAAAAFX//z8AAAAACN//rQAAAAAAe//5IwAAAAAa9P+LAAAAAAGIaGPkZrz/vUOyRgAAAAAAAEGwRLz/vWbmaQABLQAAAMr/xAAAAAAACvr/+AcAAAAAQP///zsAAAAAe////3cAAAAAtv/w/7IAAAAB7/+Q/+wBAAAs//or//8pAABn/8oA7f9kAACi/5MAuv+gAADd///////bABj/////////F1P/8SQjN///Uo7/uwAAAOH/jQABLRf/////4Y8JABf//9zt//+PABf//zMDhP/vABf//zMAOv//DRf//zMAR//uABf//1Avvf+eABf///////EQABf//3Zev/+/ABf//zMAKP//IBf//zMAEv7/SBf//zMQjP//LRf///z+///LAhf////84aAbAAABLQADedH124AHAACR///7//+NABD6/3kFdf/zBDX//xcACFtbC0f//wgAAAAAAEf//wcAAAAAAEf//wcAAAAAAEf//wcAAAAAAEf//wgAAAAAADX//xYACFtbCxD6/3cFdP/0BACS///7//+OAAADe9P23YEHAAABLRf////93IkIABf///////+UABf//1Murf/6Bhf//zMAQf//JBf//zMAGf//Mxf//zMAF///Mxf//zMAF///Mxf//zMAF///Mxf//zMAGP//Mxf//zMAOv//JRf//1M2tv/7Bhf///////+YABf////93YwKAACA7cv//////9PL///////Ty/+XJycnIcv/gwAAAADL/4MAAAAAy/+LDw8PB8v//////3fL//////93y/+DAAAAAMv/gwAAAADL/5cnJychy///////08v//////9MAAS0X/////////ysX/////////ysX//9TJycnJwYX//8zAAAAAAAX//8zAAAAAAAX//9DExMTDwAX////////wwAX////////wwAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAAAS0AA3nR9dp7BQAAkf///P//hAAQ+v95Bn3/8AE1//8XAA17ew5H//8IAAAAAABH//8HAAAAAABH//8HZ///8wBH//8HV+X/8wBH//8IAFf/8wA2//8WAGL/8wAS/P9zCrD/8wAAof///P//8wAACpvp43/88wAAAS0P//87ADv//w8P//87ADv//w8P//87ADv//w8P//87ADv//w8P//87ADv//w8P/////////w8P/////////w8P//9dK13//w8P//87ADv//w8P//87ADv//w8P//87ADv//w8P//87ADv//w8P//87ADv//w8AgO2P//////+Pj///////jxYntf+1JxYAAKf/pwAAAACn/6cAAAAAp/+nAAAAAKf/pwAAAACn/6cAAAAAp/+nAAAAAKf/pwAAFie1/7UnFo///////4+P//////+PAIENAAAAd////y8AAAB3////LwAAAAMy//8vAAAAACv//y8AAAAAK///LwAAAAAr//8vAAAAACv//y8AAAAAK///LwAAAAAu//8rAAAAAFP//w8iJydB1v/cANv//////14A2///9spYAAAAAS0X//8zAD7/9xoX//8zALn/jAAX//8zNf/zFAAX//8zsf+DAAAX//9i/u4QAAAX///a/3kAAAAX/////2cAAAAX//+5/98EAAAX//9K9/9hAAAX//8zlv/cAwAX//8zIvz/XAAX//8zAKf/2AIX//8zADD//1gAAS0X//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//9TJycnJwQX/////////x8X/////////x8AAS1b//8mAAv2/1tb//9zAFb//1tb///BAKr//1tb///8HPT//1tb////r////1tb/9b////W/1tb/5rl/+uU/1tb/5eR/5iP/1tb/5c7/0KP/1tb/5cBzQOP/1tb/5cALACP/1tb/5cAAACP/1tb/5cAAACP/1sAAS0X//+7AAD3/xcX///9GAD3/xcX////bgD3/xcX////xwD3/xcX/////yH3/xcX//vy/3n3/xcX//eb/9L3/xcX//c4/////xcX//cA1v///xcX//cAdP///xcX//cAFvv//xcX//cAAK///xcX//cAAE3//xcAAS0AAnbS9NJ1AgAAi///+v//igAO+f94AXn/+A00//8XABj//zJH//8IAAj//0dH//8HAAf//0dH//8HAAf//0dH//8HAAf//0dH//8IAAj//0c0//8XABj//zMO+f94AXn/+Q0AjP//+v//iwAAA3fT9NN2AgAAAS0X////9spnAAAX////////hAAX//9TMqH/9xYX//8zAA3+/0cX//8zAADz/2YX//8zABT//1AX//9TM6z//SIX////////mwAX////9s92AwAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAX//8zAAAAAAAAeS8AAnPR9NFzAgAAh///+///hgAM9/97AXz/9wsx//8YABn//zBH//8IAAj//0dH//8HAAf//0dH//8HAAf//0dH//8HAAf//0dH//8IAAj//0cz//8XABj//ygO+f92AHf/9AIAjv//9///eAAAA3zW/P/AAAAAAAAAav/xCgAAAAAAE/r/YQAAAS0X////+9eBBwAX////////owAX//9aNqr//yEX//87ABj//00X//87AAv//00X//87AFD//iAX//+5r/b/ogAX///8//2ABgAX//+e//9HAAAX//8/2f/NAQAX//87WP//UwAX//87AdH/1wMX//87AE7//2AAAS0ACYHY9th8BQAAoP//+///fQAL/v9qBYH/2QAn//8rAA9XVAAF+P+xEAAAAAAAiv//62YBAAAABIT5//++DQAAAAAluf//sQAAAAAAAZb//xcYe3gDACf//zcN/f95DH3//hIAnf///f//mAAACone9dN5BQAAAS2D/////////4OD/////////4MUJye1/7UnJxQAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAS1f/+8AAADb/19f/+8AAADb/19f/+8AAADb/19f/+8AAADb/19f/+8AAADb/19f/+8AAADb/19f/+8AAADb/19f/+8AAADb/19f/+8AAADb/19S//sEAADt/1Ip//+HI33//ygAsv//////swAADYrb99yMDgAAAS2O/90AAAC7/41T//8TAAHw/1IY//9IACj//xgA3P99AF7/3AAAof+yAJX/oQAAZf/nAMv/ZgAAKv//JPr/KwAAAe3/iv/vAQAAALP/7P+1AAAAAHj///96AAAAADz///8/AAAAAAj5//oJAAAAAADF/8kAAAAAAS3S/4MAAAB8/9S2/5wAAACV/7ia/7QAOgCt/5t//80AwwDG/35j/+Yi/ynf/2FH//xq/273/0Qs///D/8P//ycQ////+f///wsA9P//n///7QAA2f//Lv//0AAAvf/fANz/swAAof+lAKT/lgAAhf9sAGz/eQAAAS1K//9NADT//0kD4/+rAIv/4wIAgv/4EeH/gQAAIP7/n//+IAAAALv///+6AAAAAFf///9WAAAAABH///8ZAAAAAF////9qAAAAAMH//f/KAAAAJP//kv//KwAAhv/sDPP/igAD5f+cAKj/5wNK//9JAFX//0sAAS2V//4cAA33/5cu//9yAFv//zEAyP/KALP/ygAAYf//M/n/YwAACvH/1P/xCwAAAJX///+VAAAAAC7///8vAAAAAADK/8kAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAACn/6cAAAAAAS1H/////////0VH////////2QELJycnQ/7/bQAAAAAAhP/0DgAAAAAH6v+WAAAAAABg//8rAAAAAADO/78AAAAAAD3//1MAAAAAAKv/5AQAAAAAHvz/ewAAAAAAiP/+PycnJwsJ7f///////0tk/////////0sAASkAAG+78OCZFAAAj////f//vAAAMKdPB2n//xYAAAAOEwX9/zMAWuH//+X+/zMo/P2EWX3+/zNX/+QEAEn+/zMl+v/r5f///zMATs712oTG/zMAAS0X//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAX//+D3u+0GQAX////5fL/yQAX//+AAS7//ykX//8XAADi/1AX//8XAADQ/2EX//8XAADd/1AX//9ZABn9/yoX///7t9f/ygAX//+U5PG2GgAAASkAAEe+7uyoHAAAYf7/+///3gkL6/+ABR6jbg04//IFAAAAAABW/9oAAAAAAAA3//MGAAAAAAAK6P+FBR6jbQ0AXP7/+///3wkAAES+7u6qHQAAAS0AAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAGbTv3oP//xcAyv/y5P///xcq//8rAXv//xdR/98AABf//xdi/88AABf//xdS/98AABf//xcr//8oAHf//xcAy//v4v///xcAGrfw3Xf//xcAASkAAFnJ89R2AgAAbf//8f//kQAM7/9eAEP/+xw5/+QCAADQ/0xW/////////2o8/+wyLy8vLxMP8f91DBmWYwsAcf//+///3goAAFjG8uylGwAAAS0AAABQ2Pv//1sAAA/z/////1sAADj//jgIBwIAAEf/6AAAAAAv///////zAAAv///////zAAABB03/6AcHAAAAAEf/5wAAAAAAAEf/5wAAAAAAAEf/5wAAAAAAAEf/5wAAAAAAAEf/5wAAAAAAAEf/5wAAAAAAcS0AG7bw2nT//x8AzP/y5v///x8r//4oAX///x9S/9gAABf//x9i/8gAABf//x9S/9gAABf//x8t//4oAYf//x8Azv/y5f///x8AHLjx3Xv//x8ABgAAACz//wwCzmAOA5P/3AA4/v/++v//WQAASrvo7cRMAAAAAS0X//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAX//+F2PXUSwAX////5/X/8RAX//+AAhb5/zwX//8XAADh/08X//8XAADf/08X//8XAADf/08X//8XAADf/08X//8XAADf/08X//8XAADf/08AgO0AAGTkYwAAAAC4/7cAAAAAOJ44AAAAAAAAAAAAW////6cAAFv///+nAAACB4v/pwAAAACH/6cAAAAAh/+nAAAAAIf/pwAAAgeL/6oHAlv//////1tb//////9bAPDxAAAAON+ZAAAAAHz/9QIAAAAcmFsAAAAAAAAAAADb////ywAA2////8sAAAoLa//LAAAAAGP/ywAAAABj/8sAAAAAY//LAAAAAGP/ywAAAABj/8sAAAAAY//LAAAAAGr/xwAUIye3/64Aj/////9mAI///+2WBgAAAS0X//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAX//8XAb7/gAAX//8XZ//OBQAX//818fktAAAX///L/3oAAAAX///3/38AAAAX//+D//ciAAAX//8b0/+1AAAX//8XQv//TwAX//8XAK7/4AoAgM0P/////w8P/////w8AByb//w8AAB///w8AAB///w8AAB///w8AAB///w8AAB///w8AAB///w8AAB///w8AAB///w8AAB///w8AAB///w8AASmP/5PA20rL2jCP//zq/+/1/32P/41P/02P/4+P/4dH/0eH/4+P/4dH/0eH/4+P/4dH/0eH/4+P/4dH/0eH/4+P/4dH/0eH/4+P/4dH/0eH/48AASkX//9y2PXUSwAX////5/X/8RAX//+AAhb5/zwX//8XAADh/08X//8XAADf/08X//8XAADf/08X//8XAADf/08X//8XAADf/08X//8XAADf/08AASkAAFfH8cdWAAAAZv///P//ZQAK6/94BXn/6go4//kLAAv5/zZW/9AAAADR/1U5//kKAAr5/zcL7P90A3X/6woAaf//+v//ZwAAAFnJ8slYAAAAcS0X//902u+0GQAX////5fL/yQAX//97ASv//ykX//8XAADg/1AX//8XAADQ/2EX//8XAADg/1AX//93ACn//yoX////4O//ygAX//+H4PC2GgAX//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAX//8XAAAAAAAAcS0AGbTv2nT//xcAyv/y5f///xcq//8qAXv//xdR/98AABf//xdi/88AABf//xdS/94AABf//xcr//8oAHf//xcAy//v4f///xcAGrfw4If//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAgQnn/zKz79lLAOf/6+30//IH5/+sBxfJWwLn/zQAAAAAAOf/KwAAAAAA5/8rAAAAAADn/ysAAAAAAOf/KwAAAAAA5/8rAAAAAAAAgOkHjOH323EAg//eoe3/U7X/cAA5Yzhu//ybKgAAAGro//6wDgAACW7x/59xm1MAY//Vef/ztOX/mgOB3vjhkw0AAQsAACP//w8AAAAAI///DwAAE////////wAR4+f//+XjAAAAI///DwAAAAAj//8PAAAAACP//w8AAAAAI///DwAAAAAh//9EDwwAAAj4////xwAAAGbn///HAAEpR//rAAAA1/9HR//rAAAA1/9HR//rAAAA1/9HR//rAAAA1/9HR//rAAAA1/9HQ//zAAAA4P9DGf//aA5c/v8aAKX//////6gAAAh92PbagwoAAAEpZ//wBQAAwf9mGP3/QgAQ+/4YAMX/jwBX/8UAAHP/3ACi/3QAACL//yvq/yMAAADR/67/0gAAAAB/////gQAAAAAu////MAAAAAAA3P/gAAAAAAEpt/+QADoAcf+9hf/CAK8Ao/+LU//zCfgj1f9YIf//Yv9n/f8lAO//z//Q//IBAL7///P//8AAAIz//4f//40AAFr/+RX6/1sAACj/wwDH/ygAAAEpBNv/XQBW/+AHAFf/2AXX/1kAAAHO/7H/ygEAAABH////PgAAAAAF7//pBAAAAABq//7/aAAAAArn/27/5goAAHv/xwC4/3oAEvD/TABC//ASAHEtZf/vAwAAv/9lGP7/OgAL+f8cAMj/gQBM/9EAAHn/yACS/4cAACv//RLZ/z0AAADd/3b/7wQAAACO//D/qQAAAABA////XgAAAAAE7v/+FgAAAAAAqP/KAAAAAAAAyf+AAAAAAAAX/v82AAAAAABh/+oCAAAAAAEpAOv//////9UDAOv//////0kAAAcHB6T/uwAAAAAAMf39LwAAAAAAv/+eAAAAAABP//UbAAAAAAXa/4gHBwcAAG////////sAEe3///////sAAAEtAAmF2vXVcAMAAJj///z//3UAAvb/gAqB/94AFv//IgAp//oBF///FwBT/9EAF///F4n1/WIAF///F8//7k4AF///Fwtm/vgXF///FwAA0v9ZF///FwAA0/9lF///GB93//9AF///J////8kBF///J/fTjw4AAAEuAAFhZzQAAAAAAAB4/9kDAAAAAAADxf9fAAAAAAAAI/TdBAAAAAAAAAAAAAAAAABvu/DgmRQAAI////3//7wAADCnTwdp//8WAAAADhMF/f8zAFrh///l/v8zKPz9hFl9/v8zV//kBABJ/v8zJfr/6+X///8zAE7O9dqExv8zAAEuAAAAAChnZwgAAAAAAL7/lwAAAAAAQP/cCwAAAAAAwv07AAAAAAAAAAAAAAAAAABvu/DgmRQAAI////3//7wAADCnTwdp//8WAAAADhMF/f8zAFrh///l/v8zKPz9hFl9/v8zV//kBABJ/v8zJfr/6+X///8zAE7O9dqExv8zAAEuAAAIfX9/FQAAAAB5//b/mAAAABfy7Cnh/CwAAJv/VAA+/boAAAAAAAAAAAAAAABvu/DgmRQAAI////3//7wAADCnTwdp//8WAAAADhMF/f8zAFrh///l/v8zKPz9hFl9/v8zV//kBABJ/v8zJfr/6+X///8zAE7O9dqExv8zAAEtAHjkUgA435YAAND/oAB8//IBAEWdLAAcmFoAAAAAAAAAAAAAAABvu/DgmRQAAI////3//7wAADCnTwdp//8WAAAADhMF/f8zAFrh///l/v8zKPz9hFl9/v8zV//kBABJ/v8zJfr/6+X///8zAE7O9dqExv8zAAEpAIvzzFbT7pEBTv/0///97/9TKJcXnv+JDvOjACg3fv9VAMvNVf7////////dq/xPof92Ly8q1PEBhv+ACoAsr//a+/T43v9DKtHvoiLD74oAAG0uAABHvu7sqBwAAGH+//v//94JC+v/gAUeo24NOP/yBQAAAAAAVv/aAAAAAAAAN//zBgAAAAAACuj/hQUeo20NAFz+//v//98JAABEvu7uqh0AAAAAJ7heAAAAAAAAXP+CAAAAAAAAjf82AAAAAAAAk+MBAAAAAAAAAAMAAAAAAAEuAAFhZzQAAAAAAAB4/9kDAAAAAAADxf9fAAAAAAAAI/TdBAAAAAAAAAAAAAAAAABZyfPUdgIAAG3///H//5EADO//XgBD//scOf/kAgAA0P9MVv////////9qPP/sMi8vLy8TD/H/dQwZlmMLAHH///v//94KAABYxvLspRsAAAEuAAAAAChnZwgAAAAAAL7/lwAAAAAAQP/cCwAAAAAAwv07AAAAAAAAAAAAAAAAAABZyfPUdgIAAG3///H//5EADO//XgBD//scOf/kAgAA0P9MVv////////9qPP/sMi8vLy8TD/H/dQwZlmMLAHH///v//94KAABYxvLspRsAAAEuAAAIfX9/FQAAAAB5//b/mAAAABfy7Cnh/CwAAJv/VAA+/boAAAAAAAAAAAAAAABZyfPUdgIAAG3///H//5EADO//XgBD//scOf/kAgAA0P9MVv////////9qPP/sMi8vLy8TD/H/dQwZlmMLAHH///v//94KAABYxvLspRsAAAEtAHjkUgA435YAAND/oAB8//IBAEWdLAAcmFoAAAAAAAAAAAAAAABZyfPUdgIAAG3///H//5EADO//XgBD//scOf/kAgAA0P9MVv////////9qPP/sMi8vLy8TD/H/dQwZlmMLAHH///v//94KAABYxvLspRsAAIDuAAAAMGdkAwAAAc//hAAAAFL/0AUAAAHR+S0AAAAAAAAAAABb////pwAAW////6cAAAIHi/+nAAAAAIf/pwAAAACH/6cAAAAAh/+nAAACB4v/qgcCW///////W1v//////1sAAQ4AACp/f3AAAAAAwP/2/0wAAFL/vD/92AUG3O8cAIb/bgAAAAAAAAAAAFv///+nAAAAW////6cAAAACB4v/pwAAAAAAh/+nAAAAAACH/6cAAAAAAIf/pwAAAAIHi/+qBwIAW///////WwBb//////9bAAENALDYJQBo5WAR/v9gALz/swBskhEAO542AAAAAAAAAAAAW////6cAAABb////pwAAAAIHi/+nAAAAAACH/6cAAAAAAIf/pwAAAAAAh/+nAAAAAgeL/6oHAgBb//////9bAFv//////1sAAS0evPLCfjkOUUZj9s70/////14wGAAGQISyegYAAAAAAAAAAAAX//9y2PXUSwAX////5/X/8RAX//+AAhb5/zwX//8XAADh/08X//8XAADf/08X//8XAADf/08X//8XAADf/08X//8XAADf/08X//8XAADf/08AAS4AAAAAMGdkAwAAAAABz/+EAAAAAABS/9AFAAAAAAHR+S0AAAAAAAAAAAAAAAAAAFfH8cdWAAAAZv///P//ZQAK6/94BXn/6go4//kLAAv5/zZW/9AAAADR/1U5//kKAAr5/zcL7P90A3X/6woAaf//+v//ZwAAAFnJ8slYAAAAAS4AAA5/f38MAAAAAIn/9v+EAAAAIfjkKev3HgAAq/5FAE//pgAAAAAAAAAAAAAAAFfH8cdWAAAAZv///P//ZQAK6/94BXn/6go4//kLAAv5/zZW/9AAAADR/1U5//kKAAr5/zcL7P90A3X/6woAaf//+v//ZwAAAFnJ8slYAAAAAS0AhuJFAEbihQAA4P+PAJD/4AAAT5skACWbTgAAAAAAAAAAAAAAAFfH8cdWAAAAZv///P//ZQAK6/94BXn/6go4//kLAAv5/zZW/9AAAADR/1U5//kKAAr5/zcL7P90A3X/6woAaf//+v//ZwAAAFnJ8slYAAAAAS4ABGVnLgAAAAAAAIn/zAAAAAAAAAfT/00AAAAAAAAx+s0AAAAAAAAAAAAAAABH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dD//MAAADg/0MZ//9oDlz+/xoApf//////qAAACH3Y9tqDCgAAAS4AAAAAMGdkAwAAAAABz/+EAAAAAABS/9AFAAAAAAHR+S0AAAAAAAAAAAAAAABH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dD//MAAADg/0MZ//9oDlz+/xoApf//////qAAACH3Y9tqDCgAAAS4AAA5/f38MAAAAAIn/9v+EAAAAIfjkKev3HgAAq/5FAE//pgAAAAAAAAAAAABH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dD//MAAADg/0MZ//9oDlz+/xoApf//////qAAACH3Y9tqDCgAAAS0AhuJFAEbihQAA4P+PAJD/4AAAT5skACWbTgAAAAAAAAAAAABH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dD//MAAADg/0MZ//9oDlz+/xoApf//////qAAACH3Y9tqDCgAAcTEAhuJFAEbihQAA4P+PAJD/4AAAT5skACWbTgAAAAAAAAAAAABl/+8DAAC//2UY/v86AAv5/xwAyP+BAEz/0QAAef/IAJL/hwAAK//9Etn/PQAAAN3/dv/vBAAAAI7/8P+pAAAAAED///9eAAAAAATu//4WAAAAAACo/8oAAAAAAADJ/4AAAAAAABf+/zYAAAAAAGH/6gIAAAAAASkAduqpKsjukQEl/9vt8/LL/1Jz/ytm/3sE7qKQ+wE4/1QAysOi8gAv/////9aX/AI7/3YvLyp+/zFu/4AKgCw2/+f09Pje/0MAiu2oJMPvigAAAAAA==",
+      "lvglSymbols": " abcdefghijklmnopqrstuvwxyzàâäæçéèêëîïôœùûüÿßáíóúñöABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,:'+-°",
+      "lvglBinFile": "MAAAAGhlYWQBAAAAAwASAA4A+/8OAPz/BAD7/w4ACQAQAAAAAAgFBQAAAAAAAAAAnAAAAGNtYXAFAAAAXAAAACAAAAAOAAEABQADAGgAAAAwAAAACwAGAAsAAgBoAAAAQQAAABoAEQAaAAIAaAAAAGEAAAAaACsAGgACAGgAAACwAAAApABFABkAAwAAAAcACwAMAA0AAAAAAC8AMAAxADIANAA2ADcAOAA5ADoAOwA9AD4APwBBAEMARABGAEkASgBLAEwATwCjAAAAyAAAAGxvY2FeAAAACAAIAAsAHQBoAIMAlADyADYBoQEZApECCQOBA/kDcQTpBAQFfAX0BWwG5AZCB7oHMgiqCAgJcwnrCWMK2wpTC8sLQwzNDEUNvQ01Dq0OJQ+dDxUQjRAFEVkR0RElEp0S8RJpE+ETWRS3FDEVqRX6FU4Wohb2Fm4X5hcxGHMYzhgiGXYZyhkeGpYa6hoXG48bEByRHBIdih3eHV8e4B5hH+IfWiC/IDIhnSEVIpYiFyOPIxAkkSQSJYolJiZ8JgAAZ2x5ZgAAABoGVf/2df/2df/2df/2dBr0cACSgAAAAx4zEAAAAAAAA3/zcAAAAOGxtN/00bGw6D/////////4MnS0tz/3NLSycAAAA3/zcAAAAAAAA3/zcAAAAAAAA3/zcAAAABdIYAa4EsALf/VwDW/RIA9cYAFf99AAQ9HAAAmOJD4+Pj4+M8S///////QwCA7ROe4vjinhOc//3a/f+b2P9eAF//1+v/RABE/+vr/0MAQ//r6/9DAEP/6+v/QwBD/+vr/0MAQ//r6/9DAEP/6+v/RABE/+vZ/10AXv/Ynf/92f3/nBSg5PnkoBQAgK0AAAAytQAgpP73Kvj///c3/rP/9x40H//3AAAf//cAAB//9wAAH//3AAAf//cAAB//9wAAH//3AAAf//cAAB//9wABDQAIhN70zFgAAJD///v//1kE+P9IDJv/zBivpAAAQv/xAAAAAABf/9sAAAAAAMX/lQAAAABQ//snAAAABNn/kwAAAABs/+8UAAAAD+v/cgAAAACI/+kuJyUAH/f/////7wCk///////vAAEtAAqF3PTMZQAAAKP///v//3gAFP7/Rwh1//IBEk9PAQAU//8WAAAAAABM/+gAAAAAALL5/FMAAAAAAPP/80IAAAAAABKI//cHAAAAAAAG/f85FmdmAgAZ//89D/3/YgR7//oSAJ7///z//4kAAAqH3/XQbgIAAAEtAAAAALz//ycAAAAARf///ycAAAABzP///ycAAABW/9b//ycAAATa/E///ycAAGf/mSP//ycACuX0GCP//ycAeP9+ACP//ycAr/////////+vr/////////+vGycnJ0b//0kbAAAAACP//ycAAAAAACP//ycAAAEtAMP//////8MAAND//////8MAAN3/XScnJx4AAOv/LgAAAAAAAPj/HAAAAAAABf//uvTjlgwAE/////7//6kAF8O4KhCG//8XAAAAAAAO//89EUtKAAAR//8yEPz/WwN9//cMAJf///v//4QAAAZ72vXScQEAAAEtAAAAAIz/8xkAAAAAI/n/dgAAAAAArv/bBgAAAAA///9LAAAAAAHO/7YAAAAAAFL///jvqhQAAM//+tL6/8IAHv//WQBa//8uTv/7DAAN+/9VTv/+FQAW/v9JIP7/dwJ4//wbAJz///v//5IAAAR71PTRdQIAAAEtT/////////9aT/////////YMDCcnJyfX/6oAAAAAACf//1IAAAAAAIX/8ggAAAAAAeH/oQAAAAAAQv//SQAAAAAAoP/sBAAAAAAL8/+YAAAAAABd//9AAAAAAAC8/+YCAAAAABz9/48AAAAAAHj//zcAAAAAAAEtAAiA1vXWgAgAAJ////3//54AD///hQ2G//8OK///HQAd//8rBvn/TwBQ//kGAHT/+sL6/3IAAF3+/////lwAEv3/gQ6C//0RR//+FAAV/v9FUv/8EAAQ/P9RJf//cwJ0//8kAKT///v//6MAAAaA1fXVfwYAAAEtAAN40vTSeQMAAJr///v//5sAIf7/dAJ2//0gT//8EQAS/P9NUv/9EwAU/f9NI/7/gA2B//8cAJj//////9AAAAFen8T//1IAAAAAAMH/zQEAAAAAVf//PwAAAAAI3/+tAAAAAAB7//kjAAAAABr0/4sAAAAAAYhoY+RmvP+9Q7JGAAAAAAAAQbBEvP+9ZuZpAAEtAAAAyv/EAAAAAAAK+v/4BwAAAABA////OwAAAAB7////dwAAAAC2//D/sgAAAAHv/5D/7AEAACz/+iv//ykAAGf/ygDt/2QAAKL/kwC6/6AAAN3//////9sAGP////////8XU//xJCM3//9Sjv+7AAAA4f+NAAEtF//////hjwkAF///3O3//48AF///MwOE/+8AF///MwA6//8NF///MwBH/+4AF///UC+9/54AF///////8RAAF///dl6//78AF///MwAo//8gF///MwAS/v9IF///MxCM//8tF////P7//8sCF/////zhoBsAAAEtAAN50fXbgAcAAJH///v//40AEPr/eQV1//MENf//FwAIW1sLR///CAAAAAAAR///BwAAAAAAR///BwAAAAAAR///BwAAAAAAR///CAAAAAAANf//FgAIW1sLEPr/dwV0//QEAJL///v//44AAAN70/bdgQcAAAEtF/////3ciQgAF////////5QAF///Uy6t//oGF///MwBB//8kF///MwAZ//8zF///MwAX//8zF///MwAX//8zF///MwAX//8zF///MwAY//8zF///MwA6//8lF///Uza2//sGF////////5gAF/////3djAoAAIDty///////08v//////9PL/5cnJychy/+DAAAAAMv/gwAAAADL/4sPDw8Hy///////d8v//////3fL/4MAAAAAy/+DAAAAAMv/lycnJyHL///////Ty///////0wABLRf/////////Kxf/////////Kxf//1MnJycnBhf//zMAAAAAABf//zMAAAAAABf//0MTExMPABf////////DABf////////DABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAAAABLQADedH12nsFAACR///8//+EABD6/3kGff/wATX//xcADXt7Dkf//wgAAAAAAEf//wcAAAAAAEf//wdn///zAEf//wdX5f/zAEf//wgAV//zADb//xYAYv/zABL8/3MKsP/zAACh///8///zAAAKm+njf/zzAAABLQ///zsAO///Dw///zsAO///Dw///zsAO///Dw///zsAO///Dw///zsAO///Dw//////////Dw//////////Dw///10rXf//Dw///zsAO///Dw///zsAO///Dw///zsAO///Dw///zsAO///Dw///zsAO///DwCA7Y///////4+P//////+PFie1/7UnFgAAp/+nAAAAAKf/pwAAAACn/6cAAAAAp/+nAAAAAKf/pwAAAACn/6cAAAAAp/+nAAAWJ7X/tScWj///////j4///////48AgQ0AAAB3////LwAAAHf///8vAAAAAzL//y8AAAAAK///LwAAAAAr//8vAAAAACv//y8AAAAAK///LwAAAAAr//8vAAAAAC7//ysAAAAAU///DyInJ0HW/9wA2///////XgDb///2ylgAAAABLRf//zMAPv/3Ghf//zMAuf+MABf//zM1//MUABf//zOx/4MAABf//2L+7hAAABf//9r/eQAAABf/////ZwAAABf//7n/3wQAABf//0r3/2EAABf//zOW/9wDABf//zMi/P9cABf//zMAp//YAhf//zMAMP//WAABLRf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//1MnJycnBBf/////////Hxf/////////HwABLVv//yYAC/b/W1v//3MAVv//W1v//8EAqv//W1v///wc9P//W1v///+v////W1v/1v///9b/W1v/muX/65T/W1v/l5H/mI//W1v/lzv/Qo//W1v/lwHNA4//W1v/lwAsAI//W1v/lwAAAI//W1v/lwAAAI//WwABLRf//7sAAPf/Fxf///0YAPf/Fxf///9uAPf/Fxf////HAPf/Fxf/////Iff/Fxf/+/L/eff/Fxf/95v/0vf/Fxf/9zj/////Fxf/9wDW////Fxf/9wB0////Fxf/9wAW+///Fxf/9wAAr///Fxf/9wAATf//FwABLQACdtL00nUCAACL///6//+KAA75/3gBef/4DTT//xcAGP//Mkf//wgACP//R0f//wcAB///R0f//wcAB///R0f//wcAB///R0f//wgACP//RzT//xcAGP//Mw75/3gBef/5DQCM///6//+LAAADd9P003YCAAABLRf////2ymcAABf///////+EABf//1Myof/3Fhf//zMADf7/Rxf//zMAAPP/Zhf//zMAFP//UBf//1MzrP/9Ihf///////+bABf////2z3YDABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAABf//zMAAAAAAAB5LwACc9H00XMCAACH///7//+GAAz3/3sBfP/3CzH//xgAGf//MEf//wgACP//R0f//wcAB///R0f//wcAB///R0f//wcAB///R0f//wgACP//RzP//xcAGP//KA75/3YAd//0AgCO///3//94AAADfNb8/8AAAAAAAABq//EKAAAAAAAT+v9hAAABLRf////714EHABf///////+jABf//1o2qv//IRf//zsAGP//TRf//zsAC///TRf//zsAUP/+IBf//7mv9v+iABf///z//YAGABf//57//0cAABf//z/Z/80BABf//ztY//9TABf//zsB0f/XAxf//zsATv//YAABLQAJgdj22HwFAACg///7//99AAv+/2oFgf/ZACf//ysAD1dUAAX4/7EQAAAAAACK///rZgEAAAAEhPn//74NAAAAACW5//+xAAAAAAABlv//Fxh7eAMAJ///Nw39/3kMff/+EgCd///9//+YAAAKid7103kFAAABLYP/////////g4P/////////gxQnJ7X/tScnFAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAABLV//7wAAANv/X1//7wAAANv/X1//7wAAANv/X1//7wAAANv/X1//7wAAANv/X1//7wAAANv/X1//7wAAANv/X1//7wAAANv/X1//7wAAANv/X1L/+wQAAO3/Uin//4cjff//KACy//////+zAAANitv33IwOAAABLY7/3QAAALv/jVP//xMAAfD/Uhj//0gAKP//GADc/30AXv/cAACh/7IAlf+hAABl/+cAy/9mAAAq//8k+v8rAAAB7f+K/+8BAAAAs//s/7UAAAAAeP///3oAAAAAPP///z8AAAAACPn/+gkAAAAAAMX/yQAAAAABLdL/gwAAAHz/1Lb/nAAAAJX/uJr/tAA6AK3/m3//zQDDAMb/fmP/5iL/Kd//YUf//Gr/bvf/RCz//8P/w///JxD////5////CwD0//+f///tAADZ//8u///QAAC9/98A3P+zAACh/6UApP+WAACF/2wAbP95AAABLUr//00ANP//SQPj/6sAi//jAgCC//gR4f+BAAAg/v+f//4gAAAAu////7oAAAAAV////1YAAAAAEf///xkAAAAAX////2oAAAAAwf/9/8oAAAAk//+S//8rAACG/+wM8/+KAAPl/5wAqP/nA0r//0kAVf//SwABLZX//hwADff/ly7//3IAW///MQDI/8oAs//KAABh//8z+f9jAAAK8f/U//ELAAAAlf///5UAAAAALv///y8AAAAAAMr/yQAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAAAAKf/pwAAAAABLUf/////////RUf////////ZAQsnJydD/v9tAAAAAACE//QOAAAAAAfq/5YAAAAAAGD//ysAAAAAAM7/vwAAAAAAPf//UwAAAAAAq//kBAAAAAAe/P97AAAAAACI//4/JycnCwnt////////S2T/////////SwABKQAAb7vw4JkUAACP///9//+8AAAwp08Haf//FgAAAA4TBf3/MwBa4f//5f7/Myj8/YRZff7/M1f/5AQASf7/MyX6/+vl////MwBOzvXahMb/MwABLRf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//4Pe77QZABf////l8v/JABf//4ABLv//KRf//xcAAOL/UBf//xcAAND/YRf//xcAAN3/UBf//1kAGf3/Khf///u31//KABf//5Tk8bYaAAABKQAAR77u7KgcAABh/v/7///eCQvr/4AFHqNuDTj/8gUAAAAAAFb/2gAAAAAAADf/8wYAAAAAAAro/4UFHqNtDQBc/v/7///fCQAARL7u7qodAAABLQAAAAAAF///FwAAAAAAF///FwAAAAAAF///FwAAAAAAF///FwAZtO/eg///FwDK//Lk////Fyr//ysBe///F1H/3wAAF///F2L/zwAAF///F1L/3wAAF///Fyv//ygAd///FwDL/+/i////FwAat/Ddd///FwABKQAAWcnz1HYCAABt///x//+RAAzv/14AQ//7HDn/5AIAAND/TFb/////////ajz/7DIvLy8vEw/x/3UMGZZjCwBx///7///eCgAAWMby7KUbAAABLQAAAFDY+///WwAAD/P/////WwAAOP/+OAgHAgAAR//oAAAAAC////////MAAC////////MAAAEHTf/oBwcAAAAAR//nAAAAAAAAR//nAAAAAAAAR//nAAAAAAAAR//nAAAAAAAAR//nAAAAAAAAR//nAAAAAABxLQAbtvDadP//HwDM//Lm////Hyv//igBf///H1L/2AAAF///H2L/yAAAF///H1L/2AAAF///Hy3//igBh///HwDO//Ll////HwAcuPHde///HwAGAAAALP//DALOYA4Dk//cADj+//76//9ZAABKu+jtxEwAAAABLRf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//4XY9dRLABf////n9f/xEBf//4ACFvn/PBf//xcAAOH/Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//TwCA7QAAZORjAAAAALj/twAAAAA4njgAAAAAAAAAAABb////pwAAW////6cAAAIHi/+nAAAAAIf/pwAAAACH/6cAAAAAh/+nAAACB4v/qgcCW///////W1v//////1sA8PEAAAA435kAAAAAfP/1AgAAAByYWwAAAAAAAAAAANv////LAADb////ywAACgtr/8sAAAAAY//LAAAAAGP/ywAAAABj/8sAAAAAY//LAAAAAGP/ywAAAABj/8sAAAAAav/HABQjJ7f/rgCP/////2YAj///7ZYGAAABLRf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcBvv+AABf//xdn/84FABf//zXx+S0AABf//8v/egAAABf///f/fwAAABf//4P/9yIAABf//xvT/7UAABf//xdC//9PABf//xcArv/gCgCAzQ//////Dw//////DwAHJv//DwAAH///DwAAH///DwAAH///DwAAH///DwAAH///DwAAH///DwAAH///DwAAH///DwAAH///DwAAH///DwABKY//k8DbSsvaMI///Or/7/X/fY//jU//TY//j4//h0f/R4f/j4//h0f/R4f/j4//h0f/R4f/j4//h0f/R4f/j4//h0f/R4f/j4//h0f/R4f/jwABKRf//3LY9dRLABf////n9f/xEBf//4ACFvn/PBf//xcAAOH/Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//TwABKQAAV8fxx1YAAABm///8//9lAArr/3gFef/qCjj/+QsAC/n/Nlb/0AAAANH/VTn/+QoACvn/Nwvs/3QDdf/rCgBp///6//9nAAAAWcnyyVgAAABxLRf//3Ta77QZABf////l8v/JABf//3sBK///KRf//xcAAOD/UBf//xcAAND/YRf//xcAAOD/UBf//3cAKf//Khf////g7//KABf//4fg8LYaABf//xcAAAAAABf//xcAAAAAABf//xcAAAAAABf//xcAAAAAAABxLQAZtO/adP//FwDK//Ll////Fyr//yoBe///F1H/3wAAF///F2L/zwAAF///F1L/3gAAF///Fyv//ygAd///FwDL/+/h////FwAat/Dgh///FwAAAAAAF///FwAAAAAAF///FwAAAAAAF///FwAAAAAAF///FwCBCef/MrPv2UsA5//r7fT/8gfn/6wHF8lbAuf/NAAAAAAA5/8rAAAAAADn/ysAAAAAAOf/KwAAAAAA5/8rAAAAAADn/ysAAAAAAACA6QeM4ffbcQCD/96h7f9Ttf9wADljOG7//JsqAAAAauj//rAOAAAJbvH/n3GbUwBj/9V5//O05f+aA4He+OGTDQABCwAAI///DwAAAAAj//8PAAAT////////ABHj5///5eMAAAAj//8PAAAAACP//w8AAAAAI///DwAAAAAj//8PAAAAACH//0QPDAAACPj////HAAAAZuf//8cAASlH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dH/+sAAADX/0dD//MAAADg/0MZ//9oDlz+/xoApf//////qAAACH3Y9tqDCgAAASln//AFAADB/2YY/f9CABD7/hgAxf+PAFf/xQAAc//cAKL/dAAAIv//K+r/IwAAANH/rv/SAAAAAH////+BAAAAAC7///8wAAAAAADc/+AAAAAAASm3/5AAOgBx/72F/8IArwCj/4tT//MJ+CPV/1gh//9i/2f9/yUA7//P/9D/8gEAvv//8///wAAAjP//h///jQAAWv/5Ffr/WwAAKP/DAMf/KAAAASkE2/9dAFb/4AcAV//YBdf/WQAAAc7/sf/KAQAAAEf///8+AAAAAAXv/+kEAAAAAGr//v9oAAAACuf/bv/mCgAAe//HALj/egAS8P9MAEL/8BIAcS1l/+8DAAC//2UY/v86AAv5/xwAyP+BAEz/0QAAef/IAJL/hwAAK//9Etn/PQAAAN3/dv/vBAAAAI7/8P+pAAAAAED///9eAAAAAATu//4WAAAAAACo/8oAAAAAAADJ/4AAAAAAABf+/zYAAAAAAGH/6gIAAAAAASkA6///////1QMA6///////SQAABwcHpP+7AAAAAAAx/f0vAAAAAAC//54AAAAAAE//9RsAAAAABdr/iAcHBwAAb///////+wAR7f//////+wAAnOYAJbbktiIAAMqZNZvCAAX+IgAj+QEA4nEIctkAAEfr/upDAAAAAxoDAAAAAS0ACYXa9dVwAwAAmP///P//dQAC9v+ACoH/3gAW//8iACn/+gEX//8XAFP/0QAX//8XifX9YgAX//8Xz//uTgAX//8XC2b++BcX//8XAADS/1kX//8XAADT/2UX//8YH3f//0AX//8n////yQEX//8n99OPDgAAAS4AAWFnNAAAAAAAAHj/2QMAAAAAAAPF/18AAAAAAAAj9N0EAAAAAAAAAAAAAAAAAG+78OCZFAAAj////f//vAAAMKdPB2n//xYAAAAOEwX9/zMAWuH//+X+/zMo/P2EWX3+/zNX/+QEAEn+/zMl+v/r5f///zMATs712oTG/zMAAS4AAAAAKGdnCAAAAAAAvv+XAAAAAABA/9wLAAAAAADC/TsAAAAAAAAAAAAAAAAAAG+78OCZFAAAj////f//vAAAMKdPB2n//xYAAAAOEwX9/zMAWuH//+X+/zMo/P2EWX3+/zNX/+QEAEn+/zMl+v/r5f///zMATs712oTG/zMAAS4AAAh9f38VAAAAAHn/9v+YAAAAF/LsKeH8LAAAm/9UAD79ugAAAAAAAAAAAAAAAG+78OCZFAAAj////f//vAAAMKdPB2n//xYAAAAOEwX9/zMAWuH//+X+/zMo/P2EWX3+/zNX/+QEAEn+/zMl+v/r5f///zMATs712oTG/zMAAS0AeORSADjflgAA0P+gAHz/8gEARZ0sAByYWgAAAAAAAAAAAAAAAG+78OCZFAAAj////f//vAAAMKdPB2n//xYAAAAOEwX9/zMAWuH//+X+/zMo/P2EWX3+/zNX/+QEAEn+/zMl+v/r5f///zMATs712oTG/zMAASkAi/PMVtPukQFO//T///3v/1Molxee/4kO86MAKDd+/1UAy81V/v///////92r/E+h/3YvLyrU8QGG/4AKgCyv/9r79Pje/0Mq0e+iIsPvigAAbS4AAEe+7uyoHAAAYf7/+///3gkL6/+ABR6jbg04//IFAAAAAABW/9oAAAAAAAA3//MGAAAAAAAK6P+FBR6jbQ0AXP7/+///3wkAAES+7u6qHQAAAAAnuF4AAAAAAABc/4IAAAAAAACN/zYAAAAAAACT4wEAAAAAAAAAAwAAAAAAAS4AAWFnNAAAAAAAAHj/2QMAAAAAAAPF/18AAAAAAAAj9N0EAAAAAAAAAAAAAAAAAFnJ89R2AgAAbf//8f//kQAM7/9eAEP/+xw5/+QCAADQ/0xW/////////2o8/+wyLy8vLxMP8f91DBmWYwsAcf//+///3goAAFjG8uylGwAAAS4AAAAAKGdnCAAAAAAAvv+XAAAAAABA/9wLAAAAAADC/TsAAAAAAAAAAAAAAAAAAFnJ89R2AgAAbf//8f//kQAM7/9eAEP/+xw5/+QCAADQ/0xW/////////2o8/+wyLy8vLxMP8f91DBmWYwsAcf//+///3goAAFjG8uylGwAAAS4AAAh9f38VAAAAAHn/9v+YAAAAF/LsKeH8LAAAm/9UAD79ugAAAAAAAAAAAAAAAFnJ89R2AgAAbf//8f//kQAM7/9eAEP/+xw5/+QCAADQ/0xW/////////2o8/+wyLy8vLxMP8f91DBmWYwsAcf//+///3goAAFjG8uylGwAAAS0AeORSADjflgAA0P+gAHz/8gEARZ0sAByYWgAAAAAAAAAAAAAAAFnJ89R2AgAAbf//8f//kQAM7/9eAEP/+xw5/+QCAADQ/0xW/////////2o8/+wyLy8vLxMP8f91DBmWYwsAcf//+///3goAAFjG8uylGwAAgO4AAAAwZ2QDAAABz/+EAAAAUv/QBQAAAdH5LQAAAAAAAAAAAFv///+nAABb////pwAAAgeL/6cAAAAAh/+nAAAAAIf/pwAAAACH/6cAAAIHi/+qBwJb//////9bW///////WwABDgAAKn9/cAAAAADA//b/TAAAUv+8P/3YBQbc7xwAhv9uAAAAAAAAAAAAW////6cAAABb////pwAAAAIHi/+nAAAAAACH/6cAAAAAAIf/pwAAAAAAh/+nAAAAAgeL/6oHAgBb//////9bAFv//////1sAAQ0AsNglAGjlYBH+/2AAvP+zAGySEQA7njYAAAAAAAAAAABb////pwAAAFv///+nAAAAAgeL/6cAAAAAAIf/pwAAAAAAh/+nAAAAAACH/6cAAAACB4v/qgcCAFv//////1sAW///////WwABLR688sJ+OQ5RRmP2zvT/////XjAYAAZAhLJ6BgAAAAAAAAAAABf//3LY9dRLABf////n9f/xEBf//4ACFvn/PBf//xcAAOH/Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//Txf//xcAAN//TwABLgAAAAAwZ2QDAAAAAAHP/4QAAAAAAFL/0AUAAAAAAdH5LQAAAAAAAAAAAAAAAAAAV8fxx1YAAABm///8//9lAArr/3gFef/qCjj/+QsAC/n/Nlb/0AAAANH/VTn/+QoACvn/Nwvs/3QDdf/rCgBp///6//9nAAAAWcnyyVgAAAABLgAADn9/fwwAAAAAif/2/4QAAAAh+OQp6/ceAACr/kUAT/+mAAAAAAAAAAAAAAAAV8fxx1YAAABm///8//9lAArr/3gFef/qCjj/+QsAC/n/Nlb/0AAAANH/VTn/+QoACvn/Nwvs/3QDdf/rCgBp///6//9nAAAAWcnyyVgAAAABLQCG4kUARuKFAADg/48AkP/gAABPmyQAJZtOAAAAAAAAAAAAAAAAV8fxx1YAAABm///8//9lAArr/3gFef/qCjj/+QsAC/n/Nlb/0AAAANH/VTn/+QoACvn/Nwvs/3QDdf/rCgBp///6//9nAAAAWcnyyVgAAAABLgAEZWcuAAAAAAAAif/MAAAAAAAAB9P/TQAAAAAAADH6zQAAAAAAAAAAAAAAAEf/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0P/8wAAAOD/Qxn//2gOXP7/GgCl//////+oAAAIfdj22oMKAAABLgAAAAAwZ2QDAAAAAAHP/4QAAAAAAFL/0AUAAAAAAdH5LQAAAAAAAAAAAAAAAEf/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0P/8wAAAOD/Qxn//2gOXP7/GgCl//////+oAAAIfdj22oMKAAABLgAADn9/fwwAAAAAif/2/4QAAAAh+OQp6/ceAACr/kUAT/+mAAAAAAAAAAAAAEf/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0P/8wAAAOD/Qxn//2gOXP7/GgCl//////+oAAAIfdj22oMKAAABLQCG4kUARuKFAADg/48AkP/gAABPmyQAJZtOAAAAAAAAAAAAAEf/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0f/6wAAANf/R0P/8wAAAOD/Qxn//2gOXP7/GgCl//////+oAAAIfdj22oMKAABxMQCG4kUARuKFAADg/48AkP/gAABPmyQAJZtOAAAAAAAAAAAAAGX/7wMAAL//ZRj+/zoAC/n/HADI/4EATP/RAAB5/8gAkv+HAAAr//0S2f89AAAA3f92/+8EAAAAjv/w/6kAAAAAQP///14AAAAABO7//hYAAAAAAKj/ygAAAAAAAMn/gAAAAAAAF/7/NgAAAAAAYf/qAgAAAAABKQB26qkqyO6RASX/2+3z8sv/UnP/K2b/ewTuopD7ATj/VADKw6LyAC//////1pf8Ajv/di8vKn7/MW7/gAqALDb/5/T0+N7/QwCK7agkw++KAAAAA=",
       "lvglGlyphs": {
         "encodings": [],
         "symbols": " abcdefghijklmnopqrstuvwxyzàâäæçéèêëîïôœùûüÿßáíóúñö"
@@ -2910,8 +3526,8 @@
       "descent": 4,
       "glyphs": [],
       "lvglRanges": "",
-      "lvglSymbols": " abcdefghijklmnopqrstuvwxyzàâäæçéèêëîïôœùûüÿßáíóúñöABCDEFGHIJKLMNOPQRSTUVWXYZ-°.'0123456789",
-      "lvglBinFile": "MAAAAGhlYWQBAAAAAwAQAAwA/P8MAPz/AwD8/wwACAAQAAAAAAgEBAAAAAAAAAAAmAAAAGNtYXAFAAAAXAAAACAAAAAPAAEABAADAGQAAAAwAAAACgAFAAoAAgBkAAAAQQAAABoADwAaAAIAZAAAAGEAAAAaACkAGgACAGQAAACwAAAApABDABkAAwAAAAcADQAOAAAALwAwADEAMgA0ADYANwA4ADkAOgA7AD0APgA/AEEAQwBEAEYASQBKAEsATABPAKMAAADEAAAAbG9jYVwAAAAIAAgACgAWACQAMgCMAMoAJAF+AdgBMgKMAuYCQAOaA/QDTgSoBAIFRgWgBfoFVAaYBucGQQebB/UHTwipCAMJbQnHCSEKewrVCi8LiQvjCz0MlwzZDDMNdQ3PDREOaw7FDh8PYw+5DxMQTBCOENAQEhFsEcYRCBJCEooSzBIOE1ATkhPsEy4UThSoFAoVbBXOFSgWahbMFi4XkBfyF0wYlhjsGDsZlRn3GVkasxoVG3cb2RszHKUc6BwAAGdseWYAADYlx8vHy8fLx8siIxViVa+vr69Se/////93IEMAQkUAFf3+FQTHygQAiwA5x/LxxzkAANn/vb3/2AAG/vICA/L+Bgv/4wAA4/8LC//jAADj/wsL/+MAAOP/Cwv/4wAA4/8LC//jAADj/wsG/vICA/L+BgDa/7y9/9kAADvJ8vLIOgAQXAAAACMmABSQ+k9E8f//T2vw1P9PLhSP/08AAI//TwAAj/9PAACP/08AAI//TwAAj/9PAACP/08AAI//TwCLACa28eSbEgAD1f/X7v+vACr/twAO+PwIDS8cAAby/goAAAAASf/KAAAAAALM/1IAAAAAZf+5AAAAABHr+CQAAAAAk/+BAAAAAC38/+/r6w4AwP//////DwCLADO88eitJAAP7P/V4P/dBiiXcgAA1/8rAAAAD0rx6wYAAABn//9GAAAAACKV/uIMAAAAAAC+/0ALIxYAALL/WjL/0gQJ7f8zA9T/5eL/wgAAIrPw5Z4SAACLAAAAPv//XwAAAADI//9fAAAAVP/9/18AAAXa5Lr/XwAAa/9er/9fAAzpzQGv/18AgP8/AK//XwC7////////u63r6+v5//OtAAAAAK//XwAAAAAAr/9fAACLAOj/////4wAA9/7r6+vSAAf/1gAAAAAAF//Wma93BgAm//////+tAC3Xoxg09/8lAAAAAAC7/04LIxYAALf/TS7/0QMO7P8lAcn/4+X/tAAAGqjs5p0NAACLAAAAIPf9NwAAAACv/40AAAAARf/dCgAAAAXX/0IAAAAAa//++NA9AAjm/9DQ/+4QPf/ZAADa/1Jo/6oAAKr/aU3/5AsM5P9GCd7/7O3/1AQAIrDr6akaAACLY////////2Rc6+vr8f/4EAAAAAB5/6sAAAAAAdz/TgAAAABB/+wFAAAAAKX/lQAAAAAR9/84AAAAAG3/2wAAAAAA0f9/AAAAADX//yMAAAAAmf/FAAAAAACLADe87u68NwAT7//h4f/vEkH/1gAA1v9AFPbySUry9hMAaf////9pABTs/oCA/uwTS//MAADN/0po/6oAAKv/aEX/5wcH5/9EA9X/39//1AMAG6rp6aoaAACLACu07OmuIQAR5//n5//dCVb/0gMD0/9NZP+9AAC9/2cl+v6wsf7/PABT1/j8/+cIAAAAHff/agAAAACg/9YFAAAALv3/RQAAAAC3/60AAAAAQv/3IAAAAACLAAAr//8mAAAAAGn//2UAAAAAp///owAAAADl3vPiAAAAI/+lwf8gAABi/2+M/18AAKD/OFj/nQAA3v/m6v/cABz///////8bWv+YAAC9/1mY/20AAI//mACLM/////W/KgAz//Ck3P/VATP/1wAH7/8dM//XAADe/x4z/9oRWf3ZADP//////0QAM//hQXn55xEz/9cAALr/SjP/1wAJ4f9UM//2xPH/9Rwz////8shGAACLACCu6O6yIgAE1//r5f/SATr/3wcCy+skWP+zAAAAAABb/68AAAAAAFv/rwAAAAAAW/+vAAAAAABY/7MAAAAAADr/3gcCx+ckBNf/6+T/1AEAIbDq77QkAACLM/////C6KQAz//zr/v/ZBDP/1wAr+/8tM//XAADL/0kz/9cAAL//SzP/1wAAv/9LM//XAAC//0sz/9cAAMb/SjP/1wAl+P8vM//86/7/3QYz////8b0tABBr6//////z6//u6+vg6/8fAAAA6/8fAAAA6//c19eK6/////+j6/8fAAAA6/8fAAAA6/8fAAAA6//u6+vg6//////zAIsz////////QzP//Ovr6+s+M//XAAAAAAAz/9cAAAAAADP/+dfX18AAM///////4wAz/9cAAAAAADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAAAIsAIK7o77YoAATX/+vg/9wCOv/fBwCkvyBY/7MAAAAAAFv/rwCXo6MMW/+vAOv//xNb/68AAPf/E1n/swAB+v8TPP/eBS7//xMG4P/m8P//EwAvyPPAxf8TAIsr/98AAN//Kyv/3wAA3/8rK//fAADf/ysr/98AAN//Kyv//evr/f8rK////////ysr/98AAN//Kyv/3wAA3/8rK//fAADf/ysr/98AAN//Kyv/3wAA3/8rEGu3/////7ep7P//7KkAB///BwAAB///BwAAB///BwAAB///BwAAB///BwAAB///BwAAB///BwCp7P//7Km3/////7cQewAAAPf//0cAAADJ9v9HAAAAAM//RwAAAADP/0cAAAAAz/9HAAAAAM//RwAAAADP/0cAAAAA2/88AAABTf3/Gejr8v//rgD7///jmg4AAIsz/9cACOX7JjP/1wBv/5YAM//XCefzFwAz/9dz/38AADP/4uroDAAAM//+/80AAAAz/9nU/04AADP/11j/0AEAM//XAtf/VQAz/9cAXP/WAjP/1wAD2/9dAIsz/9cAAAAAADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAAM//XAAAAAAAz//zr6+vrMzP///////83AItr/9MAALT/a2v//yUR+v9ra///dmP//2tr///Hu///a2v/5v785v9ra/+O//+N/2tr/07k6kj/a2v/S4yTQ/9ra/9LMThD/2tr/0sAAEP/a2v/SwAAQ/9rAIsz//9ZAKP/MzP//7cAo/8zM////Bij/zMz////caP/MzP/9v/Oo/8zM/+u8P/P/zMz/6OU////MzP/oy3///8zM/+jAMb//zMz/6MAX///MzP/owAJ7v8zAIsAHqzq6aweAATT/+rq/9MDOP/fBwfg/zdY/7MAALP/WFv/rwAAr/9bW/+vAACv/1tb/68AAK//W1j/swAAs/9YOP/eBwff/zcE1f/p6v/UBAAfrurqrh8AAIsz////5akgADP//O3//90JM//XACHm/1Mz/9cAAK3/dTP/1wAk6/9aM//86f//6RIz////6LMsADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAADo0AHKvq6ascAALQ/+vr/88CNv/hCAji/zVX/7QAALT/Vlv/rwAAr/9bW/+vAACv/1tb/68AAK//W1j/swAAtP9VOP/fBgbg/ycE1v/n6P/LAQAhsu7/9hQAAAAAAun/MQAAAAAAmf+NAACLM////+yyJwAz//3x///gCzP/3wAt6v9KM//fAAC4/2Yz/98AAuv/RDP/8Y3S/80CM//3/v+kEgAz/9+k/7oAADP/3x/3/0kAM//fAIj/1QMz/98AD+v/ZwCLACq07O2wHwAJ4f/Y5v/DADj/3wEE1eYJKv/rFAAAAAABxv/nXwEAAAAUoP7/yiQAAAAAM8//3AoAAAAACuX/Pzj/0wME4f8+Bt3/6eX/3QkAKrnw6a8lAACLj////////4+E6+z//+zrhAAAB///BwAAAAAH//8HAAAAAAf//wcAAAAAB///BwAAAAAH//8HAAAAAAf//wcAAAAAB///BwAAAAAH//8HAAAAAAf//wcAAACLb/+bAACL/29v/5sAAIv/b2//mwAAi/9vb/+bAACL/29v/5sAAIv/b2//mwAAi/9vb/+bAACL/29v/58AAI//blH/1QwKyv9PEur/9fT/6hIAMbru77wyAACLmf+RAABz/5da/8YAAKj/WRv/9wQA3v8cAN3/MBX/3QAAnv9lSv+fAABg/5qA/2EAACH/z7b/IgAAAOP77uUAAAAApP//pgAAAABm//9oAAAAACf//yoAAACL1f87AAA1/9e4/1UBAlD/uZv/bzI4av+afv+Je4CF/3xh/6PEyJ//XUT/zvz9zv8/J///+fb//yAK///FwP/9BQDt/4iE/+MAAND/S0n/xQAAsv0QEP2mAACLVP/vCADd/1IF5/9ZO//mBACE/7qY/4IAAB/9/fL8HQAAALT//7EAAAAAav//bgAAAAC6///BAAAAIv7y9v8nAACH/6Kr/4sABej/SlP/6gZU/+4FCfL/VQCLmv/JAAC2/5wv//8nFvv/MQDC/4Nt/8QAAFf/38r/WAAABeb//+YFAAAAf///fwAAAAAc//8cAAAAAAf//wcAAAAAB///BwAAAAAH//8HAAAAAAf//wcAAACLW////////01U6+vr9v/aAgAAAADD/2kAAAAAOP/tCgAAAACt/4UAAAAAJP36GgAAAACW/6EAAAAAFPb/MAAAAACA/70AAAAACev/9evr61hp////////XwCIABOe2fHANQACvP/U2f/pDQAELAQAxf89AGfh/vDq/0s2/9tYVdf/S2j/kQAJzv9LOv/0r+D//0sAbt/ywJ3/SwCLM/+/AAAAAAAz/78AAAAAADP/vwAAAAAAM//WtfLRQwAz///crP/zDDP/3QwAs/9QM/+/AACG/2wz/78AAIP/azP/0wMApv9RM///vIP58wwz/9XH9dJEAACIAAeI2O60RAAArf/lzPz6JC3/5wsAOzgAXf+jAAAAAABb/6YAAAAAACr/6Q4APTsBAKb/6M/8+SQABYTY77ZEAACLAAAAAAC//zMAAAAAAL//MwAAAAAAv/8zAETR8rXW/zMM8/+r2///M1L/sAAL2/8zbf+EAAC//zNt/4MAAL//M1L/rwAK3P8zDPP+qtv//zMARdPyt8r/MwCIAAyV4u6yJgAAtv/b0//hDDD/swAAnv9TXP/27+/1/3he/5cfHx8fDzL/2AoAUlMDALj/5dD9+CIAC5Te7bVAAACLAAAPtvT//2sAAHX/+NPPVwAAk/9rAAAAR///////KwA6z+v/4c8jAAAAk/9fAAAAAACT/18AAAAAAJP/XwAAAAAAk/9fAAAAAACT/18AAAAAAJP/XwAAAA2LAEfS8bXI/zcN9P6r3f//N1L/rQAM3v83bf+AAAC//zdt/4AAAL//N1P/rgAQ4P83DfX/rt///zcAR9Tyr9X/NABEAQAG5f8TPv/hv+v/rwADes/13ZAPAACLM/+/AAAAAAAz/78AAAAAADP/vwAAAAAAM//WtPDnegAz///ervr/LTP/3QsAsP9aM/+/AACP/2Mz/78AAI//YzP/vwAAj/9jM/+/AACP/2Mz/78AAI//YxBrAAPExAIAABL8/BIAAAA4NwAAi////wcAcc/7/wcAAADn/wcAAADn/wcAAADn/wcAAADn/wcAcc/7/9Fxi/////+LHW4AAACs0wwAAALw/ycAAAAsQgAX/////wsT09P7/wsAAADn/wsAAADn/wsAAADn/wsAAADn/wsAAADn/wsAAADn/wsAABH7+gKm5/X/yQC3//3SNAAAizP/vwAAAAAAM/+/AAAAAAAz/78AAAAAADP/vwBg/6AAM/+/GO7kEAAz/8Cu/0gAADP/9P/BAAAAM//W8v0zAAAz/792/8kCADP/vwbb/2YAM/+/AE7/7RQQW0P///9jN8/q/2MAAI//YwAAj/9jAACP/2MAAI//YwAAj/9jAACP/2MAAI//YwAAj/9jAACP/2MAiJv/jeN5t+VEm//J7vHG/5Gb/z+xr0H/m5v/P6+vP/+bm/8/r68//5ub/z+vrz//m5v/P6+vP/+bm/8/r68//5sAiDP/yLPw53oAM///3q76/y4z/90LALD/WjP/vwAAj/9jM/+/AACP/2Mz/78AAI//YzP/vwAAj/9jM/+/AACP/2MAiAAJlOTjlAkAAK//4OD/rgAs/98JCd//K1z/lQAAlv9bXP+VAACW/1ss/94ICN7/KwCw/97f/68AAAmV5OSVCQANizP/yLXx0UMAM///3Kv/8wwz/9wLALH/UDP/vwAAhf9sM/+/AACF/2sz/9sKALD/UTP//9qq//MMM//XuPPSRAAz/78AAAAAADP/vwAAAAAAM/+/AAAAAAANiwBE0fG1yP8zDPP/q9z//zNS/7AAC9z/M23/hAAAv/8zbf+DAAC//zNS/68ACtv/Mwzz/qra//8zAEXT87jX/zMAAAAAAL//MwAAAAAAv/8zAAAAAAC//zMAiAf/v27e7XoAB//56bD6/hwH//YeAForAAf/zwAAAAAAB//PAAAAAAAH/88AAAAAAAf/zwAAAAAAB//PAAAAAAAQeCO48e6pEAC6/4eh/5UAz/1EBB8YAFD2/8NUAAAAHJb4/4kASlMIKvvvALX/r5b/0gAdsu/xvCsAAHoAAHP/fwAAAABz/38AAC///////zcgr9T/168mAABz/38AAAAAc/9/AAAAAHP/fwAAAABz/4sAAAAAXf/82MMAAAy9+f/nAIhb/5cAAIf/W1v/lwAAh/9bW/+XAACH/1tb/5cAAIf/W1v/mQAAif9bQf/dBAPS/0AK3P/r6f/eCgAjruvusiYAAIh0/6UAAHb/ciP/7gQAwf8jANL/PxD70QAAgf+MWP+BAAAw/9mj/zAAAADe//bgAAAAAI7//48AAAAAPP//PwAAAIi//0gPKi3/wYz/fEdmX/+OWv+vgaCR/1sn/+K828P/KALy//f/+PMCAML/2t3/wgAAkP+anv+PAABd/1tf/1wAAIgN6/MSD+7uEQBw/4KD/3AAAAfh8PPbBgAAAGL//1YAAAAAf///fgAAABTy5NXyFAAAj/9vYP+OAB746woG5PgeDYtv/6QAAHX/cB3/7AIAwP8jAMr/OQ/71AAAd/+EVf+GAAAl/8+g/zgAAADS//DpAgAAAID//50AAAAALv//TwAAAAAM/PcKAAAAAFb/swAAAAAAp/9mAAAAAIgL///////lCgnPz8/8/2EAAAAAQ//RAgAAAALQ/0YAAAAAY/+3AAAAAAzn/CwAAAAAg//3z8/PFh32//////8bF2UAXOPjWgAU7y0u7xE5xgAAxzUX8Ckq8BQAYuXlYAAAiwAptu7stSkAA9z/5d3/2wAm/+kEAN7/FTP/wAdD9eYAM/+/Q///TwAz/78Uf/PsEzP/vwAAk/9gM/+/AAB+/3gz/78AFMb/XTP/v2v7/+sOM/+/f+WzKAAAjAAQ4/4tAAAAAABG/q0AAAAAAACV/i8AAAAAAAEHAwAAABOe2fHANQACvP/U2f/pDQAELAQAxf89AGfh/vDq/0s2/9tYVdf/S2j/kQAJzv9LOv/0r+D//0sAbt/ywJ3/SwCMAAAAGffyIQAAAACS/2MAAAAAG/i0AAAAAAACBwIAAAAAE57Z8cA1AAK8/9TZ/+kNAAQsBADF/z0AZ+H+8Or/Szb/21hV1/9LaP+RAAnO/0s6//Sv4P//SwBu3/LAnf9LAIwAAIv//6YAAAAn+rur/z4AALjrGQ/e0QMAAAAAAAAAAAATntnxwDUAArz/1Nn/6Q0ABCwEAMX/PQBn4f7w6v9LNv/bWFXX/0to/5EACc7/Szr/9K/g//9LAG7f8sCd/0sAiwCk1hMEx8ECAOr/MhX9+g8AKUUAADk2AAATntnxwDUAArz/1Nn/6Q0ABCwEAMX/PQBn4f7w6v9LNv/bWFXX/0to/5EACc7/Szr/9K/g//9LAG7f8sCd/0sAiAup7pyi874Ua/y7//7C+oMANBLlyACjxVv//v377/jasdo458YfHxzatgDh3ABaH7r1s/7/s/1lOeHkXozurgUMjAAHiNjutEQAAK3/5cz8+iQt/+cLADs4AF3/owAAAAAAW/+mAAAAAAAq/+kOAD07AQCm/+jP/PkkAAWE2O+2RAAAAACDogkAAAAAAMzYAAAAAAAF+IwAAAAAAAhxMAAAAACMABDj/i0AAAAAAEb+rQAAAAAAAJX+LwAAAAAAAQcDAAAADJXi7rImAAC2/9vT/+EMMP+zAACe/1Nc//bv7/X/eF7/lx8fHx8PMv/YCgBSUwMAuP/l0P34IgALlN7ttUAAAIwAAAAZ9/IhAAAAAJL/YwAAAAAb+LQAAAAAAAIHAgAAAAAMleLusiYAALb/29P/4Qww/7MAAJ7/U1z/9u/v9f94Xv+XHx8fHw8y/9gKAFJTAwC4/+XQ/fgiAAuU3u21QAAAjAAAi///pgAAACf6u6v/PgAAuOsZD97RAwAAAAAAAAAAAAyV4u6yJgAAtv/b0//hDDD/swAAnv9TXP/27+/1/3he/5cfHx8fDzL/2AoAUlMDALj/5dD9+CIAC5Te7bVAAACLAKTWEwTHwQIA6v8yFf36DwApRQAAOTYAAAyV4u6yJgAAtv/b0//hDDD/swAAnv9TXP/27+/1/3he/5cfHx8fDzL/2AoAUlMDALj/5dD9+CIAC5Te7bVAABBsAAAk/OsXAACi/1IAACb8oQAAAAMHAgAAi////wcAcc/7/wcAAADn/wcAAADn/wcAAADn/wcAAADn/wcAcc/7/9Fxi/////+LAHwAAcn//2UAAGL/idzrEA/pwQI0+ZAAAAAAAAAAAIv///8HAABxz/v/BwAAAADn/wcAAAAA5/8HAAAAAOf/BwAAAADn/wcAAHHP+//RcQCL/////4sAewrQswAk3Ysj//QGS//PAD8vAANLIACL////BwAAcc/7/wcAAAAA5/8HAAAAAOf/BwAAAADn/wcAAAAA5/8HAABxz/v/0XEAi/////+LAItN0/XWs5a7Y2e+mrfZ9dRMAAAAAAAAAAAz/8iz8Od6ADP//96u+v8uM//dCwCw/1oz/78AAI//YzP/vwAAj/9jM/+/AACP/2Mz/78AAI//YzP/vwAAj/9jAIwAAAAk/OsXAAAAAKL/UgAAAAAm/KEAAAAAAAMHAgAAAAAJlOTjlAkAAK//4OD/rgAs/98JCd//K1z/lQAAlv9bXP+VAACW/1ss/94ICN7/KwCw/97f/68AAAmV5OSVCQAAjAAAm///lgAAADT9rLn9MAABx+IRFufDAAAAAAAAAAAAAAmU5OOUCQAAr//g4P+uACz/3wkJ3/8rXP+VAACW/1tc/5UAAJb/Wyz/3ggI3v8rALD/3t//rwAACZXk5JUJAACLALPQCgrQswAG9P8iI//0BgAwPwAAPy8AAAmU5OOUCQAAr//g4P+uACz/3wkJ3/8rXP+VAACW/1tc/5UAAJb/Wyz/3ggI3v8rALD/3t//rwAACZXk5JUJAACMABrt+iEAAAAAAFf/nQAAAAAAAKb7IwAAAAAAAgcDAABb/5cAAIf/W1v/lwAAh/9bW/+XAACH/1tb/5cAAIf/W1v/mQAAif9bQf/dBAPS/0AK3P/r6f/eCgAjruvusiYAAIwAAAAk/OsXAAAAAKL/UgAAAAAm/KEAAAAAAAMHAgAAAFv/lwAAh/9bW/+XAACH/1tb/5cAAIf/W1v/lwAAh/9bW/+ZAACJ/1tB/90EA9L/QArc/+vp/94KACOu6+6yJgAAjAAAm///lgAAADT9rLn9MAABx+IRFufDAAAAAAAAAAAAW/+XAACH/1tb/5cAAIf/W1v/lwAAh/9bW/+XAACH/1tb/5kAAIn/W0H/3QQD0v9ACtz/6+n/3goAI67r7rImAACLALPQCgrQswAG9P8iI//0BgAwPwAAPy8AW/+XAACH/1tb/5cAAIf/W1v/lwAAh/9bW/+XAACH/1tb/5kAAIn/W0H/3QQD0v9ACtz/6+n/3goAI67r7rImAA2OALPQCgrQswAG9P8iI//0BgAwPwAAPy8Ab/+kAAB1/3Ad/+wCAMD/IwDK/zkP+9QAAHf/hFX/hgAAJf/PoP84AAAA0v/w6QIAAACA//+dAAAAAC7//08AAAAADPz3CgAAAABW/7MAAAAAAKf/ZgAAAACIA6PnZITwvhRN/574/J7yg5DcALnEAJ/Fp8AAnfvv+NqrwQCexh8fHJfgAL7cAFofW/+x+/+z/WUHs+dji+6uBQA=",
+      "lvglSymbols": " abcdefghijklmnopqrstuvwxyzàâäæçéèêëîïôœùûüÿßáíóúñöABCDEFGHIJKLMNOPQRSTUVWXYZ-°.'/|0123456789",
+      "lvglBinFile": "MAAAAGhlYWQBAAAAAwAQAA0A/P8MAPz/AwD8/w0ACAAQAAAAAAgEBQAAAAAAAAAAlAAAAGNtYXAFAAAAXAAAACAAAAAIAAEAAgADAGAAAAAtAAAADQADAA0AAgBgAAAAQQAAABoAEAAaAAIAYAAAAGEAAAAaACoAGgACAGAAAAB8AAAA2ABEABoAAwAAAAcAAAA0AGMAZABlAGYAaABqAGsAbABtAG4AbwBxAHIAcwB1AHcAeAB6AH0AfgB/AIAAgwDXAMgAAABsb2NhXgAAAAgACAALABgAJwA2ALEADAFLAaYBAQJcArcCEgNtA8gDIwR+BNkENAWPBdQFLwaKBuUGKgd6B9UHMAiLCOYIQQmcCQcKYgq9ChgLcwvOCykMhAzfDDoNfQ3YDRsOdg65DhQPbw/KDw8QZhDBEPsQPhGBEcQRHxJ6Er0S+BJBE4QTxxMKFE0UqBTrFA4VLxWKFe0VUBazFg4XURe0FxcYehjdGDgZgxnaGSoahRroGksbphsJHGwczxwqHZ0d4B0AAGdseWYAAAA2EXHy8fLx8vHyyIjAFTCVa+vr69Se/////93AICDAEJFABX9/hUEx8oEADUPAAAAAAAAxqkAAAAAADH/PQAAAAAAndIAAAAAABL2ZgAAAAAAdO8LAAAAAALejgAAAAAATP4lAAAAAAC4twAAAAAAJf5LAAAAAACP3gIAAAAAC/BzAAAAAABn9hIAAAAAANKcAAAAAAA+/zEAAAAAAKrFAAAAAAAAAAELADnH8vHHOQAA2f+9vf/YAAb+8gID8v4GC//jAADj/wsL/+MAAOP/Cwv/4wAA4/8LC//jAADj/wsL/+MAAOP/Cwb+8gID8v4GANr/vL3/2QAAO8ny8sg6AABArAAAACMmABSQ+k9E8f//T2vw1P9PLhSP/08AAI//TwAAj/9PAACP/08AAI//TwAAj/9PAACP/08AAI//TwABCwAmtvHkmxIAA9X/1+7/rwAq/7cADvj8CA0vHAAG8v4KAAAAAEn/ygAAAAACzP9SAAAAAGX/uQAAAAAR6/gkAAAAAJP/gQAAAAAt/P/v6+sOAMD//////w8AAQsAM7zx6K0kAA/s/9Xg/90GKJdyAADX/ysAAAAPSvHrBgAAAGf//0YAAAAAIpX+4gwAAAAAAL7/QAsjFgAAsv9aMv/SBAnt/zMD1P/l4v/CAAAis/DlnhIAAAELAAAAPv//XwAAAADI//9fAAAAVP/9/18AAAXa5Lr/XwAAa/9er/9fAAzpzQGv/18AgP8/AK//XwC7////////u63r6+v5//OtAAAAAK//XwAAAAAAr/9fAAABCwDo/////+MAAPf+6+vr0gAH/9YAAAAAABf/1pmvdwYAJv//////rQAt16MYNPf/JQAAAAAAu/9OCyMWAAC3/00u/9EDDuz/JQHJ/+Pl/7QAABqo7OadDQAAAQsAAAAg9/03AAAAAK//jQAAAABF/90KAAAABdf/QgAAAABr//740D0ACOb/0ND/7hA9/9kAANr/Umj/qgAAqv9pTf/kCwzk/0YJ3v/s7f/UBAAisOvpqRoAAAELY////////2Rc6+vr8f/4EAAAAAB5/6sAAAAAAdz/TgAAAABB/+wFAAAAAKX/lQAAAAAR9/84AAAAAG3/2wAAAAAA0f9/AAAAADX//yMAAAAAmf/FAAAAAAABCwA3vO7uvDcAE+//4eH/7xJB/9YAANb/QBT28klK8vYTAGn/////aQAU7P6AgP7sE0v/zAAAzf9KaP+qAACr/2hF/+cHB+f/RAPV/9/f/9QDABuq6emqGgAAAQsAK7Ts6a4hABHn/+fn/90JVv/SAwPT/01k/70AAL3/ZyX6/rCx/v88AFPX+Pz/5wgAAAAd9/9qAAAAAKD/1gUAAAAu/f9FAAAAALf/rQAAAABC//cgAAAAAAELAAAr//8mAAAAAGn//2UAAAAAp///owAAAADl3vPiAAAAI/+lwf8gAABi/2+M/18AAKD/OFj/nQAA3v/m6v/cABz///////8bWv+YAAC9/1mY/20AAI//mAABCzP////1vyoAM//wpNz/1QEz/9cAB+//HTP/1wAA3v8eM//aEVn92QAz//////9EADP/4UF5+ecRM//XAAC6/0oz/9cACeH/VDP/9sTx//UcM/////LIRgAAAQsAIK7o7rIiAATX/+vl/9IBOv/fBwLL6yRY/7MAAAAAAFv/rwAAAAAAW/+vAAAAAABb/68AAAAAAFj/swAAAAAAOv/eBwLH5yQE1//r5P/UAQAhsOrvtCQAAAELM/////C6KQAz//zr/v/ZBDP/1wAr+/8tM//XAADL/0kz/9cAAL//SzP/1wAAv/9LM//XAAC//0sz/9cAAMb/SjP/1wAl+P8vM//86/7/3QYz////8b0tAABAy+v/////8+v/7uvr4Ov/HwAAAOv/HwAAAOv/3NfXiuv/////o+v/HwAAAOv/HwAAAOv/HwAAAOv/7uvr4Ov/////8wABCzP///////9DM//86+vr6z4z/9cAAAAAADP/1wAAAAAAM//519fXwAAz///////jADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAAM//XAAAAAAAAAQsAIK7o77YoAATX/+vg/9wCOv/fBwCkvyBY/7MAAAAAAFv/rwCXo6MMW/+vAOv//xNb/68AAPf/E1n/swAB+v8TPP/eBS7//xMG4P/m8P//EwAvyPPAxf8TAAELK//fAADf/ysr/98AAN//Kyv/3wAA3/8rK//fAADf/ysr//3r6/3/Kyv///////8rK//fAADf/ysr/98AAN//Kyv/3wAA3/8rK//fAADf/ysr/98AAN//KwBAy7f/////t6ns///sqQAH//8HAAAH//8HAAAH//8HAAAH//8HAAAH//8HAAAH//8HAAAH//8HAKns///sqbf/////twBA6wAAAPf//0cAAADJ9v9HAAAAAM//RwAAAADP/0cAAAAAz/9HAAAAAM//RwAAAADP/0cAAAAA2/88AAABTf3/Gejr8v//rgD7///jmg4AAAELM//XAAjl+yYz/9cAb/+WADP/1wnn8xcAM//Xc/9/AAAz/+Lq6AwAADP//v/NAAAAM//Z1P9OAAAz/9dY/9ABADP/1wLX/1UAM//XAFz/1gIz/9cAA9v/XQABCzP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP//Ovr6+szM////////zcAAQtr/9MAALT/a2v//yUR+v9ra///dmP//2tr///Hu///a2v/5v785v9ra/+O//+N/2tr/07k6kj/a2v/S4yTQ/9ra/9LMThD/2tr/0sAAEP/a2v/SwAAQ/9rAAELM///WQCj/zMz//+3AKP/MzP///wYo/8zM////3Gj/zMz//b/zqP/MzP/rvD/z/8zM/+jlP///zMz/6Mt////MzP/owDG//8zM/+jAF///zMz/6MACe7/MwABCwAerOrprB4ABNP/6ur/0wM4/98HB+D/N1j/swAAs/9YW/+vAACv/1tb/68AAK//W1v/rwAAr/9bWP+zAACz/1g4/94HB9//NwTV/+nq/9QEAB+u6uquHwAAAQsz////5akgADP//O3//90JM//XACHm/1Mz/9cAAK3/dTP/1wAk6/9aM//86f//6RIz////6LMsADP/1wAAAAAAM//XAAAAAAAz/9cAAAAAADP/1wAAAAAAADkNAByr6umrHAAC0P/r6//PAjb/4QgI4v81V/+0AAC0/1Zb/68AAK//W1v/rwAAr/9bW/+vAACv/1tY/7MAALT/VTj/3wYG4P8nBNb/5+j/ywEAIbLu//YUAAAAAALp/zEAAAAAAJn/jQAAAQsz////7LInADP//fH//+ALM//fAC3q/0oz/98AALj/ZjP/3wAC6/9EM//xjdL/zQIz//f+/6QSADP/36T/ugAAM//fH/f/SQAz/98AiP/VAzP/3wAP6/9nAAELACq07O2wHwAJ4f/Y5v/DADj/3wEE1eYJKv/rFAAAAAABxv/nXwEAAAAUoP7/yiQAAAAAM8//3AoAAAAACuX/Pzj/0wME4f8+Bt3/6eX/3QkAKrnw6a8lAAABC4////////+PhOvs///s64QAAAf//wcAAAAAB///BwAAAAAH//8HAAAAAAf//wcAAAAAB///BwAAAAAH//8HAAAAAAf//wcAAAAAB///BwAAAAAH//8HAAAAAQtv/5sAAIv/b2//mwAAi/9vb/+bAACL/29v/5sAAIv/b2//mwAAi/9vb/+bAACL/29v/5sAAIv/b2//nwAAj/9uUf/VDArK/08S6v/19P/qEgAxuu7vvDIAAAELmf+RAABz/5da/8YAAKj/WRv/9wQA3v8cAN3/MBX/3QAAnv9lSv+fAABg/5qA/2EAACH/z7b/IgAAAOP77uUAAAAApP//pgAAAABm//9oAAAAACf//yoAAAABC9X/OwAANf/XuP9VAQJQ/7mb/28yOGr/mn7/iXuAhf98Yf+jxMif/11E/878/c7/Pyf///n2//8gCv//xcD//QUA7f+IhP/jAADQ/0tJ/8UAALL9EBD9pgAAAQtU/+8IAN3/UgXn/1k7/+YEAIT/upj/ggAAH/398vwdAAAAtP//sQAAAABq//9uAAAAALr//8EAAAAi/vL2/ycAAIf/oqv/iwAF6P9KU//qBlT/7gUJ8v9VA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",
       "lvglGlyphs": {
         "encodings": [
           {
@@ -2949,6 +3565,15 @@
       "objID": "6eb60bc6-dcf4-400d-f51b-8fcbad03b4ff",
       "name": "clear-day_50",
       "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+oBBQoGFUeljX0AACAASURBVGgFAUInvdgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqVQAC+r4jkPq+I5CqVQACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADzuSYnCAb+2AAAAAD4+gIoDUfa2QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA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AAAAAAAAAAAAAAD0uyIsBwQC0wAAAAD5/P4tDEXe1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFKsj9gAAB01JREFUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//gT7AAAAAAAAAAD//gT7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAx+e3vKDQREAAAAMm0mtynq9YA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB/svepuYgTyQAAAABJRU5ErkJggg==",
+      "bpp": 32,
+      "alwaysBuild": false,
+      "lvglBinaryOutputFormat": 3,
+      "lvglDither": false
+    },
+    {
+      "objID": "83c94824-2057-4d60-ec37-1c79cd202cac",
+      "name": "gear",
+      "image": "data:image/png;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHj5gqkWPlD7AAAAAElFTkSuQmCC",
       "bpp": 32,
       "alwaysBuild": false,
       "lvglBinaryOutputFormat": 3,

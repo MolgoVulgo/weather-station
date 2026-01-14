@@ -12,17 +12,46 @@
 static uint32_t clock_seconds;
 static bool time_synced_once;
 
+static void ui_screen_format_time(uint32_t hours, uint32_t minutes, uint32_t seconds,
+                                  char *out, size_t out_len)
+{
+    if (!out || out_len == 0) {
+        return;
+    }
+
+    if (get_var_ui_setting_hour()) {
+        snprintf(out, out_len, "%02u:%02u:%02u",
+                 (unsigned)hours,
+                 (unsigned)minutes,
+                 (unsigned)seconds);
+        out[out_len - 1] = 0;
+        return;
+    }
+
+    uint32_t hour12 = hours % 12U;
+    if (hour12 == 0) {
+        hour12 = 12;
+    }
+    const char *suffix = (hours < 12U) ? "am" : "pm";
+    snprintf(out, out_len, "%02u:%02u %s",
+             (unsigned)hour12,
+             (unsigned)minutes,
+             suffix);
+    out[out_len - 1] = 0;
+}
+
 static void ui_screen_apply_time(const struct tm *timeinfo)
 {
     if (!timeinfo) {
         return;
     }
     char buffer[32];
-    int written = snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d",
-                           timeinfo->tm_hour,
-                           timeinfo->tm_min,
-                           timeinfo->tm_sec);
-    if (written <= 0) {
+    ui_screen_format_time((uint32_t)timeinfo->tm_hour,
+                          (uint32_t)timeinfo->tm_min,
+                          (uint32_t)timeinfo->tm_sec,
+                          buffer,
+                          sizeof(buffer));
+    if (buffer[0] == '\0') {
         return;
     }
     set_var_ui_meteo_houre(buffer);
@@ -77,11 +106,8 @@ static void ui_screen_tick(lv_timer_t *timer)
     uint32_t minutes = (clock_seconds / 60U) % 60U;
     uint32_t seconds = clock_seconds % 60U;
     char buffer[32];
-    int written = snprintf(buffer, sizeof(buffer), "%02u:%02u:%02u",
-                           (unsigned)hours,
-                           (unsigned)minutes,
-                           (unsigned)seconds);
-    if (written > 0) {
+    ui_screen_format_time(hours, minutes, seconds, buffer, sizeof(buffer));
+    if (buffer[0] != '\0') {
         set_var_ui_meteo_houre(buffer);
     }
 }
@@ -94,7 +120,9 @@ void ui_screen_start(void)
         ui_screen_apply_date(&timeinfo);
     } else {
         clock_seconds = 0;
-        set_var_ui_meteo_houre("00:00:00");
+        char buffer[32];
+        ui_screen_format_time(0, 0, 0, buffer, sizeof(buffer));
+        set_var_ui_meteo_houre(buffer);
         set_var_ui_meteo_date("");
     }
     lv_timer_create(ui_screen_tick, 1000, NULL);

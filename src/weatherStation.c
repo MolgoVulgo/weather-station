@@ -20,6 +20,8 @@
 #include <dirent.h>
 #include "ui_screen.h"
 #include "time_sync.h"
+#include "vars.h"
+#include "temp_unit.h"
 #include "svg2bin_fs.h"
 
 static const char *TAG = "WeatherStation";
@@ -259,6 +261,9 @@ void setup()
   if (time_ret != ESP_OK) {
     ESP_LOGE(TAG, "Time sync init failed: %s", esp_err_to_name(time_ret));
   }
+  const time_sync_config_t *time_cfg = time_sync_get_config();
+  set_var_ui_setting_hour(time_cfg->hour_format_24h);
+  set_var_ui_setting_gmt(time_cfg->tz_offset_seconds / 3600);
   bool ntp_ok = false;
   for (int attempt = 0; attempt < 3; attempt++) {
     struct tm timeinfo;
@@ -269,6 +274,9 @@ void setup()
     vTaskDelay(pdMS_TO_TICKS(2000));
   }
   boot_progress_set(50, ntp_ok ? "NTP OK" : "NTP ERR");
+
+  temp_unit_init();
+  set_var_ui_setting_temp(temp_unit_is_fahrenheit());
 
   logSection("SPIFFS");
   esp_err_t spiffs_ret = svg2bin_fs_init_spiffs();

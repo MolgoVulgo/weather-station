@@ -25,23 +25,18 @@ enum FlowGlobalVariables {
     FLOW_GLOBAL_VARIABLE_UI_METEO_FD4 = 7,
     FLOW_GLOBAL_VARIABLE_UI_METEO_FD5 = 8,
     FLOW_GLOBAL_VARIABLE_UI_METEO_FD6 = 9,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT1_1 = 10,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT1_2 = 11,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT1_3 = 12,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT1_4 = 13,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT1_5 = 14,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT1_6 = 15,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_1 = 16,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_2 = 17,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_3 = 18,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_4 = 19,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_5 = 20,
-    FLOW_GLOBAL_VARIABLE_UI_METEO_FT2_6 = 21,
-    FLOW_GLOBAL_VARIABLE_UI_START_BAR = 22,
-    FLOW_GLOBAL_VARIABLE_UI_START_BAR_TEXTE = 23,
-    FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT = 24,
-    FLOW_GLOBAL_VARIABLE_UI_SETTING_HOUR = 25,
-    FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT_TXT = 26
+    FLOW_GLOBAL_VARIABLE_UI_METEO_FT1 = 10,
+    FLOW_GLOBAL_VARIABLE_UI_METEO_FT2 = 11,
+    FLOW_GLOBAL_VARIABLE_UI_METEO_FT3 = 12,
+    FLOW_GLOBAL_VARIABLE_UI_METEO_FT4 = 13,
+    FLOW_GLOBAL_VARIABLE_UI_METEO_FT5 = 14,
+    FLOW_GLOBAL_VARIABLE_UI_METEO_FT6 = 15,
+    FLOW_GLOBAL_VARIABLE_UI_START_BAR = 16,
+    FLOW_GLOBAL_VARIABLE_UI_START_BAR_TEXTE = 17,
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT = 18,
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_HOUR = 19,
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT_TXT = 20,
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_TEMP = 21
 };
 
 // Native global variables
@@ -66,30 +61,18 @@ extern const char *get_var_ui_meteo_fd5();
 extern void set_var_ui_meteo_fd5(const char *value);
 extern const char *get_var_ui_meteo_fd6();
 extern void set_var_ui_meteo_fd6(const char *value);
-extern const char *get_var_ui_meteo_ft1_1();
-extern void set_var_ui_meteo_ft1_1(const char *value);
-extern const char *get_var_ui_meteo_ft1_2();
-extern void set_var_ui_meteo_ft1_2(const char *value);
-extern const char *get_var_ui_meteo_ft1_3();
-extern void set_var_ui_meteo_ft1_3(const char *value);
-extern const char *get_var_ui_meteo_ft1_4();
-extern void set_var_ui_meteo_ft1_4(const char *value);
-extern const char *get_var_ui_meteo_ft1_5();
-extern void set_var_ui_meteo_ft1_5(const char *value);
-extern const char *get_var_ui_meteo_ft1_6();
-extern void set_var_ui_meteo_ft1_6(const char *value);
-extern const char *get_var_ui_meteo_ft2_1();
-extern void set_var_ui_meteo_ft2_1(const char *value);
-extern const char *get_var_ui_meteo_ft2_2();
-extern void set_var_ui_meteo_ft2_2(const char *value);
-extern const char *get_var_ui_meteo_ft2_3();
-extern void set_var_ui_meteo_ft2_3(const char *value);
-extern const char *get_var_ui_meteo_ft2_4();
-extern void set_var_ui_meteo_ft2_4(const char *value);
-extern const char *get_var_ui_meteo_ft2_5();
-extern void set_var_ui_meteo_ft2_5(const char *value);
-extern const char *get_var_ui_meteo_ft2_6();
-extern void set_var_ui_meteo_ft2_6(const char *value);
+extern const char *get_var_ui_meteo_ft1();
+extern void set_var_ui_meteo_ft1(const char *value);
+extern const char *get_var_ui_meteo_ft2();
+extern void set_var_ui_meteo_ft2(const char *value);
+extern const char *get_var_ui_meteo_ft3();
+extern void set_var_ui_meteo_ft3(const char *value);
+extern const char *get_var_ui_meteo_ft4();
+extern void set_var_ui_meteo_ft4(const char *value);
+extern const char *get_var_ui_meteo_ft5();
+extern void set_var_ui_meteo_ft5(const char *value);
+extern const char *get_var_ui_meteo_ft6();
+extern void set_var_ui_meteo_ft6(const char *value);
 extern int32_t get_var_ui_start_bar();
 extern void set_var_ui_start_bar(int32_t value);
 extern const char *get_var_ui_start_bar_texte();
@@ -100,6 +83,8 @@ extern bool get_var_ui_setting_hour();
 extern void set_var_ui_setting_hour(bool value);
 extern const char *get_var_ui_setting_gmt_txt();
 extern void set_var_ui_setting_gmt_txt(const char *value);
+extern bool get_var_ui_setting_temp();
+extern void set_var_ui_setting_temp(bool value);
 
 
 #ifdef __cplusplus

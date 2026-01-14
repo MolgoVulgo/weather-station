@@ -17,6 +17,7 @@
 #include "vars.h"
 #include "boot_progress.h"
 #include "ui/screens.h"
+#include "temp_unit.h"
 #include "weather_fetcher.h"
 #include "weather_icons.h"
 
@@ -32,6 +33,9 @@ static bool s_boot_done;
 static bool s_keys_loaded;
 static char s_api_key_2[64];
 static char s_api_key_3[64];
+static ForecastEntry s_last_forecast[6];
+static size_t s_last_forecast_count;
+static bool s_last_forecast_valid;
 
 #define WEATHER_NVS_NAMESPACE "weather_cfg"
 #define WEATHER_NVS_KEY_API2 "api_key_2"
@@ -106,8 +110,9 @@ static void weather_apply_ui(const CurrentWeatherData *current)
     }
     bsp_display_lock(0);
     char temp_buf[16];
-    int temp_written = snprintf(temp_buf, sizeof(temp_buf), "%.1f", current->temperature);
-    if (temp_written > 0) {
+    temp_unit_set_last_c(current->temperature);
+    temp_unit_format(current->temperature, temp_buf, sizeof(temp_buf));
+    if (temp_buf[0] != '\0') {
         set_var_ui_meteo_temp(temp_buf);
     }
     if (!current->description.empty()) {
@@ -127,6 +132,13 @@ static void weather_apply_forecast(const ForecastEntry *entries, size_t count)
     if (!entries || count == 0) {
         return;
     }
+    size_t copy_count = count < 6 ? count : 6;
+    for (size_t i = 0; i < copy_count; ++i) {
+        s_last_forecast[i] = entries[i];
+    }
+    s_last_forecast_count = copy_count;
+    s_last_forecast_valid = true;
+
     bsp_display_lock(0);
     for (size_t i = 0; i < 6 && i < count; ++i) {
         const ForecastEntry *entry = &entries[i];
@@ -163,34 +175,26 @@ static void weather_apply_forecast(const ForecastEntry *entries, size_t count)
             }
         }
 
-        char temp_min[24];
-        char temp_max[24];
-        snprintf(temp_min, sizeof(temp_min), "Min: %.0f", entry->minTemp);
-        snprintf(temp_max, sizeof(temp_max), "Max: %.0f", entry->maxTemp);
+        char temp_range[24];
+        temp_unit_format_range(entry->minTemp, entry->maxTemp, temp_range, sizeof(temp_range));
         switch (i) {
         case 0:
-            set_var_ui_meteo_ft1_1(temp_min);
-            set_var_ui_meteo_ft2_1(temp_max);
+            set_var_ui_meteo_ft1(temp_range);
             break;
         case 1:
-            set_var_ui_meteo_ft1_2(temp_min);
-            set_var_ui_meteo_ft2_2(temp_max);
+            set_var_ui_meteo_ft2(temp_range);
             break;
         case 2:
-            set_var_ui_meteo_ft1_3(temp_min);
-            set_var_ui_meteo_ft2_3(temp_max);
+            set_var_ui_meteo_ft3(temp_range);
             break;
         case 3:
-            set_var_ui_meteo_ft1_4(temp_min);
-            set_var_ui_meteo_ft2_4(temp_max);
+            set_var_ui_meteo_ft4(temp_range);
             break;
         case 4:
-            set_var_ui_meteo_ft1_5(temp_min);
-            set_var_ui_meteo_ft2_5(temp_max);
+            set_var_ui_meteo_ft5(temp_range);
             break;
         case 5:
-            set_var_ui_meteo_ft1_6(temp_min);
-            set_var_ui_meteo_ft2_6(temp_max);
+            set_var_ui_meteo_ft6(temp_range);
             break;
         default:
             break;
@@ -207,6 +211,14 @@ static void weather_apply_forecast(const ForecastEntry *entries, size_t count)
     }
     tick_screen_by_id(SCREEN_ID_UI_METEO);
     bsp_display_unlock();
+}
+
+void weather_service_refresh_forecast_units(void)
+{
+    if (!s_last_forecast_valid || s_last_forecast_count == 0) {
+        return;
+    }
+    weather_apply_forecast(s_last_forecast, s_last_forecast_count);
 }
 
 static void weather_fetch_once(void)

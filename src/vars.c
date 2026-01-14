@@ -1,4 +1,8 @@
+#include <stdio.h>
 #include <string.h>
+#include <inttypes.h>
+#include "temp_unit.h"
+#include "time_sync.h"
 #include "vars.h"
 
 char ui_meteo_date[100] = { 0 };
@@ -11,22 +15,18 @@ char ui_meteo_fd3[16] = { 0 };
 char ui_meteo_fd4[16] = { 0 };
 char ui_meteo_fd5[16] = { 0 };
 char ui_meteo_fd6[16] = { 0 };
-char ui_meteo_ft1_1[16] = { 0 };
-char ui_meteo_ft1_2[16] = { 0 };
-char ui_meteo_ft1_3[16] = { 0 };
-char ui_meteo_ft1_4[16] = { 0 };
-char ui_meteo_ft1_5[16] = { 0 };
-char ui_meteo_ft1_6[16] = { 0 };
-char ui_meteo_ft2_1[16] = { 0 };
-char ui_meteo_ft2_2[16] = { 0 };
-char ui_meteo_ft2_3[16] = { 0 };
-char ui_meteo_ft2_4[16] = { 0 };
-char ui_meteo_ft2_5[16] = { 0 };
-char ui_meteo_ft2_6[16] = { 0 };
+char ui_meteo_ft1[32] = { 0 };
+char ui_meteo_ft2[32] = { 0 };
+char ui_meteo_ft3[32] = { 0 };
+char ui_meteo_ft4[32] = { 0 };
+char ui_meteo_ft5[32] = { 0 };
+char ui_meteo_ft6[32] = { 0 };
 char ui_start_bar_texte[64] = { 0 };
 int32_t ui_start_bar = 0;
 int32_t ui_setting_gmt = 0;
-bool ui_setting_hour = false;
+char ui_setting_gmt_txt[16] = { 0 };
+bool ui_setting_hour = true;
+bool ui_setting_temp = false;
 
 const char *get_var_ui_meteo_date(void)
 {
@@ -138,136 +138,70 @@ void set_var_ui_meteo_fd6(const char *value)
     ui_meteo_fd6[sizeof(ui_meteo_fd6) / sizeof(char) - 1] = 0;
 }
 
-const char *get_var_ui_meteo_ft1_1(void)
+const char *get_var_ui_meteo_ft1(void)
 {
-    return ui_meteo_ft1_1;
+    return ui_meteo_ft1;
 }
 
-void set_var_ui_meteo_ft1_1(const char *value)
+void set_var_ui_meteo_ft1(const char *value)
 {
-    strncpy(ui_meteo_ft1_1, value, sizeof(ui_meteo_ft1_1) / sizeof(char));
-    ui_meteo_ft1_1[sizeof(ui_meteo_ft1_1) / sizeof(char) - 1] = 0;
+    strncpy(ui_meteo_ft1, value, sizeof(ui_meteo_ft1) / sizeof(char));
+    ui_meteo_ft1[sizeof(ui_meteo_ft1) / sizeof(char) - 1] = 0;
 }
 
-const char *get_var_ui_meteo_ft1_2(void)
+const char *get_var_ui_meteo_ft2(void)
 {
-    return ui_meteo_ft1_2;
+    return ui_meteo_ft2;
 }
 
-void set_var_ui_meteo_ft1_2(const char *value)
+void set_var_ui_meteo_ft2(const char *value)
 {
-    strncpy(ui_meteo_ft1_2, value, sizeof(ui_meteo_ft1_2) / sizeof(char));
-    ui_meteo_ft1_2[sizeof(ui_meteo_ft1_2) / sizeof(char) - 1] = 0;
+    strncpy(ui_meteo_ft2, value, sizeof(ui_meteo_ft2) / sizeof(char));
+    ui_meteo_ft2[sizeof(ui_meteo_ft2) / sizeof(char) - 1] = 0;
 }
 
-const char *get_var_ui_meteo_ft1_3(void)
+const char *get_var_ui_meteo_ft3(void)
 {
-    return ui_meteo_ft1_3;
+    return ui_meteo_ft3;
 }
 
-void set_var_ui_meteo_ft1_3(const char *value)
+void set_var_ui_meteo_ft3(const char *value)
 {
-    strncpy(ui_meteo_ft1_3, value, sizeof(ui_meteo_ft1_3) / sizeof(char));
-    ui_meteo_ft1_3[sizeof(ui_meteo_ft1_3) / sizeof(char) - 1] = 0;
+    strncpy(ui_meteo_ft3, value, sizeof(ui_meteo_ft3) / sizeof(char));
+    ui_meteo_ft3[sizeof(ui_meteo_ft3) / sizeof(char) - 1] = 0;
 }
 
-const char *get_var_ui_meteo_ft1_4(void)
+const char *get_var_ui_meteo_ft4(void)
 {
-    return ui_meteo_ft1_4;
+    return ui_meteo_ft4;
 }
 
-void set_var_ui_meteo_ft1_4(const char *value)
+void set_var_ui_meteo_ft4(const char *value)
 {
-    strncpy(ui_meteo_ft1_4, value, sizeof(ui_meteo_ft1_4) / sizeof(char));
-    ui_meteo_ft1_4[sizeof(ui_meteo_ft1_4) / sizeof(char) - 1] = 0;
+    strncpy(ui_meteo_ft4, value, sizeof(ui_meteo_ft4) / sizeof(char));
+    ui_meteo_ft4[sizeof(ui_meteo_ft4) / sizeof(char) - 1] = 0;
 }
 
-const char *get_var_ui_meteo_ft1_5(void)
+const char *get_var_ui_meteo_ft5(void)
 {
-    return ui_meteo_ft1_5;
+    return ui_meteo_ft5;
 }
 
-void set_var_ui_meteo_ft1_5(const char *value)
+void set_var_ui_meteo_ft5(const char *value)
 {
-    strncpy(ui_meteo_ft1_5, value, sizeof(ui_meteo_ft1_5) / sizeof(char));
-    ui_meteo_ft1_5[sizeof(ui_meteo_ft1_5) / sizeof(char) - 1] = 0;
+    strncpy(ui_meteo_ft5, value, sizeof(ui_meteo_ft5) / sizeof(char));
+    ui_meteo_ft5[sizeof(ui_meteo_ft5) / sizeof(char) - 1] = 0;
 }
 
-const char *get_var_ui_meteo_ft1_6(void)
+const char *get_var_ui_meteo_ft6(void)
 {
-    return ui_meteo_ft1_6;
+    return ui_meteo_ft6;
 }
 
-void set_var_ui_meteo_ft1_6(const char *value)
+void set_var_ui_meteo_ft6(const char *value)
 {
-    strncpy(ui_meteo_ft1_6, value, sizeof(ui_meteo_ft1_6) / sizeof(char));
-    ui_meteo_ft1_6[sizeof(ui_meteo_ft1_6) / sizeof(char) - 1] = 0;
-}
-
-const char *get_var_ui_meteo_ft2_1(void)
-{
-    return ui_meteo_ft2_1;
-}
-
-void set_var_ui_meteo_ft2_1(const char *value)
-{
-    strncpy(ui_meteo_ft2_1, value, sizeof(ui_meteo_ft2_1) / sizeof(char));
-    ui_meteo_ft2_1[sizeof(ui_meteo_ft2_1) / sizeof(char) - 1] = 0;
-}
-
-const char *get_var_ui_meteo_ft2_2(void)
-{
-    return ui_meteo_ft2_2;
-}
-
-void set_var_ui_meteo_ft2_2(const char *value)
-{
-    strncpy(ui_meteo_ft2_2, value, sizeof(ui_meteo_ft2_2) / sizeof(char));
-    ui_meteo_ft2_2[sizeof(ui_meteo_ft2_2) / sizeof(char) - 1] = 0;
-}
-
-const char *get_var_ui_meteo_ft2_3(void)
-{
-    return ui_meteo_ft2_3;
-}
-
-void set_var_ui_meteo_ft2_3(const char *value)
-{
-    strncpy(ui_meteo_ft2_3, value, sizeof(ui_meteo_ft2_3) / sizeof(char));
-    ui_meteo_ft2_3[sizeof(ui_meteo_ft2_3) / sizeof(char) - 1] = 0;
-}
-
-const char *get_var_ui_meteo_ft2_4(void)
-{
-    return ui_meteo_ft2_4;
-}
-
-void set_var_ui_meteo_ft2_4(const char *value)
-{
-    strncpy(ui_meteo_ft2_4, value, sizeof(ui_meteo_ft2_4) / sizeof(char));
-    ui_meteo_ft2_4[sizeof(ui_meteo_ft2_4) / sizeof(char) - 1] = 0;
-}
-
-const char *get_var_ui_meteo_ft2_5(void)
-{
-    return ui_meteo_ft2_5;
-}
-
-void set_var_ui_meteo_ft2_5(const char *value)
-{
-    strncpy(ui_meteo_ft2_5, value, sizeof(ui_meteo_ft2_5) / sizeof(char));
-    ui_meteo_ft2_5[sizeof(ui_meteo_ft2_5) / sizeof(char) - 1] = 0;
-}
-
-const char *get_var_ui_meteo_ft2_6(void)
-{
-    return ui_meteo_ft2_6;
-}
-
-void set_var_ui_meteo_ft2_6(const char *value)
-{
-    strncpy(ui_meteo_ft2_6, value, sizeof(ui_meteo_ft2_6) / sizeof(char));
-    ui_meteo_ft2_6[sizeof(ui_meteo_ft2_6) / sizeof(char) - 1] = 0;
+    strncpy(ui_meteo_ft6, value, sizeof(ui_meteo_ft6) / sizeof(char));
+    ui_meteo_ft6[sizeof(ui_meteo_ft6) / sizeof(char) - 1] = 0;
 }
 
 int32_t get_var_ui_start_bar(void)
@@ -298,7 +232,14 @@ int32_t get_var_ui_setting_gmt(void)
 
 void set_var_ui_setting_gmt(int32_t value)
 {
+    bool changed = (ui_setting_gmt != value);
     ui_setting_gmt = value;
+    snprintf(ui_setting_gmt_txt, sizeof(ui_setting_gmt_txt), "%+" PRId32, value);
+    ui_setting_gmt_txt[sizeof(ui_setting_gmt_txt) - 1] = 0;
+    if (changed) {
+        time_sync_set_tz_offset_seconds(value * 3600);
+        time_sync_save_config();
+    }
 }
 
 bool get_var_ui_setting_hour(void)
@@ -308,5 +249,42 @@ bool get_var_ui_setting_hour(void)
 
 void set_var_ui_setting_hour(bool value)
 {
+    bool changed = (ui_setting_hour != value);
     ui_setting_hour = value;
+    if (changed) {
+        time_sync_set_hour_format_24h(value);
+        time_sync_save_config();
+    }
+}
+
+bool get_var_ui_setting_temp(void)
+{
+    return ui_setting_temp;
+}
+
+void set_var_ui_setting_temp(bool value)
+{
+    bool changed = (ui_setting_temp != value);
+    ui_setting_temp = value;
+    if (changed) {
+        temp_unit_set_fahrenheit(value);
+        if (temp_unit_has_last()) {
+            char temp_buf[16];
+            temp_unit_format(temp_unit_get_last_c(), temp_buf, sizeof(temp_buf));
+            if (temp_buf[0] != '\0') {
+                set_var_ui_meteo_temp(temp_buf);
+            }
+        }
+    }
+}
+
+const char *get_var_ui_setting_gmt_txt(void)
+{
+    return ui_setting_gmt_txt;
+}
+
+void set_var_ui_setting_gmt_txt(const char *value)
+{
+    strncpy(ui_setting_gmt_txt, value, sizeof(ui_setting_gmt_txt) / sizeof(char));
+    ui_setting_gmt_txt[sizeof(ui_setting_gmt_txt) / sizeof(char) - 1] = 0;
 }

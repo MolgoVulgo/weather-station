@@ -13,6 +13,7 @@ static const char *TAG = "TimeSync";
 #define TIME_SYNC_NVS_NAMESPACE "time_cfg"
 #define TIME_SYNC_NVS_KEY_POOL "ntp_pool"
 #define TIME_SYNC_NVS_KEY_TZ_OFFSET "tz_offset"
+#define TIME_SYNC_NVS_KEY_HOUR_FORMAT "hour_format"
 
 #define TIME_SYNC_DEFAULT_NTP_POOL "pool.ntp.org"
 #define TIME_SYNC_VALID_EPOCH_MIN 1609459200L
@@ -20,6 +21,7 @@ static const char *TAG = "TimeSync";
 static time_sync_config_t time_sync_cfg = {
     .ntp_pool = TIME_SYNC_DEFAULT_NTP_POOL,
     .tz_offset_seconds = 0,
+    .hour_format_24h = true,
 };
 
 static void time_sync_log_callback(struct timeval *tv)
@@ -59,6 +61,17 @@ static esp_err_t time_sync_nvs_load(bool *out_missing)
     }
     time_sync_cfg.tz_offset_seconds = tz_offset;
 
+    uint8_t hour_format = 1;
+    ret = nvs_get_u8(nvs, TIME_SYNC_NVS_KEY_HOUR_FORMAT, &hour_format);
+    if (ret == ESP_ERR_NVS_NOT_FOUND) {
+        missing = true;
+        hour_format = 1;
+    } else if (ret != ESP_OK) {
+        ESP_LOGW(TAG, "Lecture NVS format heure echouee: %s", esp_err_to_name(ret));
+        hour_format = 1;
+    }
+    time_sync_cfg.hour_format_24h = (hour_format != 0);
+
     nvs_close(nvs);
 
     if (out_missing) {
@@ -90,6 +103,13 @@ esp_err_t time_sync_save_config(void)
         return ret;
     }
 
+    ret = nvs_set_u8(nvs, TIME_SYNC_NVS_KEY_HOUR_FORMAT, time_sync_cfg.hour_format_24h ? 1 : 0);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "NVS set format heure failed: %s", esp_err_to_name(ret));
+        nvs_close(nvs);
+        return ret;
+    }
+
     ret = nvs_commit(nvs);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "NVS commit failed: %s", esp_err_to_name(ret));
@@ -113,6 +133,12 @@ esp_err_t time_sync_set_ntp_pool(const char *pool)
 esp_err_t time_sync_set_tz_offset_seconds(int32_t offset_seconds)
 {
     time_sync_cfg.tz_offset_seconds = offset_seconds;
+    return ESP_OK;
+}
+
+esp_err_t time_sync_set_hour_format_24h(bool is_24h)
+{
+    time_sync_cfg.hour_format_24h = is_24h;
     return ESP_OK;
 }
 
