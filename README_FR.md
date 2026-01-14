@@ -59,6 +59,8 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - Taille buffer LVGL: `bsp_display_cfg_t.buffer_size` dans `src/weatherStation.c`.
 - Pins QSPI/I2C: `src/esp_bsp.h`.
 - NTP: pool et décalage (secondes) en NVS, namespace `time_cfg` (`src/time_sync.c`).
+- Format heure: `hour_format` dans NVS `time_cfg` (24h par defaut, 12h affiche `hh:mm am/pm`).
+- Unite temperature: `temp_unit` dans NVS `weather_cfg` (0=°C, 1=°F).
 - Wi-Fi: SSID + mot de passe en NVS, namespace `wifi_cfg` (`src/wifi_manager.c`).
 - Reset Wi-Fi: mettre `WIFI_RESET_NVS=1` dans `include/secrets.h` pour effacer les credentials.
 
@@ -86,8 +88,8 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - `sdcard_mount()` (`src/weatherStation.c`): monte la carte SD en SDMMC 1-bit sur `/sdcard` (CMD=GPIO11, CLK=GPIO12, D0=GPIO13).
 - `sdcard_list_dir()` (`src/weatherStation.c`): logge le contenu de la SD pour debug.
 - `ui_init()` (`src/ui/ui.c`): initialise les ecrans et charge l'ecran principal.
-- `ui_screen_start()` (`src/ui_screen.c`): initialise l'horloge a 00:00:00 et met a jour le label d'heure chaque seconde.
-- Service meteo (`src/weather_service.cpp`): recupere les donnees au demarrage puis toutes les `WEATHER_REFRESH_MINUTES`, met a jour les textes UI et charge l'icone depuis `icon_150.bin` via l'index integre.
+- `ui_screen_start()` (`src/ui_screen.c`): initialise l'horloge a 00:00:00 et met a jour le label d'heure chaque seconde (24h ou 12h avec am/pm).
+- Service meteo (`src/weather_service.cpp`): recupere les donnees au demarrage puis toutes les `WEATHER_REFRESH_MINUTES`, met a jour les textes UI et charge l'icone depuis `icon_150.bin` via l'index integre. Les previsions sont formatees `min/max°unite`.
 - Demarrage (`src/boot_progress.c`): met a jour `ui_start_bar`/`ui_start_bar_texte` et bascule vers `ui_meteo` une fois pret.
 - Portail captif (`src/wifi_portal.c`): AP + UI web de configuration, sauvegarde NVS, reboot. Le scan retourne jusqu'a 50 SSID et est relancable via le bouton; les resultats sont logges.
 - Recueil des fonctions principales: `docs/MAIN_FUNCTIONS.md`.

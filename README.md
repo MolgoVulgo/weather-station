@@ -59,6 +59,8 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - LVGL buffer size: `bsp_display_cfg_t.buffer_size` in `src/weatherStation.c`.
 - QSPI/I2C pins: `src/esp_bsp.h`.
 - NTP: pool and offset (seconds) in NVS, namespace `time_cfg` (`src/time_sync.c`).
+- Time format: `hour_format` in NVS `time_cfg` (24h default, 12h shows `hh:mm am/pm`).
+- Temperature unit: `temp_unit` in NVS `weather_cfg` (0=°C, 1=°F).
 - Wi-Fi: SSID + password in NVS, namespace `wifi_cfg` (`src/wifi_manager.c`).
 - Wi-Fi reset: set `WIFI_RESET_NVS=1` in `include/secrets.h` to clear stored credentials.
 
@@ -86,8 +88,8 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `sdcard_mount()` (`src/weatherStation.c`): mounts SD card in SDMMC 1-bit mode on `/sdcard` (CMD=GPIO11, CLK=GPIO12, D0=GPIO13).
 - `sdcard_list_dir()` (`src/weatherStation.c`): logs SD contents for debug.
 - `ui_init()` (`src/ui/ui.c`): initializes screens and loads the main screen.
-- `ui_screen_start()` (`src/ui_screen.c`): initializes the clock at 00:00:00 and updates the time label every second.
-- Weather service (`src/weather_service.cpp`): fetches current data at startup and then every `WEATHER_REFRESH_MINUTES`, updates UI text, and loads the icon from `icon_150.bin` using the embedded index.
+- `ui_screen_start()` (`src/ui_screen.c`): initializes the clock at 00:00:00 and updates the time label every second (24h or 12h with am/pm).
+- Weather service (`src/weather_service.cpp`): fetches current data at startup and then every `WEATHER_REFRESH_MINUTES`, updates UI text, and loads the icon from `icon_150.bin` using the embedded index. Forecast temperatures are formatted as `min/max°unit`.
 - Boot progress (`src/boot_progress.c`): updates `ui_start_bar`/`ui_start_bar_texte` and switches to `ui_meteo` when ready.
 - Captive portal (`src/wifi_portal.c`): AP + web UI for Wi-Fi setup, save to NVS, reboot. Scan returns up to 50 SSIDs and is refreshable in the UI; scan results are logged.
 - Main function catalog: `docs/MAIN_FUNCTIONS.md`.
