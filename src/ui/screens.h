@@ -10,6 +10,7 @@ extern "C" {
 typedef struct _objects_t {
     lv_obj_t *ui_start;
     lv_obj_t *ui_meteo;
+    lv_obj_t *ui_meteo_details;
     lv_obj_t *ui_setting;
     lv_obj_t *ui_wifi;
     lv_obj_t *ui_setting_hour;
@@ -53,13 +54,20 @@ typedef struct _objects_t {
     lv_obj_t *obj10;
     lv_obj_t *obj11;
     lv_obj_t *obj12;
+    lv_obj_t *obj13;
+    lv_obj_t *obj14;
+    lv_obj_t *obj15;
+    lv_obj_t *obj16;
     lv_obj_t *ui_setting_gmt_switch;
     lv_obj_t *ui_setting_gmt_label;
     lv_obj_t *ui_setting_gmt_switch1;
     lv_obj_t *ui_setting_gmt_switch2;
-    lv_obj_t *ui_setting_bt;
-    lv_obj_t *obj13;
-    lv_obj_t *obj14;
+    lv_obj_t *obj17;
+    lv_obj_t *obj18;
+    lv_obj_t *obj19;
+    lv_obj_t *obj20;
+    lv_obj_t *obj21;
+    lv_obj_t *obj22;
 } objects_t;
 
 extern objects_t objects;
@@ -67,8 +75,9 @@ extern objects_t objects;
 enum ScreensEnum {
     SCREEN_ID_UI_START = 1,
     SCREEN_ID_UI_METEO = 2,
-    SCREEN_ID_UI_SETTING = 3,
-    SCREEN_ID_UI_WIFI = 4,
+    SCREEN_ID_UI_METEO_DETAILS = 3,
+    SCREEN_ID_UI_SETTING = 4,
+    SCREEN_ID_UI_WIFI = 5,
 };
 
 void create_screen_ui_start();
@@ -76,6 +85,9 @@ void tick_screen_ui_start();
 
 void create_screen_ui_meteo();
 void tick_screen_ui_meteo();
+
+void create_screen_ui_meteo_details();
+void tick_screen_ui_meteo_details();
 
 void create_screen_ui_setting();
 void tick_screen_ui_setting();
