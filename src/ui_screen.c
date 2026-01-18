@@ -8,6 +8,7 @@
 #include "vars.h"
 #include "boot_progress.h"
 #include "weather_service.h"
+#include "lv_i18n.h"
 
 static uint32_t clock_seconds;
 static bool time_synced_once;
@@ -93,7 +94,7 @@ static void ui_screen_tick(lv_timer_t *timer)
         if (!time_synced_once) {
             time_synced_once = true;
             ESP_LOGI("UI", "Heure NTP valide, mise a jour UI");
-            boot_progress_set(60, "NTP OK");
+            boot_progress_set(60, _("NTP OK"));
             weather_service_request_update();
         }
         ui_screen_apply_time(&timeinfo);

@@ -4,6 +4,10 @@
 #include "temp_unit.h"
 #include "time_sync.h"
 #include "vars.h"
+#include "lanague.h"
+#include "i18n.h"
+#include "esp_system.h"
+#include "ui_settings.h"
 
 char ui_meteo_date[100] = { 0 };
 char ui_meteo_houre[32] = { 0 };
@@ -27,6 +31,8 @@ int32_t ui_setting_gmt = 0;
 char ui_setting_gmt_txt[16] = { 0 };
 bool ui_setting_hour = true;
 bool ui_setting_temp = false;
+int32_t ui_setting_laguage = LANAGUE_FR;
+static bool s_lang_restart_enabled = false;
 
 const char *get_var_ui_meteo_date(void)
 {
@@ -287,4 +293,34 @@ void set_var_ui_setting_gmt_txt(const char *value)
 {
     strncpy(ui_setting_gmt_txt, value, sizeof(ui_setting_gmt_txt) / sizeof(char));
     ui_setting_gmt_txt[sizeof(ui_setting_gmt_txt) / sizeof(char) - 1] = 0;
+}
+
+int32_t get_var_ui_setting_laguage(void)
+{
+    return ui_setting_laguage;
+}
+
+void set_var_ui_setting_laguage(int32_t value)
+{
+    lanague_id_t lang = LANAGUE_FR;
+    if (value == LANAGUE_EN) {
+        lang = LANAGUE_EN;
+    } else if (value == LANAGUE_DE) {
+        lang = LANAGUE_DE;
+    }
+
+    bool changed = (ui_setting_laguage != (int32_t)lang);
+    ui_setting_laguage = (int32_t)lang;
+    if (changed) {
+        lanague_set_current(lang);
+        lanague_save_current();
+        if (s_lang_restart_enabled) {
+            esp_restart();
+        }
+    }
+}
+
+void ui_settings_enable_language_restart(bool enable)
+{
+    s_lang_restart_enabled = enable;
 }

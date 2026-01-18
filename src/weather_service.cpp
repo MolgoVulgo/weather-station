@@ -23,6 +23,8 @@
 #include "weather_cache.h"
 #include "weather_fetcher.h"
 #include "weather_icons.h"
+#include "i18n.h"
+#include "lanague.h"
 
 static const char *TAG = "WeatherService";
 static esp_timer_handle_t s_weather_timer;
@@ -31,7 +33,6 @@ static bool s_weather_started;
 static bool s_first_fetch_done;
 static esp_event_handler_instance_t s_ip_handler;
 static TaskHandle_t s_weather_task;
-static const char *kWeekdaysShort[7] = {"DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"};
 static bool s_boot_done;
 static bool s_keys_loaded;
 static char s_api_key_2[64];
@@ -42,6 +43,12 @@ static bool s_last_forecast_valid;
 static bool s_cache_ready;
 
 #define WEATHER_JSON_MAX_BYTES (100 * 1024)
+
+static const char *weather_language_code(void)
+{
+    const char *code = lanague_get_weather_code(lanague_get_current());
+    return code ? code : OPENWEATHERMAP_LANGUAGE;
+}
 
 static esp_err_t weather_fetch_json_cached(const char *url, std::string &fallback, const char **out_json)
 {
@@ -248,7 +255,7 @@ static void weather_apply_forecast(const ForecastEntry *entries, size_t count)
         if (localtime_r(&entry->timestamp, &day_tm)) {
             const char *day = "";
             if (day_tm.tm_wday >= 0 && day_tm.tm_wday < 7) {
-                day = kWeekdaysShort[day_tm.tm_wday];
+                day = app_i18n_weekday_short(day_tm.tm_wday);
             }
             switch (i) {
             case 0:
@@ -342,7 +349,7 @@ static void weather_fetch_once(void)
             LOCATION_LATITUDE,
             LOCATION_LONGITUDE,
             api_key_3,
-            OPENWEATHERMAP_LANGUAGE);
+            weather_language_code());
         if (written <= 0 || (size_t)written >= sizeof(url)) {
             ESP_LOGE(TAG, "Weather URL overflow");
             return;
@@ -363,7 +370,7 @@ static void weather_fetch_once(void)
             LOCATION_LATITUDE,
             LOCATION_LONGITUDE,
             api_key_2,
-            OPENWEATHERMAP_LANGUAGE);
+            weather_language_code());
         if (written <= 0 || (size_t)written >= sizeof(url)) {
             ESP_LOGE(TAG, "Weather URL overflow");
             return;
@@ -380,12 +387,12 @@ static void weather_fetch_once(void)
         ESP_LOGE(TAG, "Weather fetch failed");
         return;
     }
-    boot_progress_set(75, "Meteo");
+    boot_progress_set(75, _("Meteo"));
     weather_apply_ui(&current);
     if (strlen(api_key_3) > 0) {
         weather_apply_forecast(daily, 6);
         if (!s_boot_done) {
-            boot_progress_set(100, "Forecast");
+            boot_progress_set(100, _("Forecast"));
             boot_progress_show_meteo();
             s_boot_done = true;
         }
@@ -399,7 +406,7 @@ static void weather_fetch_once(void)
             LOCATION_LATITUDE,
             LOCATION_LONGITUDE,
             api_key_2,
-            OPENWEATHERMAP_LANGUAGE);
+            weather_language_code());
         if (written <= 0 || (size_t)written >= sizeof(url)) {
             ESP_LOGE(TAG, "Forecast URL overflow");
             return;
@@ -416,7 +423,7 @@ static void weather_fetch_once(void)
         if (forecast_ret == ESP_OK) {
             weather_apply_forecast(forecast, 6);
             if (!s_boot_done) {
-                boot_progress_set(100, "Forecast");
+                boot_progress_set(100, _("Forecast"));
                 boot_progress_show_meteo();
                 s_boot_done = true;
             }

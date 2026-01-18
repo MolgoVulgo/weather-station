@@ -12,6 +12,7 @@
 #include <esp_err.h>
 #include <esp_netif.h>
 #include <nvs.h>
+#include <nvs_flash.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <driver/sdmmc_host.h>
@@ -23,6 +24,9 @@
 #include "vars.h"
 #include "temp_unit.h"
 #include "svg2bin_fs.h"
+#include "lanague.h"
+#include "i18n.h"
+#include "ui_settings.h"
 
 static const char *TAG = "WeatherStation";
 
@@ -209,10 +213,28 @@ void setup()
   bsp_display_start_with_config(&cfg);
   bsp_display_backlight_on();
 
+  esp_err_t nvs_ret = nvs_flash_init();
+  if (nvs_ret == ESP_ERR_NVS_NO_FREE_PAGES || nvs_ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+    ESP_LOGW(TAG, "NVS init failed (%s), erase", esp_err_to_name(nvs_ret));
+    ESP_ERROR_CHECK(nvs_flash_erase());
+    nvs_ret = nvs_flash_init();
+  }
+  if (nvs_ret != ESP_OK) {
+    ESP_LOGW(TAG, "NVS init failed: %s", esp_err_to_name(nvs_ret));
+  }
+
+  esp_err_t lang_ret = lanague_init();
+  if (lang_ret != ESP_OK) {
+    ESP_LOGW(TAG, "Lang init failed: %s", esp_err_to_name(lang_ret));
+  }
+  app_i18n_init(lanague_get_current());
+  set_var_ui_setting_laguage((int32_t)lanague_get_current());
+
   logSection("Create UI");
   bsp_display_lock(0);
   ui_init();
   boot_progress_init();
+  ui_settings_enable_language_restart(true);
   bsp_display_unlock();
 
   logSection("WiFi");
@@ -220,15 +242,15 @@ void setup()
   if (wifi_ret != ESP_OK) {
     ESP_LOGE(TAG, "WiFi init failed: %s", esp_err_to_name(wifi_ret));
   }
-  boot_progress_set(10, "WiFi...");
+  boot_progress_set(10, _("WiFi..."));
   bool wifi_connected = wait_for_wifi_ip(15000);
   if (wifi_connected) {
-    boot_progress_set(25, "WiFi OK");
+    boot_progress_set(25, _("WiFi OK"));
   } else {
-    boot_progress_set(25, "WiFi ERR");
+    boot_progress_set(25, _("WiFi ERR"));
     ESP_LOGW(TAG, "WiFi non connecte, mode AP a implementer");
     if (wifi_manager_is_portal_active()) {
-      boot_progress_set(25, "AP MODE");
+      boot_progress_set(25, _("AP MODE"));
       boot_progress_show_wifi();
       for (;;) {
         vTaskDelay(pdMS_TO_TICKS(1000));
@@ -238,7 +260,7 @@ void setup()
 
   if (weather_keys_missing_in_nvs()) {
     ESP_LOGW(TAG, "Aucune cle API en NVS, passage en mode config");
-    boot_progress_set(30, "API KEY");
+    boot_progress_set(30, _("API KEY"));
     bsp_display_lock(0);
     loadScreen(SCREEN_ID_UI_SETTING);
     tick_screen_by_id(SCREEN_ID_UI_SETTING);
@@ -273,7 +295,7 @@ void setup()
     }
     vTaskDelay(pdMS_TO_TICKS(2000));
   }
-  boot_progress_set(50, ntp_ok ? "NTP OK" : "NTP ERR");
+  boot_progress_set(50, ntp_ok ? _("NTP OK") : _("NTP ERR"));
 
   temp_unit_init();
   set_var_ui_setting_temp(temp_unit_is_fahrenheit());

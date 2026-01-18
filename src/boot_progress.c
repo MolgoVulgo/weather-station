@@ -7,6 +7,7 @@
 #include "ui.h"
 #include "ui/screens.h"
 #include "vars.h"
+#include "lv_i18n.h"
 
 static const char *TAG = "BootProgress";
 
@@ -23,7 +24,7 @@ static void boot_progress_load_screen(lv_obj_t *screen)
 void boot_progress_init(void)
 {
     set_var_ui_start_bar(0);
-    set_var_ui_start_bar_texte("Demarrage...");
+    set_var_ui_start_bar_texte(_("Demarrage..."));
     boot_progress_load_screen(objects.ui_start);
 }
 

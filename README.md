@@ -22,6 +22,11 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - Variables declared in `src/ui/vars.h` must be implemented in `src/vars.c` via `get_var_` / `set_var_` (generate/update `src/vars.c` whenever `src/ui/vars.h` changes).
 - The UI updates labels in `src/ui/screens.c` on each `tick_screen()` by reading these getters.
 
+## Internationalization (i18n)
+- Translations are defined in `src/i18n.c` and resolved via the `_()` macro from `src/lv_i18n.h`.
+- The selected language is stored in NVS (`lang_cfg`) through `src/lanague.c` and synced with the UI `ui_setting_laguage` dropdown.
+- Forecast day labels use `app_i18n_weekday_short()` and OpenWeatherMap requests use `lanague_get_weather_code()` for `lang=`.
+
 ## Boot Flow
 1. `app_main()` calls `setup()` in `src/weatherStation.c`. (default skeleton)
 2. HW logs (chip, flash, heap, PSRAM).

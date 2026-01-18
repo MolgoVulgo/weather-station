@@ -22,6 +22,11 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - Les variables exposees dans `src/ui/vars.h` doivent etre implementees dans `src/vars.c` via `get_var_` / `set_var_` (generer/mettre a jour `src/vars.c` a chaque modification de `src/ui/vars.h`).
 - L'UI met a jour les labels dans `src/ui/screens.c` a chaque `tick_screen()` en lisant ces getters.
 
+## Internationalisation (i18n)
+- Les traductions sont definies dans `src/i18n.c` et resolues via la macro `_()` de `src/lv_i18n.h`.
+- La langue selectionnee est stockee en NVS (`lang_cfg`) via `src/lanague.c` et synchronisee avec le dropdown `ui_setting_laguage`.
+- Les jours de previsions utilisent `app_i18n_weekday_short()` et les requetes OpenWeatherMap utilisent `lanague_get_weather_code()` pour `lang=`.
+
 ## Flux de demarrage
 1. `app_main()` appelle `setup()` dans `src/weatherStation.c`. ( squelette par défaut)
 2. Logs HW (chip, flash, heap, PSRAM).

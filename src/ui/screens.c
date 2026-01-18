@@ -47,6 +47,17 @@ static void event_handler_cb_ui_setting_ui_setting_unit(lv_event_t *e) {
     }
 }
 
+static void event_handler_cb_ui_setting_ui_setting_laguage(lv_event_t *e) {
+    lv_event_code_t event = lv_event_get_code(e);
+    if (event == LV_EVENT_VALUE_CHANGED) {
+        lv_obj_t *ta = lv_event_get_target(e);
+        if (tick_value_change_obj != ta) {
+            int32_t value = lv_dropdown_get_selected(ta);
+            set_var_ui_setting_laguage(value);
+        }
+    }
+}
+
 void create_screen_ui_start() {
     lv_obj_t *obj = lv_obj_create(0);
     objects.ui_start = obj;
@@ -80,7 +91,7 @@ void create_screen_ui_start() {
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &ui_font_ui_18, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text(obj, "Station Météo");
+            lv_label_set_text(obj, _("Station Météo"));
         }
     }
     
@@ -607,7 +618,7 @@ void create_screen_ui_meteo_details() {
         lv_obj_t *parent_obj = obj;
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            lv_obj_set_pos(obj, 200, 143);
+            lv_obj_set_pos(obj, 190, 24);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "ui meteo 2");
         }
@@ -700,13 +711,13 @@ void create_screen_ui_setting() {
             lv_obj_t *obj = lv_label_create(parent_obj);
             lv_obj_set_pos(obj, 42, 73);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-            lv_label_set_text(obj, "Format de l'heure :");
+            lv_label_set_text(obj, _("Format de l'heure :"));
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
             lv_obj_set_pos(obj, 42, 97);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-            lv_label_set_text(obj, "Décalage horaire :");
+            lv_label_set_text(obj, _("Décalage horaire :"));
         }
         {
             // ui_setting_gmt_switch
@@ -783,7 +794,7 @@ void create_screen_ui_setting() {
             lv_obj_set_pos(obj, 42, 179);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_pad_right(obj, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text(obj, "Unité : °C");
+            lv_label_set_text(obj, _("Unité :"));
         }
         {
             // ui_setting_unit
@@ -839,6 +850,39 @@ void create_screen_ui_setting() {
             lv_led_set_color(obj, lv_color_hex(0xffffffff));
             lv_led_set_brightness(obj, 0);
         }
+        {
+            // ui_setting_laguage
+            lv_obj_t *obj = lv_dropdown_create(parent_obj);
+            objects.ui_setting_laguage = obj;
+            lv_obj_set_pos(obj, 48, 220);
+            lv_obj_set_size(obj, 150, 35);
+            lv_dropdown_set_options(obj, "Francais\nanglais\nAllemand");
+            lv_obj_add_event_cb(obj, event_handler_cb_ui_setting_ui_setting_laguage, LV_EVENT_ALL, 0);
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 112, 179);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "°C");
+        }
+        {
+            // ui_settings_save
+            lv_obj_t *obj = lv_btn_create(parent_obj);
+            objects.ui_settings_save = obj;
+            lv_obj_set_pos(obj, 348, 220);
+            lv_obj_set_size(obj, 100, 50);
+            lv_obj_add_event_cb(obj, action_go_ui_meteo, LV_EVENT_PRESSED, (void *)0);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    lv_obj_set_pos(obj, 0, 0);
+                    lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                    lv_obj_set_style_align(obj, LV_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_label_set_text(obj, "Save");
+                }
+            }
+        }
     }
     
     tick_screen_ui_setting();
@@ -881,6 +925,17 @@ void tick_screen_ui_setting() {
             if (new_val) lv_obj_add_state(objects.ui_setting_unit, LV_STATE_CHECKED);
             else lv_obj_clear_state(objects.ui_setting_unit, LV_STATE_CHECKED);
             tick_value_change_obj = NULL;
+        }
+    }
+    {
+        if (!(lv_obj_get_state(objects.ui_setting_laguage) & LV_STATE_EDITED)) {
+            int32_t new_val = get_var_ui_setting_laguage();
+            int32_t cur_val = lv_dropdown_get_selected(objects.ui_setting_laguage);
+            if (new_val != cur_val) {
+                tick_value_change_obj = objects.ui_setting_laguage;
+                lv_dropdown_set_selected(objects.ui_setting_laguage, new_val);
+                tick_value_change_obj = NULL;
+            }
         }
     }
 }

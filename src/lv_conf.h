@@ -765,6 +765,8 @@
 
 /*--END OF LV_CONF_H--*/
 
+#include "lv_i18n.h"
+
 #endif /*LV_CONF_H*/
 
 #endif /*End of "Content enable"*/

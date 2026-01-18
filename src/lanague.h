@@ -4,9 +4,14 @@
 #include <stdint.h>
 #include "esp_err.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
     LANAGUE_FR = 0,
     LANAGUE_EN = 1,
+    LANAGUE_DE = 2,
 } lanague_id_t;
 
 typedef struct {
@@ -17,7 +22,13 @@ typedef struct {
 esp_err_t lanague_init(void);
 lanague_id_t lanague_get_current(void);
 const lanague_table_t *lanague_get_table(lanague_id_t lang);
+const char *lanague_get_locale_name(lanague_id_t lang);
+const char *lanague_get_weather_code(lanague_id_t lang);
 
 /* Pour future configuration Web/écran. */
 esp_err_t lanague_set_current(lanague_id_t lang);
 esp_err_t lanague_save_current(void);
+
+#ifdef __cplusplus
+}
+#endif
