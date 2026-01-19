@@ -24,7 +24,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - L'UI met a jour les labels dans `src/ui/screens.c` a chaque `tick_screen()` en lisant ces getters.
 
 ## UI: meteo details (hourly strip)
-- Le conteneur `hourly_strip` affiche 7 icones (index 3 = "now", 4..6 = futures, 0..2 = historique).
+- Le conteneur `hourly_strip` affiche 7 icones (index 2 = "now", 3..6 = futures +1..+4, 0..1 = historique -2..-1).
 - Les donnees horaires proviennent du One Call v3 (tableau `hourly`, 12 entrees chargees).
 - Le shift s'effectue a chaque changement d'heure si l'ecran `ui_meteo_details` est actif (animation 300ms).
 - L'animation recale le X de base du conteneur au demarrage pour eviter le decalage vers la gauche au premier move.

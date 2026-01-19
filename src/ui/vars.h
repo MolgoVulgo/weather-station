@@ -37,7 +37,14 @@ enum FlowGlobalVariables {
     FLOW_GLOBAL_VARIABLE_UI_SETTING_HOUR = 19,
     FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT_TXT = 20,
     FLOW_GLOBAL_VARIABLE_UI_SETTING_TEMP = 21,
-    FLOW_GLOBAL_VARIABLE_UI_SETTING_LAGUAGE = 22
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_LAGUAGE = 22,
+    FLOW_GLOBAL_VARIABLE_HOURLY_TEMP_0 = 23,
+    FLOW_GLOBAL_VARIABLE_HOURLY_TEMP_1 = 24,
+    FLOW_GLOBAL_VARIABLE_HOURLY_TEMP_2 = 25,
+    FLOW_GLOBAL_VARIABLE_HOURLY_TEMP_3 = 26,
+    FLOW_GLOBAL_VARIABLE_HOURLY_TEMP_4 = 27,
+    FLOW_GLOBAL_VARIABLE_HOURLY_TEMP_5 = 28,
+    FLOW_GLOBAL_VARIABLE_HOURLY_TEMP_6 = 29
 };
 
 // Native global variables
@@ -88,6 +95,20 @@ extern bool get_var_ui_setting_temp();
 extern void set_var_ui_setting_temp(bool value);
 extern int32_t get_var_ui_setting_laguage();
 extern void set_var_ui_setting_laguage(int32_t value);
+extern int32_t get_var_hourly_temp_0();
+extern void set_var_hourly_temp_0(int32_t value);
+extern int32_t get_var_hourly_temp_1();
+extern void set_var_hourly_temp_1(int32_t value);
+extern int32_t get_var_hourly_temp_2();
+extern void set_var_hourly_temp_2(int32_t value);
+extern int32_t get_var_hourly_temp_3();
+extern void set_var_hourly_temp_3(int32_t value);
+extern int32_t get_var_hourly_temp_4();
+extern void set_var_hourly_temp_4(int32_t value);
+extern int32_t get_var_hourly_temp_5();
+extern void set_var_hourly_temp_5(int32_t value);
+extern int32_t get_var_hourly_temp_6();
+extern void set_var_hourly_temp_6(int32_t value);
 
 
 #ifdef __cplusplus

@@ -33,6 +33,13 @@ bool ui_setting_hour = true;
 bool ui_setting_temp = false;
 int32_t ui_setting_laguage = LANAGUE_FR;
 static bool s_lang_restart_enabled = false;
+char hourly_temp_0[16] = { 0 };
+char hourly_temp_1[16] = { 0 };
+char hourly_temp_2[16] = { 0 };
+char hourly_temp_3[16] = { 0 };
+char hourly_temp_4[16] = { 0 };
+char hourly_temp_5[16] = { 0 };
+char hourly_temp_6[16] = { 0 };
 
 const char *get_var_ui_meteo_date(void)
 {
@@ -323,4 +330,81 @@ void set_var_ui_setting_laguage(int32_t value)
 void ui_settings_enable_language_restart(bool enable)
 {
     s_lang_restart_enabled = enable;
+}
+
+const char *get_var_hourly_temp_0(void)
+{
+    return hourly_temp_0;
+}
+
+void set_var_hourly_temp_0(const char *value)
+{
+    strncpy(hourly_temp_0, value, sizeof(hourly_temp_0) / sizeof(char));
+    hourly_temp_0[sizeof(hourly_temp_0) / sizeof(char) - 1] = 0;
+}
+
+const char *get_var_hourly_temp_1(void)
+{
+    return hourly_temp_1;
+}
+
+void set_var_hourly_temp_1(const char *value)
+{
+    strncpy(hourly_temp_1, value, sizeof(hourly_temp_1) / sizeof(char));
+    hourly_temp_1[sizeof(hourly_temp_1) / sizeof(char) - 1] = 0;
+}
+
+const char *get_var_hourly_temp_2(void)
+{
+    return hourly_temp_2;
+}
+
+void set_var_hourly_temp_2(const char *value)
+{
+    strncpy(hourly_temp_2, value, sizeof(hourly_temp_2) / sizeof(char));
+    hourly_temp_2[sizeof(hourly_temp_2) / sizeof(char) - 1] = 0;
+}
+
+const char *get_var_hourly_temp_3(void)
+{
+    return hourly_temp_3;
+}
+
+void set_var_hourly_temp_3(const char *value)
+{
+    strncpy(hourly_temp_3, value, sizeof(hourly_temp_3) / sizeof(char));
+    hourly_temp_3[sizeof(hourly_temp_3) / sizeof(char) - 1] = 0;
+}
+
+const char *get_var_hourly_temp_4(void)
+{
+    return hourly_temp_4;
+}
+
+void set_var_hourly_temp_4(const char *value)
+{
+    strncpy(hourly_temp_4, value, sizeof(hourly_temp_4) / sizeof(char));
+    hourly_temp_4[sizeof(hourly_temp_4) / sizeof(char) - 1] = 0;
+}
+
+const char *get_var_hourly_temp_5(void)
+{
+    return hourly_temp_5;
+}
+
+void set_var_hourly_temp_5(const char *value)
+{
+    strncpy(hourly_temp_5, value, sizeof(hourly_temp_5) / sizeof(char));
+    hourly_temp_5[sizeof(hourly_temp_5) / sizeof(char) - 1] = 0;
+}
+
+const char *get_var_hourly_temp_6(void)
+{
+    return hourly_temp_6;
+}
+
+void set_var_hourly_temp_6(const char *value)
+{
+    strncpy(hourly_temp_6, value, sizeof(hourly_temp_6) / sizeof(char));
+    hourly_temp_6[sizeof(hourly_temp_6) / sizeof(char) - 1] = 0;
 }

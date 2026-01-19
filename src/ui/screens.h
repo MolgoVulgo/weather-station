@@ -66,6 +66,14 @@ typedef struct _objects_t {
     lv_obj_t *hourly_icon_6;
     lv_obj_t *obj15;
     lv_obj_t *obj16;
+    lv_obj_t *hourly_temp_0;
+    lv_obj_t *hourly_temp_1;
+    lv_obj_t *hourly_temp_2;
+    lv_obj_t *hourly_temp_3;
+    lv_obj_t *hourly_temp_4;
+    lv_obj_t *hourly_temp_5;
+    lv_obj_t *hourly_temp_6;
+    lv_obj_t *hoyly_char;
     lv_obj_t *obj17;
     lv_obj_t *obj18;
     lv_obj_t *obj19;
