@@ -27,6 +27,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - The `hourly_strip` container shows 7 icons (index 3 = "now", 4..6 = future, 0..2 = history).
 - Hourly data comes from One Call v3 (`hourly` array, 12 entries loaded).
 - The strip shifts on each hour change if `ui_meteo_details` is active (300ms animation).
+- The animation captures the container base X at start to avoid the first-move left offset.
 
 ## Internationalization (i18n)
 - Translations are defined in `src/i18n.c` and resolved via the `_()` macro from `src/lv_i18n.h`.

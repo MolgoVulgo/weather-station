@@ -27,6 +27,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - Le conteneur `hourly_strip` affiche 7 icones (index 3 = "now", 4..6 = futures, 0..2 = historique).
 - Les donnees horaires proviennent du One Call v3 (tableau `hourly`, 12 entrees chargees).
 - Le shift s'effectue a chaque changement d'heure si l'ecran `ui_meteo_details` est actif (animation 300ms).
+- L'animation recale le X de base du conteneur au demarrage pour eviter le decalage vers la gauche au premier move.
 
 ## Internationalisation (i18n)
 - Les traductions sont definies dans `src/i18n.c` et resolues via la macro `_()` de `src/lv_i18n.h`.
