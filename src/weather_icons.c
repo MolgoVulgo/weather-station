@@ -3,10 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "esp_err.h"
 #include "esp_log.h"
 #include "svg2bin_decoder.h"
 #include "ui_backend.h"
+
+#define WEATHER_ICON_BIN_MAX 24
+#define WEATHER_ICON_CACHE_MAX 12
 
 static const char *TAG = "WeatherIcons";
 
@@ -14,9 +18,45 @@ typedef struct {
     lv_img_dsc_t dsc;
     uint8_t *data;
     lv_obj_t *target;
+    uint16_t last_code;
+    uint8_t last_variant;
+    bool has_last;
+    char last_bin[WEATHER_ICON_BIN_MAX];
 } weather_icon_ctx_t;
 
-static weather_icon_ctx_t s_icon_slots[8];
+#define WEATHER_ICON_SLOT_MAX 20
+static weather_icon_ctx_t s_icon_slots[WEATHER_ICON_SLOT_MAX];
+
+typedef struct {
+    uint16_t code;
+    uint8_t variant;
+    uint16_t width;
+    uint16_t height;
+    size_t data_size;
+    uint8_t *data;
+    uint32_t last_use;
+    char bin[WEATHER_ICON_BIN_MAX];
+} weather_icon_cache_t;
+
+static weather_icon_cache_t s_icon_cache[WEATHER_ICON_CACHE_MAX];
+static uint32_t s_icon_cache_use_counter;
+
+static void weather_icon_ctx_reset(weather_icon_ctx_t *ctx, lv_obj_t *target)
+{
+    if (!ctx) {
+        return;
+    }
+    if (ctx->data) {
+        free(ctx->data);
+        ctx->data = NULL;
+    }
+    ctx->target = target;
+    ctx->has_last = false;
+    ctx->last_code = 0;
+    ctx->last_variant = 0;
+    ctx->last_bin[0] = '\0';
+    memset(&ctx->dsc, 0, sizeof(ctx->dsc));
+}
 
 static weather_icon_ctx_t *weather_icon_ctx_for_target(lv_obj_t *target)
 {
@@ -30,11 +70,11 @@ static weather_icon_ctx_t *weather_icon_ctx_for_target(lv_obj_t *target)
     }
     for (size_t i = 0; i < sizeof(s_icon_slots) / sizeof(s_icon_slots[0]); ++i) {
         if (s_icon_slots[i].target == NULL) {
-            s_icon_slots[i].target = target;
+            weather_icon_ctx_reset(&s_icon_slots[i], target);
             return &s_icon_slots[i];
         }
     }
-    s_icon_slots[0].target = target;
+    weather_icon_ctx_reset(&s_icon_slots[0], target);
     return &s_icon_slots[0];
 }
 
@@ -45,6 +85,80 @@ static void rgb565_swap(uint8_t *buf, size_t len)
         buf[i] = buf[i + 1];
         buf[i + 1] = tmp;
     }
+}
+
+static weather_icon_cache_t *weather_icon_cache_find(const char *bin,
+                                                     uint16_t code,
+                                                     uint8_t variant)
+{
+    for (size_t i = 0; i < WEATHER_ICON_CACHE_MAX; ++i) {
+        weather_icon_cache_t *entry = &s_icon_cache[i];
+        if (!entry->data) {
+            continue;
+        }
+        if (entry->code == code &&
+            entry->variant == variant &&
+            strcmp(entry->bin, bin) == 0) {
+            entry->last_use = ++s_icon_cache_use_counter;
+            return entry;
+        }
+    }
+    return NULL;
+}
+
+static weather_icon_cache_t *weather_icon_cache_reserve(const char *bin,
+                                                        uint16_t code,
+                                                        uint8_t variant)
+{
+    weather_icon_cache_t *oldest = NULL;
+    for (size_t i = 0; i < WEATHER_ICON_CACHE_MAX; ++i) {
+        weather_icon_cache_t *entry = &s_icon_cache[i];
+        if (!entry->data) {
+            entry->code = code;
+            entry->variant = variant;
+            snprintf(entry->bin, sizeof(entry->bin), "%s", bin);
+            entry->last_use = ++s_icon_cache_use_counter;
+            return entry;
+        }
+        if (!oldest || entry->last_use < oldest->last_use) {
+            oldest = entry;
+        }
+    }
+    if (oldest) {
+        free(oldest->data);
+        oldest->data = NULL;
+        oldest->data_size = 0;
+        oldest->code = code;
+        oldest->variant = variant;
+        snprintf(oldest->bin, sizeof(oldest->bin), "%s", bin);
+        oldest->last_use = ++s_icon_cache_use_counter;
+    }
+    return oldest;
+}
+
+static esp_err_t weather_icon_apply_cached(weather_icon_ctx_t *ctx,
+                                           const weather_icon_cache_t *cache)
+{
+    if (!ctx || !cache || !cache->data || !ctx->target) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    uint8_t *copy = (uint8_t *)malloc(cache->data_size);
+    if (!copy) {
+        return ESP_ERR_NO_MEM;
+    }
+    memcpy(copy, cache->data, cache->data_size);
+    if (ctx->data) {
+        free(ctx->data);
+    }
+    ctx->data = copy;
+    memset(&ctx->dsc, 0, sizeof(ctx->dsc));
+    ctx->dsc.header.cf = LV_IMG_CF_TRUE_COLOR;
+    ctx->dsc.header.w = cache->width;
+    ctx->dsc.header.h = cache->height;
+    ctx->dsc.data_size = cache->data_size;
+    ctx->dsc.data = ctx->data;
+    lv_img_set_src(ctx->target, &ctx->dsc);
+    return ESP_OK;
 }
 
 static esp_err_t weather_icon_draw_cb(
@@ -160,6 +274,40 @@ esp_err_t weather_icons_set_object(lv_obj_t *target,
     }
 
     const char *bin = bin_name ? bin_name : "icon_150.bin";
+    weather_icon_ctx_t *ctx = weather_icon_ctx_for_target(target);
+    if (!ctx) {
+        return ESP_ERR_NO_MEM;
+    }
+    if (ctx->has_last &&
+        ctx->last_code == code &&
+        ctx->last_variant == variant &&
+        strcmp(ctx->last_bin, bin) == 0) {
+#ifdef DEBUG_LOG
+        ESP_LOGI(TAG, "Icon skip (code=%u variant=%u bin=%s)",
+                 (unsigned)code,
+                 (unsigned)variant,
+                 bin);
+#endif
+        return ESP_OK;
+    }
+
+    weather_icon_cache_t *cached = weather_icon_cache_find(bin, code, variant);
+    if (cached) {
+        esp_err_t cache_rc = weather_icon_apply_cached(ctx, cached);
+        if (cache_rc == ESP_OK) {
+            ctx->has_last = true;
+            ctx->last_code = code;
+            ctx->last_variant = variant;
+            snprintf(ctx->last_bin, sizeof(ctx->last_bin), "%s", bin);
+#ifdef DEBUG_LOG
+            ESP_LOGI(TAG, "Icon cache hit: code=%u variant=%u",
+                     (unsigned)code,
+                     (unsigned)variant);
+#endif
+            return ESP_OK;
+        }
+    }
+
     FILE *fp = open_weather_bin(bin);
     if (!fp) {
         return ESP_ERR_NOT_FOUND;
@@ -184,17 +332,32 @@ esp_err_t weather_icons_set_object(lv_obj_t *target,
         return rc;
     }
 
-    weather_icon_ctx_t *ctx = weather_icon_ctx_for_target(target);
-    if (!ctx) {
-        fclose(fp);
-        return ESP_ERR_NO_MEM;
-    }
     rc = svg2bin_decode_entry_at_offset(fp, offset, weather_icon_draw_cb, ctx);
     fclose(fp);
     if (rc != ESP_OK) {
         ESP_LOGE(TAG, "Decode failed: %s", esp_err_to_name(rc));
         return rc;
     }
+
+    weather_icon_cache_t *slot = weather_icon_cache_reserve(bin, code, variant);
+    if (slot) {
+        uint8_t *copy = (uint8_t *)malloc(ctx->dsc.data_size);
+        if (copy) {
+            memcpy(copy, ctx->data, ctx->dsc.data_size);
+            if (slot->data) {
+                free(slot->data);
+            }
+            slot->data = copy;
+            slot->data_size = ctx->dsc.data_size;
+            slot->width = ctx->dsc.header.w;
+            slot->height = ctx->dsc.header.h;
+        }
+    }
+
+    ctx->has_last = true;
+    ctx->last_code = code;
+    ctx->last_variant = variant;
+    snprintf(ctx->last_bin, sizeof(ctx->last_bin), "%s", bin);
 
     ESP_LOGI(TAG, "Icon set: code=%u variant=%u", (unsigned)code, (unsigned)variant);
     return ESP_OK;
