@@ -23,6 +23,7 @@
 #include "weather_cache.h"
 #include "weather_fetcher.h"
 #include "weather_icons.h"
+#include "hourly_strip.h"
 #include "i18n.h"
 #include "lanague.h"
 
@@ -334,6 +335,8 @@ static void weather_fetch_once(void)
     }
     CurrentWeatherData current;
     ForecastEntry daily[6];
+    HourlyEntry hourly[12];
+    bool hourly_valid = false;
     char url[256];
     esp_err_t weather_ret = ESP_FAIL;
     std::string json_fallback;
@@ -344,7 +347,7 @@ static void weather_fetch_once(void)
         int written = snprintf(
             url,
             sizeof(url),
-            "%s?lat=%.6f&lon=%.6f&appid=%s&units=metric&lang=%s",
+            "%s?lat=%.6f&lon=%.6f&appid=%s&units=metric&lang=%s&exclude=alerts",
             OPENWEATHERMAP_ONECALL_URL,
             LOCATION_LATITUDE,
             LOCATION_LONGITUDE,
@@ -356,9 +359,11 @@ static void weather_fetch_once(void)
         }
         weather_ret = weather_fetch_json_cached(url, json_fallback, &json);
         if (weather_ret == ESP_OK) {
-            if (!WeatherFetcher::parseOneCallJson(json, current, daily, 6, NULL, 0, NULL, 0)) {
+            if (!WeatherFetcher::parseOneCallJson(json, current, daily, 6, NULL, 0, hourly, 12)) {
                 ESP_LOGE(TAG, "Parsing onecall incomplet");
                 weather_ret = ESP_FAIL;
+            } else {
+                hourly_valid = true;
             }
         }
     } else {
@@ -389,6 +394,10 @@ static void weather_fetch_once(void)
     }
     boot_progress_set(75, _("Meteo"));
     weather_apply_ui(&current);
+    hourly_strip_update(&current,
+                        hourly_valid ? hourly : NULL,
+                        hourly_valid ? 12 : 0,
+                        current.observationTime);
     if (strlen(api_key_3) > 0) {
         weather_apply_forecast(daily, 6);
         if (!s_boot_done) {

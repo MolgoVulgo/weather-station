@@ -9,6 +9,8 @@
 #include "boot_progress.h"
 #include "weather_service.h"
 #include "lv_i18n.h"
+#include "hourly_strip.h"
+#include "ui/screens.h"
 
 static uint32_t clock_seconds;
 static bool time_synced_once;
@@ -99,6 +101,8 @@ static void ui_screen_tick(lv_timer_t *timer)
         }
         ui_screen_apply_time(&timeinfo);
         ui_screen_apply_date(&timeinfo);
+        bool details_active = (lv_scr_act() == objects.ui_meteo_details);
+        hourly_strip_tick(&timeinfo, details_active);
         return;
     }
 
