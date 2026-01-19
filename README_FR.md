@@ -13,6 +13,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - `src/lv_conf.h`: configuration LVGL compile-time.
 - `src/ui/`: export EEZ Studio (UI, assets, screens). A ne pas modifier a la main.
 - `libraries/weather/`: fetcher meteo ESP-IDF et mapping icones OWM (index integre).
+- `src/hourly_strip.cpp` / `src/hourly_strip.h`: gestion du strip horaires (7 icones, animation et buffer local).
 
 ## UI: EEZ Studio
 - `ui/` (EEZ Studio): genere une structure `objects` (ex: `objects.ui_screen_label_time`) et un pipeline d'ecrans EEZ (`loadScreen`, `tick_screen`).
@@ -21,6 +22,11 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 ## Variables UI (EEZ)
 - Les variables exposees dans `src/ui/vars.h` doivent etre implementees dans `src/vars.c` via `get_var_` / `set_var_` (generer/mettre a jour `src/vars.c` a chaque modification de `src/ui/vars.h`).
 - L'UI met a jour les labels dans `src/ui/screens.c` a chaque `tick_screen()` en lisant ces getters.
+
+## UI: meteo details (hourly strip)
+- Le conteneur `hourly_strip` affiche 7 icones (index 3 = "now", 4..6 = futures, 0..2 = historique).
+- Les donnees horaires proviennent du One Call v3 (tableau `hourly`, 12 entrees chargees).
+- Le shift s'effectue a chaque changement d'heure si l'ecran `ui_meteo_details` est actif (animation 300ms).
 
 ## Internationalisation (i18n)
 - Les traductions sont definies dans `src/i18n.c` et resolues via la macro `_()` de `src/lv_i18n.h`.
@@ -95,6 +101,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - `ui_init()` (`src/ui/ui.c`): initialise les ecrans et charge l'ecran principal.
 - `ui_screen_start()` (`src/ui_screen.c`): initialise l'horloge a 00:00:00 et met a jour le label d'heure chaque seconde (24h ou 12h avec am/pm).
 - Service meteo (`src/weather_service.cpp`): recupere les donnees au demarrage puis toutes les `WEATHER_REFRESH_MINUTES`, met a jour les textes UI et charge l'icone depuis `icon_150.bin` via l'index integre. Les previsions sont formatees `min/max°unite`.
+- Icônes meteo (`src/weather_icons.c`): cache global `code/variant/bin` pour eviter les decodages redondants entre cibles.
 - Demarrage (`src/boot_progress.c`): met a jour `ui_start_bar`/`ui_start_bar_texte` et bascule vers `ui_meteo` une fois pret.
 - Portail captif (`src/wifi_portal.c`): AP + UI web de configuration, sauvegarde NVS, reboot. Le scan retourne jusqu'a 50 SSID et est relancable via le bouton; les resultats sont logges.
 - Recueil des fonctions principales: `docs/MAIN_FUNCTIONS.md`.

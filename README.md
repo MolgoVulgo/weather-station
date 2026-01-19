@@ -13,6 +13,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `src/lv_conf.h`: LVGL compile-time configuration.
 - `src/ui/`: EEZ Studio export (UI, assets, screens). Do not edit manually.
 - `libraries/weather/`: ESP-IDF weather fetcher and OWM icon mapping (uses embedded icon index).
+- `src/hourly_strip.cpp` / `src/hourly_strip.h`: hourly strip controller (7 icons, animation, local buffer).
 
 ## UI: EEZ Studio
 - `ui/` (EEZ Studio): generates an `objects` structure (e.g. `objects.ui_screen_label_time`) and an EEZ screen pipeline (`loadScreen`, `tick_screen`).
@@ -21,6 +22,11 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 ## UI Variables (EEZ)
 - Variables declared in `src/ui/vars.h` must be implemented in `src/vars.c` via `get_var_` / `set_var_` (generate/update `src/vars.c` whenever `src/ui/vars.h` changes).
 - The UI updates labels in `src/ui/screens.c` on each `tick_screen()` by reading these getters.
+
+## UI: meteo details (hourly strip)
+- The `hourly_strip` container shows 7 icons (index 3 = "now", 4..6 = future, 0..2 = history).
+- Hourly data comes from One Call v3 (`hourly` array, 12 entries loaded).
+- The strip shifts on each hour change if `ui_meteo_details` is active (300ms animation).
 
 ## Internationalization (i18n)
 - Translations are defined in `src/i18n.c` and resolved via the `_()` macro from `src/lv_i18n.h`.
@@ -95,6 +101,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `ui_init()` (`src/ui/ui.c`): initializes screens and loads the main screen.
 - `ui_screen_start()` (`src/ui_screen.c`): initializes the clock at 00:00:00 and updates the time label every second (24h or 12h with am/pm).
 - Weather service (`src/weather_service.cpp`): fetches current data at startup and then every `WEATHER_REFRESH_MINUTES`, updates UI text, and loads the icon from `icon_150.bin` using the embedded index. Forecast temperatures are formatted as `min/max°unit`.
+- Weather icons (`src/weather_icons.c`): global `code/variant/bin` cache to avoid redundant decodes across targets.
 - Boot progress (`src/boot_progress.c`): updates `ui_start_bar`/`ui_start_bar_texte` and switches to `ui_meteo` when ready.
 - Captive portal (`src/wifi_portal.c`): AP + web UI for Wi-Fi setup, save to NVS, reboot. Scan returns up to 50 SSIDs and is refreshable in the UI; scan results are logged.
 - Main function catalog: `docs/MAIN_FUNCTIONS.md`.
