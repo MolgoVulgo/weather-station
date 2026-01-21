@@ -58,6 +58,16 @@ Ce fichier définit le cadre de fonctionnement d’un **agent Codex (extension V
 2. Arborescence `src/`, `lib/`, `components/`
 3. Fichiers de configuration spécifiques (pins, sdkconfig, partitions)
 4. README / `docs/` si présents et `/docs` s’ils existent
+5. Vérifier la cohérence des types entre `src/ui/vars.h` et `src/ui/screens.c` (même type attendu pour chaque `get_var_*`) avant toute analyse.
+
+---
+
+## Check-list de validation (rapide)
+
+* Types `get_var_*` cohérents entre `src/ui/vars.h` et `src/ui/screens.c`
+* Aucune modification directe dans `src/ui/` (fichiers générés)
+* Framework confirmé via `platformio.ini`
+* Logs activables via flag `-DDEBUG_LOG`
 
 ---
 
