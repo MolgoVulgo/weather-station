@@ -10,6 +10,7 @@
 #include "esp_log.h"
 #include "weather_icons.h"
 #include "ui/screens.h"
+#include "ui/fonts.h"
 #include "vars.h"
 #include "temp_unit.h"
 #ifdef HOURLY_STRIP_SIMULATION
@@ -50,6 +51,7 @@ typedef struct {
 
 static HourlyStripState s_hourly = {};
 static lv_chart_series_t *s_hourly_chart_series = NULL;
+static lv_obj_t *s_hourly_chart = NULL;
 static lv_obj_t *s_hourly_chart_line_top = NULL;
 static lv_obj_t *s_hourly_chart_line_mid = NULL;
 static lv_obj_t *s_hourly_chart_line_bottom = NULL;
@@ -59,6 +61,83 @@ static lv_obj_t *s_hourly_chart_label_bottom = NULL;
 static lv_point_t s_hourly_chart_line_points_top[2];
 static lv_point_t s_hourly_chart_line_points_mid[2];
 static lv_point_t s_hourly_chart_line_points_bottom[2];
+static lv_coord_t s_hourly_chart_series_1_array[HOURLY_STRIP_ICON_COUNT] = { 2, 5, 8, 9, 7, 6, 3 };
+
+static lv_obj_t *hourly_strip_create_chart(lv_obj_t *parent)
+{
+    if (!parent) {
+        return NULL;
+    }
+
+    lv_obj_update_layout(parent);
+    lv_coord_t parent_w = lv_obj_get_width(parent);
+    if (parent_w > 400) {
+        parent_w = 400;
+    }
+
+    lv_obj_t *chart = lv_chart_create(parent);
+    lv_obj_set_width(chart, parent_w);
+    lv_obj_set_height(chart, 100);
+    lv_obj_set_pos(chart, 10, 0);
+    lv_obj_set_align(chart, LV_ALIGN_CENTER);
+    lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
+    lv_chart_set_point_count(chart, HOURLY_STRIP_ICON_COUNT);
+    lv_chart_set_range(chart, LV_CHART_AXIS_PRIMARY_Y, 0, 20);
+    lv_chart_set_range(chart, LV_CHART_AXIS_SECONDARY_Y, 0, 0);
+    lv_chart_set_div_line_count(chart, 5, HOURLY_STRIP_ICON_COUNT);
+    lv_chart_set_axis_tick(chart, LV_CHART_AXIS_PRIMARY_X, 10, 2, HOURLY_STRIP_ICON_COUNT, 3, false, 50);
+    lv_chart_set_axis_tick(chart, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2, true, 50);
+    lv_chart_set_axis_tick(chart, LV_CHART_AXIS_SECONDARY_Y, 0, 0, 0, 0, false, 25);
+    lv_obj_set_style_bg_color(chart, lv_color_hex(0x141b1e), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(chart, LV_OPA_COVER, LV_PART_MAIN);
+    lv_obj_set_style_border_width(chart, 1, LV_PART_MAIN);
+    lv_obj_set_style_border_color(chart, lv_color_hex(0x2a3336), LV_PART_MAIN);
+    lv_obj_set_style_line_color(chart, lv_color_hex(0x263034), LV_PART_MAIN);
+    lv_obj_set_style_text_color(chart, lv_color_hex(0xd0d0d0), LV_PART_TICKS);
+    lv_obj_set_style_text_font(chart, &ui_font_ui_16, LV_PART_TICKS);
+
+    s_hourly_chart_series = lv_chart_add_series(chart, lv_color_hex(0xb7b7b7), LV_CHART_AXIS_PRIMARY_Y);
+    lv_chart_set_series_color(chart, s_hourly_chart_series, lv_color_hex(0xb7b7b7));
+    lv_obj_set_style_bg_color(chart, lv_color_hex(0xc2c2c2), LV_PART_INDICATOR);
+    lv_obj_set_style_border_color(chart, lv_color_hex(0x9fa4a6), LV_PART_INDICATOR);
+    lv_obj_set_style_border_width(chart, 1, LV_PART_INDICATOR);
+    lv_obj_set_style_size(chart, 6, LV_PART_INDICATOR);
+    lv_chart_set_ext_y_array(chart, s_hourly_chart_series, s_hourly_chart_series_1_array);
+
+    return chart;
+}
+
+static void hourly_strip_detail_chart_refresh(void)
+{
+    if (s_hourly_chart && !lv_obj_is_valid(s_hourly_chart)) {
+        s_hourly_chart = NULL;
+        s_hourly_chart_series = NULL;
+    }
+
+    lv_obj_t *parent = objects.ui_detail_chart;
+    if (!parent) {
+        return;
+    }
+
+    if (s_hourly_chart && lv_obj_get_parent(s_hourly_chart) == parent) {
+        return;
+    }
+
+    if (s_hourly_chart) {
+        lv_obj_del(s_hourly_chart);
+        s_hourly_chart = NULL;
+        s_hourly_chart_series = NULL;
+    }
+
+    s_hourly_chart = hourly_strip_create_chart(parent);
+#ifdef DEBUG_LOG
+    if (s_hourly_chart) {
+        ESP_LOGI("HOURLY", "Chart horaire cree dans ui_detail_chart");
+    } else {
+        ESP_LOGW("HOURLY", "Chart horaire non cree (parent nul)");
+    }
+#endif
+}
 
 static lv_obj_t *hourly_strip_icon_obj(size_t index)
 {
@@ -123,40 +202,6 @@ static void hourly_strip_apply_icon(lv_obj_t *target, const HourlyIcon *icon)
     weather_icons_set_object(target, "icon_50.bin", icon->condition_id, icon->variant);
 }
 
-static void hourly_strip_init_chart(void)
-{
-    if (!objects.hoyly_char || s_hourly_chart_series) {
-        return;
-    }
-
-    lv_chart_set_type(objects.hoyly_char, LV_CHART_TYPE_LINE);
-    lv_chart_set_point_count(objects.hoyly_char, HOURLY_STRIP_ICON_COUNT);
-    lv_chart_set_update_mode(objects.hoyly_char, LV_CHART_UPDATE_MODE_SHIFT);
-    lv_obj_set_style_pad_left(objects.hoyly_char, 25, LV_PART_MAIN);
-    lv_obj_set_style_pad_right(objects.hoyly_char, 25, LV_PART_MAIN);
-    s_hourly_chart_series = lv_chart_add_series(
-        objects.hoyly_char,
-        lv_color_hex(0xffffffff),
-        LV_CHART_AXIS_PRIMARY_Y);
-
-    s_hourly_chart_line_top = lv_line_create(objects.hoyly_char);
-    s_hourly_chart_line_mid = lv_line_create(objects.hoyly_char);
-    s_hourly_chart_line_bottom = lv_line_create(objects.hoyly_char);
-    lv_obj_set_style_line_width(s_hourly_chart_line_top, 1, LV_PART_MAIN);
-    lv_obj_set_style_line_width(s_hourly_chart_line_mid, 1, LV_PART_MAIN);
-    lv_obj_set_style_line_width(s_hourly_chart_line_bottom, 1, LV_PART_MAIN);
-    lv_obj_set_style_line_color(s_hourly_chart_line_top, lv_color_hex(0xffffffff), LV_PART_MAIN);
-    lv_obj_set_style_line_color(s_hourly_chart_line_mid, lv_color_hex(0xffffffff), LV_PART_MAIN);
-    lv_obj_set_style_line_color(s_hourly_chart_line_bottom, lv_color_hex(0xffffffff), LV_PART_MAIN);
-
-    s_hourly_chart_label_top = lv_label_create(objects.hoyly_char);
-    s_hourly_chart_label_mid = lv_label_create(objects.hoyly_char);
-    s_hourly_chart_label_bottom = lv_label_create(objects.hoyly_char);
-    lv_obj_set_style_text_color(s_hourly_chart_label_top, lv_color_hex(0xffffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_color(s_hourly_chart_label_mid, lv_color_hex(0xffffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_color(s_hourly_chart_label_bottom, lv_color_hex(0xffffffff), LV_PART_MAIN);
-}
-
 static float hourly_strip_to_unit(float temp_c, bool is_fahrenheit)
 {
     if (std::isnan(temp_c)) {
@@ -202,113 +247,6 @@ static void hourly_strip_chart_set_label(lv_obj_t *label, const char *text, lv_c
     lv_obj_update_layout(label);
     lv_coord_t h = lv_obj_get_height(label);
     lv_obj_set_pos(label, x, (lv_coord_t)(y - h / 2));
-}
-
-static void hourly_strip_update_chart(void)
-{
-    hourly_strip_init_chart();
-    if (!objects.hoyly_char || !s_hourly_chart_series) {
-        return;
-    }
-
-    bool is_fahrenheit = temp_unit_is_fahrenheit();
-    float step = is_fahrenheit ? 50.0f : 10.0f;
-    bool any_valid = false;
-    float min_val = 0.0f;
-    float max_val = 0.0f;
-    for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
-        float temp = hourly_strip_to_unit(s_hourly.temps[i], is_fahrenheit);
-        if (!std::isnan(temp)) {
-            if (!any_valid) {
-                min_val = temp;
-                max_val = temp;
-                any_valid = true;
-            } else {
-                if (temp < min_val) {
-                    min_val = temp;
-                }
-                if (temp > max_val) {
-                    max_val = temp;
-                }
-            }
-        }
-    }
-
-    float fallback = any_valid ? min_val : 0.0f;
-    for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
-        float temp = hourly_strip_to_unit(s_hourly.temps[i], is_fahrenheit);
-        if (std::isnan(temp)) {
-            temp = fallback;
-        }
-        lv_chart_set_value_by_id(objects.hoyly_char,
-                                 s_hourly_chart_series,
-                                 (uint16_t)i,
-                                 (lv_coord_t)lrintf(temp));
-    }
-
-    float mid_val = 0.0f;
-    bool mid_is_zero = false;
-    if (!any_valid) {
-        mid_val = 0.0f;
-    } else if (min_val >= 0.0f) {
-        mid_val = hourly_strip_round_step((min_val + max_val) / 2.0f, step);
-    } else if (max_val <= 0.0f) {
-        mid_val = hourly_strip_round_step((min_val + max_val) / 2.0f, step);
-    } else if (min_val >= -step && max_val <= step) {
-        mid_val = 0.0f;
-        mid_is_zero = true;
-    } else {
-        mid_val = hourly_strip_round_step((min_val + max_val) / 2.0f, step);
-    }
-
-    float top_val = mid_val + step;
-    float bottom_val = mid_val - step;
-    lv_chart_set_range(objects.hoyly_char,
-                       LV_CHART_AXIS_PRIMARY_Y,
-                       (int32_t)lrintf(bottom_val),
-                       (int32_t)lrintf(top_val));
-
-    lv_obj_update_layout(objects.hoyly_char);
-    lv_coord_t chart_w = lv_obj_get_width(objects.hoyly_char);
-    lv_coord_t chart_h = lv_obj_get_height(objects.hoyly_char);
-    lv_coord_t pad_left = lv_obj_get_style_pad_left(objects.hoyly_char, LV_PART_MAIN);
-    lv_coord_t pad_right = lv_obj_get_style_pad_right(objects.hoyly_char, LV_PART_MAIN);
-    lv_coord_t plot_w = chart_w - pad_left - pad_right;
-    if (plot_w < 0) {
-        plot_w = 0;
-    }
-    lv_coord_t y_top = 0;
-    lv_coord_t y_mid = chart_h / 2;
-    lv_coord_t y_bottom = chart_h - 1;
-
-    hourly_strip_chart_set_line(s_hourly_chart_line_top,
-                                s_hourly_chart_line_points_top,
-                                pad_left,
-                                y_top,
-                                plot_w);
-    hourly_strip_chart_set_line(s_hourly_chart_line_mid,
-                                s_hourly_chart_line_points_mid,
-                                pad_left,
-                                y_mid,
-                                plot_w);
-    hourly_strip_chart_set_line(s_hourly_chart_line_bottom,
-                                s_hourly_chart_line_points_bottom,
-                                pad_left,
-                                y_bottom,
-                                plot_w);
-
-    lv_color_t mid_color = mid_is_zero ? lv_color_hex(0xff00aaff) : lv_color_hex(0xffffffff);
-    lv_obj_set_style_line_color(s_hourly_chart_line_mid, mid_color, LV_PART_MAIN);
-
-    char label_buf[16];
-    snprintf(label_buf, sizeof(label_buf), "%.0f", top_val);
-    hourly_strip_chart_set_label(s_hourly_chart_label_top, label_buf, 0, y_top);
-    snprintf(label_buf, sizeof(label_buf), "%.0f", mid_val);
-    hourly_strip_chart_set_label(s_hourly_chart_label_mid, label_buf, 0, y_mid);
-    snprintf(label_buf, sizeof(label_buf), "%.0f", bottom_val);
-    hourly_strip_chart_set_label(s_hourly_chart_label_bottom, label_buf, 0, y_bottom);
-
-    lv_chart_refresh(objects.hoyly_char);
 }
 
 static float hourly_strip_temp_from_entry(const HourlyEntry *entry, float fallback)
@@ -386,7 +324,6 @@ static void hourly_strip_apply_all(void)
         }
     }
     hourly_strip_apply_temps();
-    hourly_strip_update_chart();
 }
 
 static size_t hourly_strip_find_cursor(time_t now_ts)
@@ -679,6 +616,10 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
     if (!timeinfo || !hourly_strip_ready() || !s_hourly.initialized) {
         return;
     }
+
+    if (details_active) {
+        hourly_strip_detail_chart_refresh();
+    }
 #ifdef HOURLY_STRIP_SIMULATION
     hourly_strip_sim_tick(timeinfo, details_active);
     return;
@@ -702,4 +643,9 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
         ESP_LOGI("HOURLY", "Shift horaire sans animation");
 #endif
     }
+}
+
+extern "C" void hourly_strip_detail_chart_ensure(void)
+{
+    hourly_strip_detail_chart_refresh();
 }

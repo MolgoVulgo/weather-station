@@ -138,3 +138,4 @@ Ce fichier définit le cadre de fonctionnement d’un **agent Codex (extension V
 * Action(s) appliquée(s)
 * Indication de validation sur cible
 * Hypothèses si nécessaires
+* Toujours proposer un commit récapitulatif après génération de code (message du commit en anglais).

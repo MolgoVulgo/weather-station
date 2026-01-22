@@ -7,6 +7,14 @@
 extern "C" {
 #endif
 
+typedef struct _groups_t {
+    lv_group_t *test;
+} groups_t;
+
+extern groups_t groups;
+
+void ui_create_groups();
+
 typedef struct _objects_t {
     lv_obj_t *ui_start;
     lv_obj_t *ui_meteo;
@@ -73,7 +81,7 @@ typedef struct _objects_t {
     lv_obj_t *hourly_temp_4;
     lv_obj_t *hourly_temp_5;
     lv_obj_t *hourly_temp_6;
-    lv_obj_t *hoyly_char;
+    lv_obj_t *ui_detail_chart;
     lv_obj_t *obj17;
     lv_obj_t *obj18;
     lv_obj_t *obj19;

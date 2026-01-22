@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 void hourly_strip_tick(const struct tm *timeinfo, bool details_active);
+void hourly_strip_detail_chart_ensure(void);
 
 #ifdef __cplusplus
 }
