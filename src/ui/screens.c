@@ -661,7 +661,7 @@ void tick_screen_ui_meteo() {
         }
     }
     {
-        const char *new_val = get_var_ui_meteo_ft5();
+        const char *new_val = get_var_ui_meteo_ft6();
         const char *cur_val = lv_label_get_text(objects.ui_meteo_ft1_6);
         if (strcmp(new_val, cur_val) != 0) {
             tick_value_change_obj = objects.ui_meteo_ft1_6;
@@ -811,7 +811,7 @@ void create_screen_ui_meteo_details() {
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.obj25 = obj;
-            lv_obj_set_pos(obj, 164, 11);
+            lv_obj_set_pos(obj, 156, 14);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "");
         }
@@ -830,24 +830,24 @@ void create_screen_ui_meteo_details() {
         {
             lv_obj_t *obj = lv_led_create(parent_obj);
             objects.obj19 = obj;
-            lv_obj_set_pos(obj, 230, 293);
-            lv_obj_set_size(obj, 18, 16);
-            lv_led_set_color(obj, lv_color_hex(0xffffffff));
+            lv_obj_set_pos(obj, 231, 293);
+            lv_obj_set_size(obj, 16, 16);
+            lv_led_set_color(obj, lv_color_hex(0xffcac8e9));
             lv_led_set_brightness(obj, 255);
         }
         {
             lv_obj_t *obj = lv_led_create(parent_obj);
             objects.obj20 = obj;
-            lv_obj_set_pos(obj, 268, 293);
-            lv_obj_set_size(obj, 18, 16);
+            lv_obj_set_pos(obj, 269, 293);
+            lv_obj_set_size(obj, 16, 16);
             lv_led_set_color(obj, lv_color_hex(0xffffffff));
             lv_led_set_brightness(obj, 0);
         }
         {
             lv_obj_t *obj = lv_led_create(parent_obj);
             objects.obj21 = obj;
-            lv_obj_set_pos(obj, 193, 293);
-            lv_obj_set_size(obj, 18, 16);
+            lv_obj_set_pos(obj, 194, 293);
+            lv_obj_set_size(obj, 16, 16);
             lv_led_set_color(obj, lv_color_hex(0xffffffff));
             lv_led_set_brightness(obj, 0);
         }
@@ -943,7 +943,7 @@ void create_screen_ui_meteo_details() {
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            lv_obj_set_pos(obj, 446, 251);
+            lv_obj_set_pos(obj, 456, 293);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "%");
         }

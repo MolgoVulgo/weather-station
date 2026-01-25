@@ -292,7 +292,7 @@
       {
         "objID": "d9e54306-0e44-4993-810a-d694d5ceabc4",
         "name": "ui_humidity",
-        "type": "integer",
+        "type": "string",
         "defaultValue": "0",
         "persistent": false,
         "native": false
@@ -300,7 +300,7 @@
       {
         "objID": "859d6cbd-6c51-4566-a024-ac451b61128f",
         "name": "ui_clouds",
-        "type": "integer",
+        "type": "string",
         "defaultValue": "0",
         "persistent": false,
         "native": false
@@ -308,7 +308,7 @@
       {
         "objID": "f33c9d66-a21c-4601-ebd7-9d850218b654",
         "name": "ui_pop",
-        "type": "integer",
+        "type": "string",
         "defaultValue": "0",
         "persistent": false,
         "native": false
@@ -2125,7 +2125,7 @@
               },
               "group": "",
               "groupIndex": 0,
-              "text": "ui_meteo_ft5",
+              "text": "ui_meteo_ft6",
               "textType": "expression",
               "longMode": "WRAP",
               "recolor": false,
@@ -3439,8 +3439,8 @@
             {
               "objID": "309a7f45-77e7-4986-f4f2-80a42ba03a5b",
               "type": "LVGLLabelWidget",
-              "left": 446,
-              "top": 251,
+              "left": 456,
+              "top": 293,
               "width": 8,
               "height": 17,
               "customInputs": [],

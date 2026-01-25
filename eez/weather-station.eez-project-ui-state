@@ -2,7 +2,7 @@
   "navigation": {
     "selectedUserPageObject": "[weather-station.eez-project]:/userPages/2",
     "selectedUserWidgetObject": "[weather-station.eez-project]:/userWidgets/0",
-    "selectedGlobalVariableObject": "[weather-station.eez-project]:/variables/globalVariables/25",
+    "selectedGlobalVariableObject": "[weather-station.eez-project]:/variables/globalVariables/24",
     "selectedThemeObject": "[weather-station.eez-project]:/themes/0",
     "selectedFontObject": "[weather-station.eez-project]:/fonts/4",
     "selectedBitmapObject": "[weather-station.eez-project]:/bitmaps/3",
@@ -205,6 +205,7 @@
               "type": "tabset",
               "id": "EDITORS",
               "weight": 65,
+              "selected": 3,
               "enableDeleteWhenEmpty": false,
               "enableClose": false,
               "children": [
@@ -253,8 +254,7 @@
                   },
                   "icon": "svg:page"
                 }
-              ],
-              "active": true
+              ]
             },
             {
               "type": "row",
@@ -274,7 +274,8 @@
                       "enableClose": false,
                       "icon": "svg:properties"
                     }
-                  ]
+                  ],
+                  "active": true
                 },
                 {
                   "type": "tabset",
@@ -1130,6 +1131,9 @@
         "0": {
           "0": {
             "1": {}
+          },
+          "1": {
+            "$selected": true
           }
         }
       },

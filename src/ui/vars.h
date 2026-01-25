@@ -91,12 +91,12 @@ extern bool get_var_ui_setting_temp();
 extern void set_var_ui_setting_temp(bool value);
 extern int32_t get_var_ui_setting_laguage();
 extern void set_var_ui_setting_laguage(int32_t value);
-extern int32_t get_var_ui_humidity();
-extern void set_var_ui_humidity(int32_t value);
-extern int32_t get_var_ui_clouds();
-extern void set_var_ui_clouds(int32_t value);
-extern int32_t get_var_ui_pop();
-extern void set_var_ui_pop(int32_t value);
+extern const char *get_var_ui_humidity();
+extern void set_var_ui_humidity(const char *value);
+extern const char *get_var_ui_clouds();
+extern void set_var_ui_clouds(const char *value);
+extern const char *get_var_ui_pop();
+extern void set_var_ui_pop(const char *value);
 
 
 #ifdef __cplusplus
