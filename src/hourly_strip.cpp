@@ -9,6 +9,8 @@
 #include "weather_fetcher.h"
 #include "esp_log.h"
 #include "ui/screens.h"
+#include "ui/images.h"
+#include "weather_icons.h"
 #include "ui/fonts.h"
 #include "vars.h"
 #include "temp_unit.h"
@@ -185,6 +187,117 @@ static float hourly_strip_temp_from_entry(const HourlyEntry *entry, float fallba
     return fallback;
 }
 
+static lv_obj_t *hourly_detail_widget_container(size_t index)
+{
+    switch (index) {
+    case 0:
+        return objects.obj11;
+    case 1:
+        return objects.obj12;
+    case 2:
+        return objects.obj13;
+    case 3:
+        return objects.obj14;
+    case 4:
+        return objects.obj15;
+    case 5:
+        return objects.obj16;
+    case 6:
+        return objects.obj17;
+    default:
+        return NULL;
+    }
+}
+
+static lv_obj_t *hourly_detail_widget_label(size_t index)
+{
+    switch (index) {
+    case 0:
+        return objects.obj11__obj0;
+    case 1:
+        return objects.obj12__obj0;
+    case 2:
+        return objects.obj13__obj0;
+    case 3:
+        return objects.obj14__obj0;
+    case 4:
+        return objects.obj15__obj0;
+    case 5:
+        return objects.obj16__obj0;
+    case 6:
+        return objects.obj17__obj0;
+    default:
+        return NULL;
+    }
+}
+
+static void hourly_detail_set_widget(size_t index, const HourlyEntry *entry, time_t fallback_ts)
+{
+    lv_obj_t *container = hourly_detail_widget_container(index);
+    lv_obj_t *label = hourly_detail_widget_label(index);
+    if (!container || !label) {
+        return;
+    }
+
+    lv_obj_t *icon = lv_obj_get_child(container, 0);
+    time_t ts = fallback_ts;
+    if (entry && entry->valid) {
+        ts = entry->timestamp;
+    }
+
+    struct tm info;
+    if (ts > 0 && localtime_r(&ts, &info)) {
+        char buf[8];
+        snprintf(buf, sizeof(buf), "%02dH", info.tm_hour);
+        buf[sizeof(buf) - 1] = '\0';
+        lv_label_set_text(label, buf);
+    } else {
+        lv_label_set_text(label, "");
+    }
+
+    if (!icon) {
+        return;
+    }
+
+    if (entry && entry->valid && entry->conditionId != 0) {
+        weather_icons_set_object(icon, "icon_50.bin", (uint16_t)entry->conditionId, entry->iconVariant);
+    } else {
+        lv_img_set_src(icon, &img_clear_day_50);
+    }
+}
+
+static void hourly_detail_apply_widgets(time_t now_ts)
+{
+    if (!objects.ui_detail_hourly) {
+        return;
+    }
+
+    if (!now_ts) {
+        now_ts = time(NULL);
+    }
+
+    time_t base_ts = now_ts;
+    if (s_hourly.hourly_count > 0 &&
+        s_hourly.hourly_cache[0].valid &&
+        s_hourly.hourly_cache[0].timestamp > 0) {
+        base_ts = s_hourly.hourly_cache[0].timestamp;
+    }
+
+    for (size_t slot = 0; slot < HOURLY_STRIP_ICON_COUNT; ++slot) {
+        const HourlyEntry *entry = NULL;
+        int idx = (int)slot - 2;
+        if (idx >= 0 && (size_t)idx < s_hourly.hourly_count) {
+            entry = &s_hourly.hourly_cache[idx];
+        }
+        time_t fallback_ts = 0;
+        if (base_ts) {
+            int offset_hours = (int)slot - 2;
+            fallback_ts = base_ts + (time_t)(offset_hours * 3600);
+        }
+        hourly_detail_set_widget(slot, entry, fallback_ts);
+    }
+}
+
 static int hourly_strip_percent_from_pop(float pop)
 {
     if (std::isnan(pop)) {
@@ -351,6 +464,7 @@ void hourly_strip_update(const CurrentWeatherData *current,
         detail_entry = &s_hourly.hourly_cache[s_hourly.hourly_cursor];
     }
     hourly_strip_set_detail_vars(detail_entry);
+    hourly_detail_apply_widgets(now_ts);
 
     float now_temp = NAN;
     if (current && !std::isnan(current->temperature)) {

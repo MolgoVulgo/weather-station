@@ -138,4 +138,4 @@ Ce fichier définit le cadre de fonctionnement d’un **agent Codex (extension V
 * Action(s) appliquée(s)
 * Indication de validation sur cible
 * Hypothèses si nécessaires
-* Toujours proposer un commit récapitulatif après génération de code (message du commit en anglais).
+* Après toute génération ou modification de code, analyser le diff réel et les fichiers impactés afin de produire un message de commit en anglais, à l’impératif, reflétant l’intention principale du changement, sa portée fonctionnelle ou technique, et conforme aux conventions usuelles de Git (pas de résumé vague ou tautologique).
