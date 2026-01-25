@@ -25,6 +25,9 @@ char ui_meteo_ft3[32] = { 0 };
 char ui_meteo_ft4[32] = { 0 };
 char ui_meteo_ft5[32] = { 0 };
 char ui_meteo_ft6[32] = { 0 };
+char ui_humidity[16] = { 0 };
+char ui_clouds[16] = { 0 };
+char ui_pop[16] = { 0 };
 char ui_start_bar_texte[64] = { 0 };
 int32_t ui_start_bar = 0;
 int32_t ui_setting_gmt = 0;
@@ -323,4 +326,49 @@ void set_var_ui_setting_laguage(int32_t value)
 void ui_settings_enable_language_restart(bool enable)
 {
     s_lang_restart_enabled = enable;
+}
+
+int32_t get_var_ui_humidity(void)
+{
+    return (int32_t)(intptr_t)ui_humidity;
+}
+
+void set_var_ui_humidity(int32_t value)
+{
+    const char *text = (const char *)(intptr_t)value;
+    if (!text) {
+        text = "";
+    }
+    strncpy(ui_humidity, text, sizeof(ui_humidity) / sizeof(char));
+    ui_humidity[sizeof(ui_humidity) / sizeof(char) - 1] = 0;
+}
+
+int32_t get_var_ui_clouds(void)
+{
+    return (int32_t)(intptr_t)ui_clouds;
+}
+
+void set_var_ui_clouds(int32_t value)
+{
+    const char *text = (const char *)(intptr_t)value;
+    if (!text) {
+        text = "";
+    }
+    strncpy(ui_clouds, text, sizeof(ui_clouds) / sizeof(char));
+    ui_clouds[sizeof(ui_clouds) / sizeof(char) - 1] = 0;
+}
+
+int32_t get_var_ui_pop(void)
+{
+    return (int32_t)(intptr_t)ui_pop;
+}
+
+void set_var_ui_pop(int32_t value)
+{
+    const char *text = (const char *)(intptr_t)value;
+    if (!text) {
+        text = "";
+    }
+    strncpy(ui_pop, text, sizeof(ui_pop) / sizeof(char));
+    ui_pop[sizeof(ui_pop) / sizeof(char) - 1] = 0;
 }

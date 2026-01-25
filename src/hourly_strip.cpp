@@ -38,15 +38,15 @@ typedef struct {
 static HourlyStripState s_hourly = {};
 static lv_chart_series_t *s_hourly_chart_series = NULL;
 static lv_obj_t *s_hourly_chart = NULL;
-static lv_obj_t *s_hourly_chart_line_top = NULL;
-static lv_obj_t *s_hourly_chart_line_mid = NULL;
-static lv_obj_t *s_hourly_chart_line_bottom = NULL;
-static lv_obj_t *s_hourly_chart_label_top = NULL;
-static lv_obj_t *s_hourly_chart_label_mid = NULL;
-static lv_obj_t *s_hourly_chart_label_bottom = NULL;
-static lv_point_t s_hourly_chart_line_points_top[2];
-static lv_point_t s_hourly_chart_line_points_mid[2];
-static lv_point_t s_hourly_chart_line_points_bottom[2];
+static lv_obj_t *s_hourly_chart_line_top __attribute__((unused)) = NULL;
+static lv_obj_t *s_hourly_chart_line_mid __attribute__((unused)) = NULL;
+static lv_obj_t *s_hourly_chart_line_bottom __attribute__((unused)) = NULL;
+static lv_obj_t *s_hourly_chart_label_top __attribute__((unused)) = NULL;
+static lv_obj_t *s_hourly_chart_label_mid __attribute__((unused)) = NULL;
+static lv_obj_t *s_hourly_chart_label_bottom __attribute__((unused)) = NULL;
+static lv_point_t s_hourly_chart_line_points_top[2] __attribute__((unused));
+static lv_point_t s_hourly_chart_line_points_mid[2] __attribute__((unused));
+static lv_point_t s_hourly_chart_line_points_bottom[2] __attribute__((unused));
 static lv_coord_t s_hourly_chart_series_1_array[HOURLY_STRIP_ICON_COUNT] = { 2, 5, 8, 9, 7, 6, 3 };
 
 static lv_obj_t *hourly_strip_create_chart(lv_obj_t *parent)
@@ -127,10 +127,10 @@ static void hourly_strip_detail_chart_refresh(void)
 
 static bool hourly_strip_ready(void)
 {
-    return objects.hourly_strip != NULL;
+    return objects.ui_detail_hourly != NULL;
 }
 
-static float hourly_strip_to_unit(float temp_c, bool is_fahrenheit)
+static float __attribute__((unused)) hourly_strip_to_unit(float temp_c, bool is_fahrenheit)
 {
     if (std::isnan(temp_c)) {
         return temp_c;
@@ -141,7 +141,7 @@ static float hourly_strip_to_unit(float temp_c, bool is_fahrenheit)
     return (temp_c * 9.0f / 5.0f) + 32.0f;
 }
 
-static float hourly_strip_round_step(float value, float step)
+static float __attribute__((unused)) hourly_strip_round_step(float value, float step)
 {
     if (std::isnan(value) || step <= 0.0f) {
         return value;
@@ -149,11 +149,11 @@ static float hourly_strip_round_step(float value, float step)
     return step * std::round(value / step);
 }
 
-static void hourly_strip_chart_set_line(lv_obj_t *line,
-                                        lv_point_t *points,
-                                        lv_coord_t x,
-                                        lv_coord_t y,
-                                        lv_coord_t width)
+static void __attribute__((unused)) hourly_strip_chart_set_line(lv_obj_t *line,
+                                                                lv_point_t *points,
+                                                                lv_coord_t x,
+                                                                lv_coord_t y,
+                                                                lv_coord_t width)
 {
     if (!line || !points) {
         return;
@@ -166,7 +166,7 @@ static void hourly_strip_chart_set_line(lv_obj_t *line,
     lv_obj_set_pos(line, x, y);
 }
 
-static void hourly_strip_chart_set_label(lv_obj_t *label, const char *text, lv_coord_t x, lv_coord_t y)
+static void __attribute__((unused)) hourly_strip_chart_set_label(lv_obj_t *label, const char *text, lv_coord_t x, lv_coord_t y)
 {
     if (!label) {
         return;
@@ -183,6 +183,48 @@ static float hourly_strip_temp_from_entry(const HourlyEntry *entry, float fallba
         return entry->temperature;
     }
     return fallback;
+}
+
+static int hourly_strip_percent_from_pop(float pop)
+{
+    if (std::isnan(pop)) {
+        return -1;
+    }
+    int value = (int)std::lround(pop * 100.0f);
+    if (value < 0) {
+        value = 0;
+    } else if (value > 100) {
+        value = 100;
+    }
+    return value;
+}
+
+static void hourly_strip_set_detail_vars(const HourlyEntry *entry)
+{
+    char buf[16];
+    if (entry && entry->valid) {
+        snprintf(buf, sizeof(buf), "%u%%", (unsigned)entry->humidity);
+        buf[sizeof(buf) - 1] = '\0';
+        set_var_ui_humidity((int32_t)(intptr_t)buf);
+
+        snprintf(buf, sizeof(buf), "%u%%", (unsigned)entry->clouds);
+        buf[sizeof(buf) - 1] = '\0';
+        set_var_ui_clouds((int32_t)(intptr_t)buf);
+
+        int pop_percent = hourly_strip_percent_from_pop(entry->pop);
+        if (pop_percent >= 0) {
+            snprintf(buf, sizeof(buf), "%d%%", pop_percent);
+        } else {
+            buf[0] = '\0';
+        }
+        buf[sizeof(buf) - 1] = '\0';
+        set_var_ui_pop((int32_t)(intptr_t)buf);
+        return;
+    }
+
+    set_var_ui_humidity((int32_t)(intptr_t)"");
+    set_var_ui_clouds((int32_t)(intptr_t)"");
+    set_var_ui_pop((int32_t)(intptr_t)"");
 }
 
 static size_t hourly_strip_find_cursor(time_t now_ts)
@@ -301,6 +343,14 @@ void hourly_strip_update(const CurrentWeatherData *current,
         s_hourly.hourly_count = 0;
         s_hourly.hourly_cursor = 0;
     }
+
+    const HourlyEntry *detail_entry = NULL;
+    if (s_hourly.hourly_count > 0 &&
+        s_hourly.hourly_cursor < s_hourly.hourly_count &&
+        s_hourly.hourly_cache[s_hourly.hourly_cursor].valid) {
+        detail_entry = &s_hourly.hourly_cache[s_hourly.hourly_cursor];
+    }
+    hourly_strip_set_detail_vars(detail_entry);
 
     float now_temp = NAN;
     if (current && !std::isnan(current->temperature)) {

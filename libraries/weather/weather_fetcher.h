@@ -60,6 +60,8 @@ struct HourlyEntry {
   float temperature = NAN;
   float feelsLike = NAN;
   float pop = NAN;
+  uint8_t humidity = 0;
+  uint8_t clouds = 0;
   float rain1h = NAN;
   float snow1h = NAN;
   std::string iconId;

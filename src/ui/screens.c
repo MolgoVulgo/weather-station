@@ -806,6 +806,7 @@ void create_screen_ui_meteo_details() {
             lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_border_width(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_radius(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
@@ -886,6 +887,66 @@ void create_screen_ui_meteo_details() {
             lv_line_set_points(obj, line_points, 2);
             lv_obj_set_style_line_color(obj, lv_color_hex(0xffff0000), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 24, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "Humidité:");
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 181, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "Nuages:");
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 317, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "Précipitation:");
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 112, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "%");
+        }
+        {
+            // ui_humidity
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.ui_humidity = obj;
+            lv_obj_set_pos(obj, 96, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "");
+        }
+        {
+            // ui_pop
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.ui_pop = obj;
+            lv_obj_set_pos(obj, 429, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "");
+        }
+        {
+            // ui_clouds
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.ui_clouds = obj;
+            lv_obj_set_pos(obj, 237, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "");
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 253, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "%");
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 446, 251);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "%");
+        }
     }
     
     tick_screen_ui_meteo_details();
@@ -905,6 +966,33 @@ void tick_screen_ui_meteo_details() {
         if (strcmp(new_val, cur_val) != 0) {
             tick_value_change_obj = objects.obj25;
             lv_label_set_text(objects.obj25, new_val);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        const char *new_val = get_var_ui_humidity();
+        const char *cur_val = lv_label_get_text(objects.ui_humidity);
+        if (strcmp(new_val, cur_val) != 0) {
+            tick_value_change_obj = objects.ui_humidity;
+            lv_label_set_text(objects.ui_humidity, new_val);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        const char *new_val = get_var_ui_pop();
+        const char *cur_val = lv_label_get_text(objects.ui_pop);
+        if (strcmp(new_val, cur_val) != 0) {
+            tick_value_change_obj = objects.ui_pop;
+            lv_label_set_text(objects.ui_pop, new_val);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        const char *new_val = get_var_ui_clouds();
+        const char *cur_val = lv_label_get_text(objects.ui_clouds);
+        if (strcmp(new_val, cur_val) != 0) {
+            tick_value_change_obj = objects.ui_clouds;
+            lv_label_set_text(objects.ui_clouds, new_val);
             tick_value_change_obj = NULL;
         }
     }
@@ -1237,15 +1325,15 @@ void create_user_widget_hourly(lv_obj_t *parent_obj, int startWidgetIndex) {
         lv_obj_t *parent_obj = obj;
         {
             lv_obj_t *obj = lv_img_create(parent_obj);
-            lv_obj_set_pos(obj, 5, 0);
+            lv_obj_set_pos(obj, 0, 0);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_img_set_src(obj, &img_clear_day_50);
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
             ((lv_obj_t **)&objects)[startWidgetIndex + 0] = obj;
-            lv_obj_set_pos(obj, 17, 60);
-            lv_obj_set_size(obj, 27, LV_SIZE_CONTENT);
+            lv_obj_set_pos(obj, 0, 60);
+            lv_obj_set_size(obj, 50, LV_SIZE_CONTENT);
             lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &ui_font_ui_16, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);

@@ -377,6 +377,8 @@ static bool parse_onecall(const char *json,
         entry.temperature = json_number_or(item, "temp", entry.temperature);
         entry.feelsLike = json_number_or(item, "feels_like", entry.feelsLike);
         entry.pop = json_number_or(item, "pop", entry.pop);
+        entry.humidity = static_cast<uint8_t>(json_int_or(item, "humidity", entry.humidity));
+        entry.clouds = static_cast<uint8_t>(json_int_or(item, "clouds", entry.clouds));
         cJSON *rain = cJSON_GetObjectItemCaseSensitive(item, "rain");
         if (cJSON_IsObject(rain)) {
           entry.rain1h = json_number_or(rain, "1h", entry.rain1h);

@@ -83,6 +83,9 @@ typedef struct _objects_t {
     lv_obj_t *obj22;
     lv_obj_t *obj23;
     lv_obj_t *obj24;
+    lv_obj_t *ui_humidity;
+    lv_obj_t *ui_pop;
+    lv_obj_t *ui_clouds;
     lv_obj_t *obj25;
     lv_obj_t *obj26;
     lv_obj_t *obj27;

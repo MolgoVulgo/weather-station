@@ -37,7 +37,10 @@ enum FlowGlobalVariables {
     FLOW_GLOBAL_VARIABLE_UI_SETTING_HOUR = 19,
     FLOW_GLOBAL_VARIABLE_UI_SETTING_GMT_TXT = 20,
     FLOW_GLOBAL_VARIABLE_UI_SETTING_TEMP = 21,
-    FLOW_GLOBAL_VARIABLE_UI_SETTING_LAGUAGE = 22
+    FLOW_GLOBAL_VARIABLE_UI_SETTING_LAGUAGE = 22,
+    FLOW_GLOBAL_VARIABLE_UI_HUMIDITY = 23,
+    FLOW_GLOBAL_VARIABLE_UI_CLOUDS = 24,
+    FLOW_GLOBAL_VARIABLE_UI_POP = 25
 };
 
 // Native global variables
@@ -88,6 +91,12 @@ extern bool get_var_ui_setting_temp();
 extern void set_var_ui_setting_temp(bool value);
 extern int32_t get_var_ui_setting_laguage();
 extern void set_var_ui_setting_laguage(int32_t value);
+extern int32_t get_var_ui_humidity();
+extern void set_var_ui_humidity(int32_t value);
+extern int32_t get_var_ui_clouds();
+extern void set_var_ui_clouds(int32_t value);
+extern int32_t get_var_ui_pop();
+extern void set_var_ui_pop(int32_t value);
 
 
 #ifdef __cplusplus
