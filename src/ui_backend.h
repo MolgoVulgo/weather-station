@@ -3,7 +3,6 @@
 
 #include <lvgl.h>
 
-#if defined(UI_BACKEND_EEZ)
 #include "ui/ui.h"
 #include "ui/screens.h"
 
@@ -36,8 +35,5 @@ static inline lv_obj_t *ui_weather_forecast_icon(size_t index)
         return NULL;
     }
 }
-#else
-#error "Define UI_BACKEND_EEZ to select the UI backend."
-#endif
 
 #endif

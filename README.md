@@ -83,7 +83,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 
 ### Using EEZ Studio (`ui/`)
 1. Keep `#include "ui_backend.h"` in `src/weatherStation.c` and `src/ui_screen.c`.
-2. In `platformio.ini`, enable `-D UI_BACKEND_EEZ=1`.
+2. The UI backend is fixed to EEZ (no build flag switch).
 3. Verify `src/CMakeLists.txt`:
    - `INCLUDE_DIRS` contains `src/ui`
 

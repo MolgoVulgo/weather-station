@@ -3,6 +3,9 @@
 ## Objet
 Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x480). Le code demarre LVGL 8.3 avec un pilote LCD AXS15231B en QSPI et un controle tactile associe.
 
+## Etat actuel (UI)
+- Aucun changement fonctionnel en cours cote code; dernier diff git ne touche que l'etat UI EEZ (`eez/weather-station.eez-project-ui-state`).
+
 ## Structure des sources
 - `src/weatherStation.c`: point d'entree `app_main()` et sequence de demarrage LVGL + init SD.
 - `src/esp_bsp.c` / `src/esp_bsp.h`: BSP carte, init bus QSPI/I2C, LCD, tactile, backlight, sync tear.
@@ -83,7 +86,7 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 
 ### Utiliser EEZ Studio (`ui/`)
 1. Garder `#include "ui_backend.h"` dans `src/weatherStation.c` et `src/ui_screen.c`.
-2. Dans `platformio.ini`, activer `-D UI_BACKEND_EEZ=1`.
+2. Le backend UI est fixe sur EEZ (pas de flag de selection).
 3. Verifier `src/CMakeLists.txt`:
    - `INCLUDE_DIRS` contient `src/ui`
 

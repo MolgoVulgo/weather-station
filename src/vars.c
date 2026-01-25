@@ -328,47 +328,38 @@ void ui_settings_enable_language_restart(bool enable)
     s_lang_restart_enabled = enable;
 }
 
-int32_t get_var_ui_humidity(void)
+const char *get_var_ui_humidity(void)
 {
-    return (int32_t)(intptr_t)ui_humidity;
+    return ui_humidity;
 }
 
-void set_var_ui_humidity(int32_t value)
+void set_var_ui_humidity(const char *value)
 {
-    const char *text = (const char *)(intptr_t)value;
-    if (!text) {
-        text = "";
-    }
+    const char *text = value ? value : "";
     strncpy(ui_humidity, text, sizeof(ui_humidity) / sizeof(char));
     ui_humidity[sizeof(ui_humidity) / sizeof(char) - 1] = 0;
 }
 
-int32_t get_var_ui_clouds(void)
+const char *get_var_ui_clouds(void)
 {
-    return (int32_t)(intptr_t)ui_clouds;
+    return ui_clouds;
 }
 
-void set_var_ui_clouds(int32_t value)
+void set_var_ui_clouds(const char *value)
 {
-    const char *text = (const char *)(intptr_t)value;
-    if (!text) {
-        text = "";
-    }
+    const char *text = value ? value : "";
     strncpy(ui_clouds, text, sizeof(ui_clouds) / sizeof(char));
     ui_clouds[sizeof(ui_clouds) / sizeof(char) - 1] = 0;
 }
 
-int32_t get_var_ui_pop(void)
+const char *get_var_ui_pop(void)
 {
-    return (int32_t)(intptr_t)ui_pop;
+    return ui_pop;
 }
 
-void set_var_ui_pop(int32_t value)
+void set_var_ui_pop(const char *value)
 {
-    const char *text = (const char *)(intptr_t)value;
-    if (!text) {
-        text = "";
-    }
+    const char *text = value ? value : "";
     strncpy(ui_pop, text, sizeof(ui_pop) / sizeof(char));
     ui_pop[sizeof(ui_pop) / sizeof(char) - 1] = 0;
 }

@@ -318,11 +318,11 @@ static void hourly_strip_set_detail_vars(const HourlyEntry *entry)
     if (entry && entry->valid) {
         snprintf(buf, sizeof(buf), "%u%%", (unsigned)entry->humidity);
         buf[sizeof(buf) - 1] = '\0';
-        set_var_ui_humidity((int32_t)(intptr_t)buf);
+        set_var_ui_humidity(buf);
 
         snprintf(buf, sizeof(buf), "%u%%", (unsigned)entry->clouds);
         buf[sizeof(buf) - 1] = '\0';
-        set_var_ui_clouds((int32_t)(intptr_t)buf);
+        set_var_ui_clouds(buf);
 
         int pop_percent = hourly_strip_percent_from_pop(entry->pop);
         if (pop_percent >= 0) {
@@ -331,13 +331,13 @@ static void hourly_strip_set_detail_vars(const HourlyEntry *entry)
             buf[0] = '\0';
         }
         buf[sizeof(buf) - 1] = '\0';
-        set_var_ui_pop((int32_t)(intptr_t)buf);
+        set_var_ui_pop(buf);
         return;
     }
 
-    set_var_ui_humidity((int32_t)(intptr_t)"");
-    set_var_ui_clouds((int32_t)(intptr_t)"");
-    set_var_ui_pop((int32_t)(intptr_t)"");
+    set_var_ui_humidity("");
+    set_var_ui_clouds("");
+    set_var_ui_pop("");
 }
 
 static size_t hourly_strip_find_cursor(time_t now_ts)
