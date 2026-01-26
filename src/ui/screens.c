@@ -797,9 +797,8 @@ void create_screen_ui_meteo_details() {
             // ui_detail_chart
             lv_obj_t *obj = lv_obj_create(parent_obj);
             objects.ui_detail_chart = obj;
-            lv_obj_set_pos(obj, 20, 127);
-            lv_obj_set_size(obj, 440, 100);
-            lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_pos(obj, 15, 127);
+            lv_obj_set_size(obj, 445, 100);
             lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -807,6 +806,7 @@ void create_screen_ui_meteo_details() {
             lv_obj_set_style_border_width(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_radius(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+            lv_obj_set_style_pad_left(obj, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
@@ -886,6 +886,7 @@ void create_screen_ui_meteo_details() {
             };
             lv_line_set_points(obj, line_points, 2);
             lv_obj_set_style_line_color(obj, lv_color_hex(0xffff0000), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_line_opa(obj, 125, LV_PART_MAIN | LV_STATE_DEFAULT);
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
@@ -917,6 +918,7 @@ void create_screen_ui_meteo_details() {
             objects.ui_humidity = obj;
             lv_obj_set_pos(obj, 96, 251);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "");
         }
         {
@@ -925,6 +927,7 @@ void create_screen_ui_meteo_details() {
             objects.ui_pop = obj;
             lv_obj_set_pos(obj, 429, 251);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "");
         }
         {
@@ -933,6 +936,7 @@ void create_screen_ui_meteo_details() {
             objects.ui_clouds = obj;
             lv_obj_set_pos(obj, 237, 251);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "");
         }
         {
@@ -943,7 +947,7 @@ void create_screen_ui_meteo_details() {
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            lv_obj_set_pos(obj, 456, 293);
+            lv_obj_set_pos(obj, 445, 251);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "%");
         }

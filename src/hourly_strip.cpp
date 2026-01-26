@@ -34,6 +34,7 @@ typedef struct {
     int last_sim_stamp = -1;
     bool sim_pending = false;
     float sim_temp = NAN;
+    int8_t sim_dir = 1;
 #endif
 } HourlyStripState;
 
@@ -50,6 +51,121 @@ static lv_point_t s_hourly_chart_line_points_top[2] __attribute__((unused));
 static lv_point_t s_hourly_chart_line_points_mid[2] __attribute__((unused));
 static lv_point_t s_hourly_chart_line_points_bottom[2] __attribute__((unused));
 static lv_coord_t s_hourly_chart_series_1_array[HOURLY_STRIP_ICON_COUNT] = { 2, 5, 8, 9, 7, 6, 3 };
+
+static bool hourly_strip_chart_compute_range(lv_coord_t *out_min, lv_coord_t *out_max)
+{
+    if (!out_min || !out_max) {
+        return false;
+    }
+
+    float min_temp = NAN;
+    float max_temp = NAN;
+    for (size_t i = 2; i < HOURLY_STRIP_ICON_COUNT; ++i) {
+        float temp = s_hourly.temps[i];
+        if (std::isnan(temp)) {
+            continue;
+        }
+        if (std::isnan(min_temp) || temp < min_temp) {
+            min_temp = temp;
+        }
+        if (std::isnan(max_temp) || temp > max_temp) {
+            max_temp = temp;
+        }
+    }
+
+    if (std::isnan(min_temp) || std::isnan(max_temp)) {
+        return false;
+    }
+
+    int32_t min_floor = (int32_t)std::floor((min_temp - 5.0f) / 5.0f) * 5;
+    int32_t max_ceil = (int32_t)std::ceil((max_temp + 5.0f) / 5.0f) * 5;
+
+    int32_t range_min = min_floor;
+    int32_t range_max = range_min + 20;
+    if (max_ceil > range_max) {
+        range_max = max_ceil;
+        range_min = range_max - 20;
+    }
+
+    *out_min = (lv_coord_t)range_min;
+    *out_max = (lv_coord_t)range_max;
+    return true;
+}
+
+static void hourly_strip_chart_sync(void)
+{
+    for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
+        float temp = s_hourly.temps[i];
+        if (std::isnan(temp)) {
+            s_hourly_chart_series_1_array[i] = 0;
+        } else {
+            s_hourly_chart_series_1_array[i] = (lv_coord_t)std::lround(temp);
+        }
+    }
+
+    if (s_hourly_chart && s_hourly_chart_series) {
+        lv_coord_t range_min = 0;
+        lv_coord_t range_max = 0;
+        if (hourly_strip_chart_compute_range(&range_min, &range_max)) {
+            lv_chart_set_range(s_hourly_chart, LV_CHART_AXIS_PRIMARY_Y, range_min, range_max);
+#ifdef DEBUG_LOG
+            char label_buf[128];
+            int offset = snprintf(label_buf, sizeof(label_buf), "[");
+            if (offset < 0) {
+                label_buf[0] = '\0';
+            } else {
+                for (int val = (int)range_max; val >= (int)range_min; val -= 5) {
+                    int written = snprintf(label_buf + offset, sizeof(label_buf) - (size_t)offset,
+                                           "%s%d", (offset > 1) ? " " : "", val);
+                    if (written < 0 || (size_t)written >= sizeof(label_buf) - (size_t)offset) {
+                        break;
+                    }
+                    offset += written;
+                }
+                if ((size_t)offset < sizeof(label_buf) - 1) {
+                    label_buf[offset++] = ']';
+                    label_buf[offset] = '\0';
+                } else {
+                    label_buf[sizeof(label_buf) - 1] = '\0';
+                }
+            }
+            ESP_LOGI("HOURLY", "new val : %d : range Y %s", (int)s_hourly_chart_series_1_array[2], label_buf);
+#endif
+        }
+        lv_chart_refresh(s_hourly_chart);
+    }
+}
+
+static void hourly_strip_chart_draw_cb(lv_event_t *event)
+{
+    lv_obj_draw_part_dsc_t *dsc = (lv_obj_draw_part_dsc_t *)lv_event_get_param(event);
+    if (!dsc) {
+        return;
+    }
+    if (dsc->part != LV_PART_TICKS) {
+        return;
+    }
+    if (dsc->type != LV_CHART_DRAW_PART_TICK_LABEL) {
+        return;
+    }
+    if (dsc->id != LV_CHART_AXIS_PRIMARY_Y) {
+        return;
+    }
+    if (dsc->value != 0 || !dsc->p1) {
+        return;
+    }
+
+    lv_obj_t *chart = lv_event_get_target(event);
+    lv_draw_line_dsc_t line_dsc;
+    lv_draw_line_dsc_init(&line_dsc);
+    line_dsc.color = lv_palette_main(LV_PALETTE_BLUE);
+    line_dsc.width = 2;
+    line_dsc.opa = LV_OPA_50;
+
+    lv_point_t p1 = { chart->coords.x1, dsc->p1->y };
+    lv_point_t p2 = { chart->coords.x2, dsc->p1->y };
+    lv_draw_line(dsc->draw_ctx, &line_dsc, &p1, &p2);
+}
 
 static lv_obj_t *hourly_strip_create_chart(lv_obj_t *parent)
 {
@@ -91,6 +207,7 @@ static lv_obj_t *hourly_strip_create_chart(lv_obj_t *parent)
     lv_obj_set_style_border_width(chart, 1, LV_PART_INDICATOR);
     lv_obj_set_style_size(chart, 6, LV_PART_INDICATOR);
     lv_chart_set_ext_y_array(chart, s_hourly_chart_series, s_hourly_chart_series_1_array);
+    lv_obj_add_event_cb(chart, hourly_strip_chart_draw_cb, LV_EVENT_DRAW_PART_BEGIN, NULL);
 
     return chart;
 }
@@ -118,6 +235,7 @@ static void hourly_strip_detail_chart_refresh(void)
     }
 
     s_hourly_chart = hourly_strip_create_chart(parent);
+    hourly_strip_chart_sync();
 #ifdef DEBUG_LOG
     if (s_hourly_chart) {
         ESP_LOGI("HOURLY", "Chart horaire cree dans ui_detail_chart");
@@ -326,7 +444,7 @@ static void hourly_strip_set_detail_vars(const HourlyEntry *entry)
 
         int pop_percent = hourly_strip_percent_from_pop(entry->pop);
         if (pop_percent >= 0) {
-            snprintf(buf, sizeof(buf), "%d%%", pop_percent);
+            snprintf(buf, sizeof(buf), "%d", pop_percent);
         } else {
             buf[0] = '\0';
         }
@@ -390,14 +508,27 @@ static void hourly_strip_shift_no_anim(void)
 {
     float new_temp = hourly_strip_next_temp();
     hourly_strip_shift_state(&new_temp);
+    hourly_strip_chart_sync();
 }
 
 #ifdef HOURLY_STRIP_SIMULATION
-static float hourly_strip_random_temp(void)
+static float hourly_strip_sim_next_temp(void)
 {
-    uint32_t r = esp_random();
-    int32_t temp = (int32_t)(r % 45) - 5;
-    return (float)temp;
+    if (std::isnan(s_hourly.sim_temp)) {
+        s_hourly.sim_temp = -25.0f;
+        s_hourly.sim_dir = 1;
+    }
+
+    float next = s_hourly.sim_temp + (float)(2 * s_hourly.sim_dir);
+    if (next >= 25.0f) {
+        next = 25.0f;
+        s_hourly.sim_dir = -1;
+    } else if (next <= -25.0f) {
+        next = -25.0f;
+        s_hourly.sim_dir = 1;
+    }
+
+    return next;
 }
 
 static void hourly_strip_sim_tick(const struct tm *timeinfo, bool details_active)
@@ -406,8 +537,10 @@ static void hourly_strip_sim_tick(const struct tm *timeinfo, bool details_active
         return;
     }
 
-    if (std::isnan(s_hourly.temps[2])) {
-        float temp_seed = hourly_strip_random_temp();
+    if (std::isnan(s_hourly.sim_temp)) {
+        s_hourly.sim_temp = -25.0f;
+        s_hourly.sim_dir = 1;
+        float temp_seed = s_hourly.sim_temp;
         for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
             s_hourly.temps[i] = temp_seed;
         }
@@ -418,11 +551,11 @@ static void hourly_strip_sim_tick(const struct tm *timeinfo, bool details_active
         return;
     }
     s_hourly.last_sim_stamp = stamp;
-    if ((timeinfo->tm_sec % 30) != 0) {
+    if ((timeinfo->tm_sec % 15) != 0) {
         return;
     }
 
-    s_hourly.sim_temp = hourly_strip_random_temp();
+    s_hourly.sim_temp = hourly_strip_sim_next_temp();
     s_hourly.sim_pending = true;
     (void)details_active;
     hourly_strip_shift_no_anim();
@@ -476,29 +609,25 @@ void hourly_strip_update(const CurrentWeatherData *current,
     }
     s_hourly.temps[2] = fallback_temp;
 
+    s_hourly.temps[0] = 0.0f;
+    s_hourly.temps[1] = 0.0f;
+
     if (hourly && hourly_count > 0) {
-        for (size_t i = 0; i < 2; ++i) {
-            size_t offset = 2 - i;
-            float temp = fallback_temp;
-            if (s_hourly.hourly_cursor >= offset) {
-                size_t idx = s_hourly.hourly_cursor - offset;
-                temp = hourly_strip_temp_from_entry(&s_hourly.hourly_cache[idx], fallback_temp);
-            }
-            s_hourly.temps[i] = temp;
-        }
         for (size_t i = 0; i < 4; ++i) {
             size_t idx = s_hourly.hourly_cursor + i;
             if (idx < s_hourly.hourly_count) {
                 s_hourly.temps[3 + i] = hourly_strip_temp_from_entry(&s_hourly.hourly_cache[idx], fallback_temp);
             } else {
-                s_hourly.temps[3 + i] = fallback_temp;
+                s_hourly.temps[3 + i] = 0.0f;
             }
         }
     } else {
-        for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
-            s_hourly.temps[i] = fallback_temp;
+        for (size_t i = 0; i < 4; ++i) {
+            s_hourly.temps[3 + i] = 0.0f;
         }
     }
+
+    hourly_strip_chart_sync();
 
     if (!now_ts) {
         now_ts = time(NULL);

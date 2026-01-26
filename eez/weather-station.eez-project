@@ -2693,9 +2693,9 @@
             {
               "objID": "f8a1db32-03e1-4a31-9b7f-59925e8fa624",
               "type": "LVGLContainerWidget",
-              "left": 20,
+              "left": 15,
               "top": 127,
-              "width": 440,
+              "width": 445,
               "height": 100,
               "customInputs": [],
               "customOutputs": [],
@@ -2725,7 +2725,14 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "e9b0da99-f6bf-4ce8-d89d-8c8b45d4f35a"
+                "objID": "e9b0da99-f6bf-4ce8-d89d-8c8b45d4f35a",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "pad_left": 5
+                    }
+                  }
+                }
               },
               "group": "",
               "groupIndex": 0
@@ -3085,7 +3092,8 @@
                 "definition": {
                   "MAIN": {
                     "DEFAULT": {
-                      "line_color": "#ff0000"
+                      "line_color": "#ff0000",
+                      "line_opa": 125
                     }
                   }
                 }
@@ -3296,7 +3304,14 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "440dfd5a-4abc-4504-f137-e06e1b62813a"
+                "objID": "440dfd5a-4abc-4504-f137-e06e1b62813a",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "RIGHT"
+                    }
+                  }
+                }
               },
               "group": "",
               "groupIndex": 0,
@@ -3340,7 +3355,14 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "a20999f9-d7e6-43e4-c6c0-8773b411def9"
+                "objID": "a20999f9-d7e6-43e4-c6c0-8773b411def9",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "RIGHT"
+                    }
+                  }
+                }
               },
               "group": "",
               "groupIndex": 0,
@@ -3384,7 +3406,14 @@
               "disabledStateType": "literal",
               "states": "",
               "localStyles": {
-                "objID": "0e3cbfe8-2b1e-42cd-c5d5-ec91a8c6a3fc"
+                "objID": "0e3cbfe8-2b1e-42cd-c5d5-ec91a8c6a3fc",
+                "definition": {
+                  "MAIN": {
+                    "DEFAULT": {
+                      "text_align": "RIGHT"
+                    }
+                  }
+                }
               },
               "group": "",
               "groupIndex": 0,
@@ -3439,8 +3468,8 @@
             {
               "objID": "309a7f45-77e7-4986-f4f2-80a42ba03a5b",
               "type": "LVGLLabelWidget",
-              "left": 456,
-              "top": 293,
+              "left": 445,
+              "top": 251,
               "width": 8,
               "height": 17,
               "customInputs": [],
