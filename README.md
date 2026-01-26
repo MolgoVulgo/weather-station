@@ -113,3 +113,12 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - Weather fetch requires `esp_http_client`, `esp-tls`, `mbedtls`, `json` (declared in `src/CMakeLists.txt`).
 - Weather service uses `OPENWEATHERMAP_API_KEY_3` (One Call v3) when set; otherwise it falls back to `OPENWEATHERMAP_API_KEY_2` (current weather v2.5).
 - Weather mode is exclusive: full v3 (current + forecast via One Call) or full v2.5 (current + forecast), never mixed.
+
+## Logging
+- Application logs use `ESP_LOGx` with per-module tags.
+- Default verbosity is controlled by PlatformIO flags:
+  - `LOG_LOCAL_LEVEL` sets the compile-time maximum.
+  - `APP_LOG_FILTERS=1` enables tag filtering at runtime.
+  - `APP_LOG_APP_LEVEL` sets the level for application tags.
+  - `APP_LOG_NOISY_LEVEL` reduces noise for system tags (wifi, gpio, sdmmc, mbedtls, cert bundle).
+- SD card banners, `sdmmc_card_print_info()`, and SD directory listing are only printed when `DEBUG_LOG` is defined.

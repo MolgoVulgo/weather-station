@@ -30,8 +30,12 @@
 
 static const char *TAG = "WeatherStation";
 
+#ifdef DEBUG_LOG
 #define logSection(section) \
-  ESP_LOGI(TAG, "\n\n************* %s **************\n", section);
+  ESP_LOGI(TAG, "\n\n************* %s **************\n", section)
+#else
+#define logSection(section) ((void)0)
+#endif
 
 /**
  * @brief LVGL porting app
@@ -43,6 +47,48 @@ static const char *TAG = "WeatherStation";
  *
  */
 #define LVGL_PORT_ROTATION_DEGREE (90)
+
+static void log_configure(void)
+{
+#ifdef APP_LOG_FILTERS
+#ifndef APP_LOG_APP_LEVEL
+#define APP_LOG_APP_LEVEL ESP_LOG_INFO
+#endif
+#ifndef APP_LOG_NOISY_LEVEL
+#define APP_LOG_NOISY_LEVEL ESP_LOG_WARN
+#endif
+  const esp_log_level_t app_level = (esp_log_level_t)APP_LOG_APP_LEVEL;
+  const esp_log_level_t noisy_level = (esp_log_level_t)APP_LOG_NOISY_LEVEL;
+
+  esp_log_level_set("WeatherStation", app_level);
+  esp_log_level_set("WeatherStationBsp", app_level);
+  esp_log_level_set("TimeSync", app_level);
+  esp_log_level_set("WeatherIcons", app_level);
+  esp_log_level_set("WeatherService", app_level);
+  esp_log_level_set("WeatherCache", app_level);
+  esp_log_level_set("WiFi", app_level);
+  esp_log_level_set("WiFiPortal", app_level);
+  esp_log_level_set("UI", app_level);
+  esp_log_level_set("LVGL", app_level);
+  esp_log_level_set("LVFS", app_level);
+  esp_log_level_set("BootProgress", app_level);
+  esp_log_level_set("Svg2BinFS", app_level);
+  esp_log_level_set("TempUnit", app_level);
+  esp_log_level_set("Lang", app_level);
+  esp_log_level_set("lcd_panel.axs15231b", app_level);
+  esp_log_level_set("TP", app_level);
+
+  esp_log_level_set("wifi", noisy_level);
+  esp_log_level_set("esp-x509-crt-bundle", noisy_level);
+  esp_log_level_set("mbedtls", noisy_level);
+  esp_log_level_set("gpio", noisy_level);
+  esp_log_level_set("sdmmc", noisy_level);
+  esp_log_level_set("sdmmc_cmd", noisy_level);
+  esp_log_level_set("sdmmc_host", noisy_level);
+  esp_log_level_set("sdmmc_sd", noisy_level);
+  esp_log_level_set("sdspi", noisy_level);
+#endif
+}
 
 static bool weather_keys_missing_in_nvs(void)
 {
@@ -99,12 +145,18 @@ static esp_err_t sdcard_mount(void)
   }
 
   ESP_LOGI(TAG, "SD mounted at %s", mount_point);
+#ifdef DEBUG_LOG
   sdmmc_card_print_info(stdout, card);
+#endif
   return ESP_OK;
 }
 
 static void sdcard_list_dir(const char *path)
 {
+#ifndef DEBUG_LOG
+  (void)path;
+  return;
+#else
   DIR *dir = opendir(path);
   if (!dir) {
     ESP_LOGE(TAG, "SD opendir failed: %s", path);
@@ -117,6 +169,7 @@ static void sdcard_list_dir(const char *path)
     ESP_LOGI(TAG, "  %s", ent->d_name);
   }
   closedir(dir);
+#endif
 }
 
 static bool wait_for_wifi_ip(uint32_t timeout_ms)
@@ -167,6 +220,7 @@ void setup()
   //  String title = "WeatherStation";
 
   //vTaskDelay(pdMS_TO_TICKS(10000));
+  log_configure();
   logSection("WeatherStation start");
   esp_chip_info_t chip_info;
   uint32_t flash_size;

@@ -116,3 +116,12 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - La meteo requiert `esp_http_client`, `esp-tls`, `mbedtls`, `json` (declares dans `src/CMakeLists.txt`).
 - Le service meteo utilise `OPENWEATHERMAP_API_KEY_3` (One Call v3) si renseigne, sinon `OPENWEATHERMAP_API_KEY_2` (meteo courante v2.5).
 - Le mode meteo est exclusif: soit full v3 (courant + previsions via One Call), soit full v2.5, jamais hybride.
+
+## Logs
+- Les logs applicatifs utilisent `ESP_LOGx` avec un tag par module.
+- La verbosite par defaut est pilotee via PlatformIO :
+  - `LOG_LOCAL_LEVEL` fixe le niveau max au compile-time.
+  - `APP_LOG_FILTERS=1` active le filtrage par tag au runtime.
+  - `APP_LOG_APP_LEVEL` definit le niveau des tags applicatifs.
+  - `APP_LOG_NOISY_LEVEL` reduit le bruit des tags systeme (wifi, gpio, sdmmc, mbedtls, bundle cert).
+- Les bannieres SD, `sdmmc_card_print_info()` et le listing des fichiers SD ne s'affichent que si `DEBUG_LOG` est defini.
