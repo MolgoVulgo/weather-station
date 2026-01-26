@@ -30,11 +30,18 @@ typedef struct {
     size_t hourly_cursor = 0;
     HourlyEntry hourly_cache[HOURLY_CACHE_MAX] = {};
     float temps[HOURLY_STRIP_ICON_COUNT] = {};
+    bool detail_init_pending = false;
+    bool detail_init_done = false;
+    HourlyEntry history[2] = {};
+    bool history_valid[2] = { false, false };
 #ifdef HOURLY_STRIP_SIMULATION
     int last_sim_stamp = -1;
     bool sim_pending = false;
     float sim_temp = NAN;
     int8_t sim_dir = 1;
+    bool sim_active = false;
+    time_t sim_base_ts = 0;
+    size_t sim_icon_index = 0;
 #endif
 } HourlyStripState;
 
@@ -51,6 +58,49 @@ static lv_point_t s_hourly_chart_line_points_top[2] __attribute__((unused));
 static lv_point_t s_hourly_chart_line_points_mid[2] __attribute__((unused));
 static lv_point_t s_hourly_chart_line_points_bottom[2] __attribute__((unused));
 static lv_coord_t s_hourly_chart_series_1_array[HOURLY_STRIP_ICON_COUNT] = { 2, 5, 8, 9, 7, 6, 3 };
+
+static void hourly_strip_apply_detail(time_t now_ts);
+static void hourly_detail_apply_widgets(time_t now_ts);
+static void hourly_strip_set_detail_vars(const HourlyEntry *entry);
+
+#ifdef HOURLY_STRIP_SIMULATION
+static const struct {
+    int conditionId;
+    uint8_t iconVariant;
+} s_hourly_sim_icons[] = {
+    { 800, 0 }, { 801, 0 }, { 802, 0 }, { 803, 0 }, { 804, 0 },
+    { 500, 0 }, { 501, 0 }, { 502, 0 }, { 600, 0 }, { 602, 0 },
+    { 200, 0 }, { 210, 0 },
+};
+#endif
+
+static void hourly_strip_history_reset(void)
+{
+    s_hourly.history_valid[0] = false;
+    s_hourly.history_valid[1] = false;
+}
+
+static void hourly_strip_history_seed(const HourlyEntry *entry)
+{
+    if (!entry || !entry->valid) {
+        return;
+    }
+    s_hourly.history[0] = *entry;
+    s_hourly.history[1] = *entry;
+    s_hourly.history_valid[0] = true;
+    s_hourly.history_valid[1] = true;
+}
+
+static void hourly_strip_history_push(const HourlyEntry *entry)
+{
+    if (!entry || !entry->valid) {
+        return;
+    }
+    s_hourly.history[1] = s_hourly.history[0];
+    s_hourly.history_valid[1] = s_hourly.history_valid[0];
+    s_hourly.history[0] = *entry;
+    s_hourly.history_valid[0] = true;
+}
 
 static bool hourly_strip_chart_compute_range(lv_coord_t *out_min, lv_coord_t *out_max)
 {
@@ -134,6 +184,18 @@ static void hourly_strip_chart_sync(void)
         }
         lv_chart_refresh(s_hourly_chart);
     }
+}
+
+static void hourly_strip_apply_detail(time_t now_ts)
+{
+    const HourlyEntry *detail_entry = NULL;
+    if (s_hourly.hourly_count > 0 &&
+        s_hourly.hourly_cursor < s_hourly.hourly_count &&
+        s_hourly.hourly_cache[s_hourly.hourly_cursor].valid) {
+        detail_entry = &s_hourly.hourly_cache[s_hourly.hourly_cursor];
+    }
+    hourly_strip_set_detail_vars(detail_entry);
+    hourly_detail_apply_widgets(now_ts);
 }
 
 static void hourly_strip_chart_draw_cb(lv_event_t *event)
@@ -349,7 +411,10 @@ static lv_obj_t *hourly_detail_widget_label(size_t index)
     }
 }
 
-static void hourly_detail_set_widget(size_t index, const HourlyEntry *entry, time_t fallback_ts)
+static void hourly_detail_set_widget(size_t index,
+                                     const HourlyEntry *entry,
+                                     const HourlyEntry *icon_entry,
+                                     time_t fallback_ts)
 {
     lv_obj_t *container = hourly_detail_widget_container(index);
     lv_obj_t *label = hourly_detail_widget_label(index);
@@ -377,8 +442,9 @@ static void hourly_detail_set_widget(size_t index, const HourlyEntry *entry, tim
         return;
     }
 
-    if (entry && entry->valid && entry->conditionId != 0) {
-        weather_icons_set_object(icon, "icon_50.bin", (uint16_t)entry->conditionId, entry->iconVariant);
+    const HourlyEntry *icon_src = icon_entry ? icon_entry : entry;
+    if (icon_src && icon_src->valid && icon_src->conditionId != 0) {
+        weather_icons_set_object(icon, "icon_50.bin", (uint16_t)icon_src->conditionId, icon_src->iconVariant);
     } else {
         lv_img_set_src(icon, &img_clear_day_50);
     }
@@ -394,16 +460,21 @@ static void hourly_detail_apply_widgets(time_t now_ts)
         now_ts = time(NULL);
     }
 
-    time_t base_ts = now_ts;
+    const HourlyEntry *current_entry = NULL;
     if (s_hourly.hourly_count > 0 &&
-        s_hourly.hourly_cache[0].valid &&
-        s_hourly.hourly_cache[0].timestamp > 0) {
-        base_ts = s_hourly.hourly_cache[0].timestamp;
+        s_hourly.hourly_cursor < s_hourly.hourly_count &&
+        s_hourly.hourly_cache[s_hourly.hourly_cursor].valid) {
+        current_entry = &s_hourly.hourly_cache[s_hourly.hourly_cursor];
+    }
+
+    time_t base_ts = now_ts;
+    if (current_entry && current_entry->timestamp > 0) {
+        base_ts = current_entry->timestamp;
     }
 
     for (size_t slot = 0; slot < HOURLY_STRIP_ICON_COUNT; ++slot) {
         const HourlyEntry *entry = NULL;
-        int idx = (int)slot - 2;
+        int idx = (int)s_hourly.hourly_cursor + ((int)slot - 2);
         if (idx >= 0 && (size_t)idx < s_hourly.hourly_count) {
             entry = &s_hourly.hourly_cache[idx];
         }
@@ -412,7 +483,57 @@ static void hourly_detail_apply_widgets(time_t now_ts)
             int offset_hours = (int)slot - 2;
             fallback_ts = base_ts + (time_t)(offset_hours * 3600);
         }
-        hourly_detail_set_widget(slot, entry, fallback_ts);
+        const HourlyEntry *icon_entry = entry;
+        if (slot == 0 && s_hourly.history_valid[1]) {
+            icon_entry = &s_hourly.history[1];
+        } else if (slot == 1 && s_hourly.history_valid[0]) {
+            icon_entry = &s_hourly.history[0];
+        } else if (s_hourly.detail_init_pending && slot < 2 && current_entry) {
+            icon_entry = current_entry;
+        }
+        hourly_detail_set_widget(slot, entry, icon_entry, fallback_ts);
+#ifdef DEBUG_LOG
+        if (slot == 0) {
+            char log_buf[128];
+            int offset = snprintf(log_buf, sizeof(log_buf), "Icons hourly:");
+            if (offset < 0) {
+                log_buf[0] = '\0';
+            }
+            for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
+                const HourlyEntry *e = NULL;
+                int idx2 = (int)s_hourly.hourly_cursor + ((int)i - 2);
+                if (idx2 >= 0 && (size_t)idx2 < s_hourly.hourly_count) {
+                    e = &s_hourly.hourly_cache[idx2];
+                }
+                const HourlyEntry *icon_src = e;
+                if (i == 0 && s_hourly.history_valid[1]) {
+                    icon_src = &s_hourly.history[1];
+                } else if (i == 1 && s_hourly.history_valid[0]) {
+                    icon_src = &s_hourly.history[0];
+                } else if (s_hourly.detail_init_pending && i < 2 && current_entry) {
+                    icon_src = current_entry;
+                }
+                int code = (icon_src && icon_src->valid) ? icon_src->conditionId : 0;
+                if (offset > 0 && (size_t)offset < sizeof(log_buf)) {
+                    int written = snprintf(log_buf + offset,
+                                           sizeof(log_buf) - (size_t)offset,
+                                           " %d",
+                                           code);
+                    if (written < 0 || (size_t)written >= sizeof(log_buf) - (size_t)offset) {
+                        break;
+                    }
+                    offset += written;
+                }
+            }
+            ESP_LOGI("HOURLY", "%s", log_buf);
+        }
+#endif
+    }
+
+    if (s_hourly.detail_init_pending && current_entry) {
+        hourly_strip_history_seed(current_entry);
+        s_hourly.detail_init_pending = false;
+        s_hourly.detail_init_done = true;
     }
 }
 
@@ -500,18 +621,93 @@ static void hourly_strip_shift_state(const float *new_temp)
 #endif
     if (s_hourly.hourly_count > 0 &&
         s_hourly.hourly_cursor + 1 < s_hourly.hourly_count) {
+#ifdef HOURLY_STRIP_SIMULATION
+        if (!s_hourly.sim_active) {
+            s_hourly.hourly_cursor++;
+        }
+#else
         s_hourly.hourly_cursor++;
+#endif
     }
 }
 
-static void hourly_strip_shift_no_anim(void)
+static void hourly_strip_shift_no_anim(time_t now_ts, bool push_history)
 {
+    if (push_history) {
+        if (s_hourly.hourly_count > 0 &&
+            s_hourly.hourly_cursor < s_hourly.hourly_count &&
+            s_hourly.hourly_cache[s_hourly.hourly_cursor].valid) {
+            hourly_strip_history_push(&s_hourly.hourly_cache[s_hourly.hourly_cursor]);
+        }
+    }
     float new_temp = hourly_strip_next_temp();
     hourly_strip_shift_state(&new_temp);
     hourly_strip_chart_sync();
+    hourly_strip_apply_detail(now_ts);
 }
 
 #ifdef HOURLY_STRIP_SIMULATION
+static void hourly_strip_sim_fill_entry(HourlyEntry *entry, time_t ts, size_t icon_index)
+{
+    if (!entry) {
+        return;
+    }
+    const size_t icon_count = sizeof(s_hourly_sim_icons) / sizeof(s_hourly_sim_icons[0]);
+    size_t idx = (icon_index < icon_count) ? icon_index : (icon_index % icon_count);
+    entry->timestamp = ts;
+    entry->temperature = s_hourly.sim_temp;
+    entry->feelsLike = s_hourly.sim_temp;
+    entry->pop = 0.15f;
+    entry->humidity = 55;
+    entry->clouds = 35;
+    entry->rain1h = NAN;
+    entry->snow1h = NAN;
+    entry->iconId.clear();
+    entry->iconVariant = s_hourly_sim_icons[idx].iconVariant;
+    entry->conditionId = s_hourly_sim_icons[idx].conditionId;
+    entry->valid = true;
+}
+
+static void hourly_strip_sim_seed(time_t now_ts)
+{
+    if (s_hourly.sim_active) {
+        return;
+    }
+    if (!now_ts) {
+        now_ts = time(NULL);
+    }
+    s_hourly.sim_base_ts = now_ts;
+    s_hourly.sim_icon_index = 0;
+    s_hourly.hourly_count = HOURLY_CACHE_MAX;
+    s_hourly.hourly_cursor = 0;
+    for (size_t i = 0; i < HOURLY_CACHE_MAX; ++i) {
+        time_t ts = now_ts + (time_t)(i * 3600);
+        hourly_strip_sim_fill_entry(&s_hourly.hourly_cache[i], ts, s_hourly.sim_icon_index++);
+    }
+    s_hourly.sim_active = true;
+    hourly_strip_apply_detail(now_ts);
+}
+
+static void hourly_strip_sim_shift_cache(time_t now_ts)
+{
+    if (!s_hourly.sim_active) {
+        hourly_strip_sim_seed(now_ts);
+        return;
+    }
+    if (s_hourly.hourly_count == 0) {
+        s_hourly.hourly_count = HOURLY_CACHE_MAX;
+    }
+    for (size_t i = 0; i + 1 < s_hourly.hourly_count; ++i) {
+        s_hourly.hourly_cache[i] = s_hourly.hourly_cache[i + 1];
+    }
+    s_hourly.sim_base_ts += 3600;
+    time_t ts = s_hourly.sim_base_ts + (time_t)((s_hourly.hourly_count - 1) * 3600);
+    hourly_strip_sim_fill_entry(&s_hourly.hourly_cache[s_hourly.hourly_count - 1],
+                                ts,
+                                s_hourly.sim_icon_index++);
+    s_hourly.hourly_cursor = 0;
+}
+
 static float hourly_strip_sim_next_temp(void)
 {
     if (std::isnan(s_hourly.sim_temp)) {
@@ -546,19 +742,31 @@ static void hourly_strip_sim_tick(const struct tm *timeinfo, bool details_active
         }
     }
 
+    struct tm timeinfo_copy = *timeinfo;
+    time_t now_ts = mktime(&timeinfo_copy);
+    if (now_ts == (time_t)-1) {
+        now_ts = 0;
+    }
+
     int stamp = timeinfo->tm_min * 60 + timeinfo->tm_sec;
     if (stamp == s_hourly.last_sim_stamp) {
         return;
     }
     s_hourly.last_sim_stamp = stamp;
-    if ((timeinfo->tm_sec % 15) != 0) {
+    if ((timeinfo->tm_sec % 30) != 0) {
         return;
     }
 
+    if (s_hourly.sim_active &&
+        s_hourly.hourly_count > 0 &&
+        s_hourly.hourly_cache[0].valid) {
+        hourly_strip_history_push(&s_hourly.hourly_cache[0]);
+    }
     s_hourly.sim_temp = hourly_strip_sim_next_temp();
     s_hourly.sim_pending = true;
     (void)details_active;
-    hourly_strip_shift_no_anim();
+    hourly_strip_sim_shift_cache(now_ts);
+    hourly_strip_shift_no_anim(now_ts, false);
 }
 #endif
 
@@ -576,6 +784,7 @@ void hourly_strip_update(const CurrentWeatherData *current,
             s_hourly.temps[i] = NAN;
         }
         s_hourly.initialized = true;
+        hourly_strip_history_reset();
     }
 
     if (hourly && hourly_count > 0) {
@@ -590,14 +799,7 @@ void hourly_strip_update(const CurrentWeatherData *current,
         s_hourly.hourly_cursor = 0;
     }
 
-    const HourlyEntry *detail_entry = NULL;
-    if (s_hourly.hourly_count > 0 &&
-        s_hourly.hourly_cursor < s_hourly.hourly_count &&
-        s_hourly.hourly_cache[s_hourly.hourly_cursor].valid) {
-        detail_entry = &s_hourly.hourly_cache[s_hourly.hourly_cursor];
-    }
-    hourly_strip_set_detail_vars(detail_entry);
-    hourly_detail_apply_widgets(now_ts);
+    hourly_strip_apply_detail(now_ts);
 
     float now_temp = NAN;
     if (current && !std::isnan(current->temperature)) {
@@ -662,10 +864,24 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
     s_hourly.last_hour = timeinfo->tm_hour;
     s_hourly.last_yday = timeinfo->tm_yday;
 
-    hourly_strip_shift_no_anim();
+    struct tm timeinfo_copy = *timeinfo;
+    time_t now_ts = mktime(&timeinfo_copy);
+    if (now_ts == (time_t)-1) {
+        now_ts = 0;
+    }
+    hourly_strip_shift_no_anim(now_ts, true);
 }
 
 extern "C" void hourly_strip_detail_chart_ensure(void)
 {
     hourly_strip_detail_chart_refresh();
+}
+
+extern "C" void hourly_strip_detail_ui_init(void)
+{
+    if (s_hourly.detail_init_done || s_hourly.detail_init_pending) {
+        return;
+    }
+    s_hourly.detail_init_pending = true;
+    hourly_detail_apply_widgets(time(NULL));
 }

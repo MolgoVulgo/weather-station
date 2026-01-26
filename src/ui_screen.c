@@ -119,6 +119,7 @@ static void ui_screen_tick(lv_timer_t *timer)
 
 void ui_screen_start(void)
 {
+    hourly_strip_detail_ui_init();
     hourly_strip_detail_chart_ensure();
     struct tm timeinfo;
     if (time_sync_get_local_time(&timeinfo, NULL)) {
