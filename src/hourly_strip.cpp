@@ -14,7 +14,7 @@
 #include "ui/fonts.h"
 #include "vars.h"
 #include "temp_unit.h"
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
 #include "esp_system.h"
 #include "esp_random.h"
 #endif
@@ -34,7 +34,7 @@ typedef struct {
     bool detail_init_done = false;
     HourlyEntry history[2] = {};
     bool history_valid[2] = { false, false };
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
     int last_sim_stamp = -1;
     bool sim_pending = false;
     float sim_temp = NAN;
@@ -63,7 +63,7 @@ static void hourly_strip_apply_detail(time_t now_ts);
 static void hourly_detail_apply_widgets(time_t now_ts);
 static void hourly_strip_set_detail_vars(const HourlyEntry *entry);
 
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
 static const struct {
     int conditionId;
     uint8_t iconVariant;
@@ -364,6 +364,11 @@ static float hourly_strip_temp_from_entry(const HourlyEntry *entry, float fallba
     if (entry && entry->valid && !std::isnan(entry->temperature)) {
         return entry->temperature;
     }
+#ifdef DEBUG_LOG
+    if (entry && !entry->valid) {
+        ESP_LOGW("HOURLY", "erreur data hourly: entry invalide (temp)");
+    }
+#endif
     return fallback;
 }
 
@@ -426,6 +431,10 @@ static void hourly_detail_set_widget(size_t index,
     time_t ts = fallback_ts;
     if (entry && entry->valid) {
         ts = entry->timestamp;
+#ifdef DEBUG_LOG
+    } else if (entry && !entry->valid) {
+        ESP_LOGW("HOURLY", "erreur data hourly: entry invalide (ts) slot=%u", (unsigned)index);
+#endif
     }
 
     struct tm info;
@@ -574,6 +583,11 @@ static void hourly_strip_set_detail_vars(const HourlyEntry *entry)
         return;
     }
 
+#ifdef DEBUG_LOG
+    if (entry && !entry->valid) {
+        ESP_LOGW("HOURLY", "erreur data hourly: entry invalide (detail vars)");
+    }
+#endif
     set_var_ui_humidity("");
     set_var_ui_clouds("");
     set_var_ui_pop("");
@@ -581,21 +595,13 @@ static void hourly_strip_set_detail_vars(const HourlyEntry *entry)
 
 static size_t hourly_strip_find_cursor(time_t now_ts)
 {
-    if (s_hourly.hourly_count == 0) {
-        return 0;
-    }
-    for (size_t i = 0; i < s_hourly.hourly_count; ++i) {
-        if (s_hourly.hourly_cache[i].valid &&
-            s_hourly.hourly_cache[i].timestamp > now_ts) {
-            return i;
-        }
-    }
+    (void)now_ts;
     return 0;
 }
 
 static float hourly_strip_next_temp(void)
 {
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
     if (s_hourly.sim_pending) {
         return s_hourly.sim_temp;
     }
@@ -616,12 +622,12 @@ static void hourly_strip_shift_state(const float *new_temp)
     if (new_temp) {
         s_hourly.temps[HOURLY_STRIP_ICON_COUNT - 1] = *new_temp;
     }
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
     s_hourly.sim_pending = false;
 #endif
     if (s_hourly.hourly_count > 0 &&
         s_hourly.hourly_cursor + 1 < s_hourly.hourly_count) {
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
         if (!s_hourly.sim_active) {
             s_hourly.hourly_cursor++;
         }
@@ -646,7 +652,7 @@ static void hourly_strip_shift_no_anim(time_t now_ts, bool push_history)
     hourly_strip_apply_detail(now_ts);
 }
 
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
 static void hourly_strip_sim_fill_entry(HourlyEntry *entry, time_t ts, size_t icon_index)
 {
     if (!entry) {
@@ -779,6 +785,13 @@ void hourly_strip_update(const CurrentWeatherData *current,
         return;
     }
 
+    if (!hourly || hourly_count == 0) {
+#ifdef DEBUG_LOG
+        ESP_LOGW("HOURLY", "erreur data hourly: cache vide, affichage conserve");
+#endif
+        return;
+    }
+
     if (!s_hourly.initialized) {
         for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
             s_hourly.temps[i] = NAN;
@@ -787,17 +800,12 @@ void hourly_strip_update(const CurrentWeatherData *current,
         hourly_strip_history_reset();
     }
 
-    if (hourly && hourly_count > 0) {
-        size_t copy = hourly_count < HOURLY_CACHE_MAX ? hourly_count : HOURLY_CACHE_MAX;
-        for (size_t i = 0; i < copy; ++i) {
-            s_hourly.hourly_cache[i] = hourly[i];
-        }
-        s_hourly.hourly_count = copy;
-        s_hourly.hourly_cursor = hourly_strip_find_cursor(now_ts);
-    } else {
-        s_hourly.hourly_count = 0;
-        s_hourly.hourly_cursor = 0;
+    size_t copy = hourly_count < HOURLY_CACHE_MAX ? hourly_count : HOURLY_CACHE_MAX;
+    for (size_t i = 0; i < copy; ++i) {
+        s_hourly.hourly_cache[i] = hourly[i];
     }
+    s_hourly.hourly_count = copy;
+    s_hourly.hourly_cursor = hourly_strip_find_cursor(now_ts);
 
     hourly_strip_apply_detail(now_ts);
 
@@ -814,17 +822,11 @@ void hourly_strip_update(const CurrentWeatherData *current,
     s_hourly.temps[0] = 0.0f;
     s_hourly.temps[1] = 0.0f;
 
-    if (hourly && hourly_count > 0) {
-        for (size_t i = 0; i < 4; ++i) {
-            size_t idx = s_hourly.hourly_cursor + i;
-            if (idx < s_hourly.hourly_count) {
-                s_hourly.temps[3 + i] = hourly_strip_temp_from_entry(&s_hourly.hourly_cache[idx], fallback_temp);
-            } else {
-                s_hourly.temps[3 + i] = 0.0f;
-            }
-        }
-    } else {
-        for (size_t i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < 4; ++i) {
+        size_t idx = s_hourly.hourly_cursor + i;
+        if (idx < s_hourly.hourly_count) {
+            s_hourly.temps[3 + i] = hourly_strip_temp_from_entry(&s_hourly.hourly_cache[idx], fallback_temp);
+        } else {
             s_hourly.temps[3 + i] = 0.0f;
         }
     }
@@ -852,7 +854,7 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
     if (details_active) {
         hourly_strip_detail_chart_refresh();
     }
-#ifdef HOURLY_STRIP_SIMULATION
+#if HOURLY_STRIP_SIMULATION
     hourly_strip_sim_tick(timeinfo, details_active);
     return;
 #endif

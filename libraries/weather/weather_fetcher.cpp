@@ -366,12 +366,12 @@ static bool parse_onecall(const char *json,
     cJSON *hourly_arr = cJSON_GetObjectItemCaseSensitive(root, "hourly");
     if (cJSON_IsArray(hourly_arr)) {
       int total = cJSON_GetArraySize(hourly_arr);
-      for (int i = 1; i < total && (size_t)(i - 1) < hourly_count; ++i) {
+      for (int i = 0; i < total && (size_t)i < hourly_count; ++i) {
         cJSON *item = cJSON_GetArrayItem(hourly_arr, i);
         if (!cJSON_IsObject(item)) {
           continue;
         }
-        HourlyEntry &entry = hourly[i - 1];
+        HourlyEntry &entry = hourly[i];
         entry.valid = true;
         entry.timestamp = static_cast<time_t>(json_int_or(item, "dt", 0));
         entry.temperature = json_number_or(item, "temp", entry.temperature);
