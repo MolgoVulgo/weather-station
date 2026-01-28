@@ -389,6 +389,15 @@ static bool parse_onecall(const char *json,
         }
         cJSON *weather = cJSON_GetObjectItemCaseSensitive(item, "weather");
         parse_weather_item(weather, &entry.conditionId, &entry.iconId, &entry.iconVariant, nullptr, nullptr);
+#ifdef DEBUG_LOG
+        ESP_LOGI("HOURLY",
+                 "parse_hourly i=%d dt=%ld temp=%.2f pop=%.2f valid=%d",
+                 i,
+                 (long)entry.timestamp,
+                 (double)entry.temperature,
+                 (double)entry.pop,
+                 entry.valid ? 1 : 0);
+#endif
       }
     }
   }

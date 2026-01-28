@@ -14,6 +14,9 @@
 #include "ui/fonts.h"
 #include "vars.h"
 #include "temp_unit.h"
+extern "C" {
+#include "time_sync.h"
+}
 #if HOURLY_STRIP_SIMULATION
 #include "esp_system.h"
 #include "esp_random.h"
@@ -34,6 +37,9 @@ typedef struct {
     bool detail_init_done = false;
     HourlyEntry history[2] = {};
     bool history_valid[2] = { false, false };
+#ifdef DEBUG_LOG
+    const char *trace_source = NULL;
+#endif
 #if HOURLY_STRIP_SIMULATION
     int last_sim_stamp = -1;
     bool sim_pending = false;
@@ -188,11 +194,14 @@ static void hourly_strip_chart_sync(void)
 
 static void hourly_strip_apply_detail(time_t now_ts)
 {
+#ifdef DEBUG_LOG
+    s_hourly.trace_source = "apply_detail";
+#endif
     const HourlyEntry *detail_entry = NULL;
-    if (s_hourly.hourly_count > 0 &&
-        s_hourly.hourly_cursor < s_hourly.hourly_count &&
-        s_hourly.hourly_cache[s_hourly.hourly_cursor].valid) {
-        detail_entry = &s_hourly.hourly_cache[s_hourly.hourly_cursor];
+    size_t detail_index = s_hourly.hourly_cursor + 2;
+    if (s_hourly.hourly_count > detail_index &&
+        s_hourly.hourly_cache[detail_index].valid) {
+        detail_entry = &s_hourly.hourly_cache[detail_index];
     }
     hourly_strip_set_detail_vars(detail_entry);
     hourly_detail_apply_widgets(now_ts);
@@ -429,7 +438,9 @@ static void hourly_detail_set_widget(size_t index,
 
     lv_obj_t *icon = lv_obj_get_child(container, 0);
     time_t ts = fallback_ts;
+    time_t entry_ts = 0;
     if (entry && entry->valid) {
+        entry_ts = entry->timestamp;
         ts = entry->timestamp;
 #ifdef DEBUG_LOG
     } else if (entry && !entry->valid) {
@@ -437,8 +448,12 @@ static void hourly_detail_set_widget(size_t index,
 #endif
     }
 
+    const time_sync_config_t *time_cfg = time_sync_get_config();
+    int32_t tz_offset = time_cfg ? time_cfg->tz_offset_seconds : 0;
+    time_t display_ts = ts ? (ts + (time_t)tz_offset) : ts;
+
     struct tm info;
-    if (ts > 0 && localtime_r(&ts, &info)) {
+    if (display_ts > 0 && localtime_r(&display_ts, &info)) {
         char buf[8];
         snprintf(buf, sizeof(buf), "%02dH", info.tm_hour);
         buf[sizeof(buf) - 1] = '\0';
@@ -457,6 +472,39 @@ static void hourly_detail_set_widget(size_t index,
     } else {
         lv_img_set_src(icon, &img_clear_day_50);
     }
+
+#ifdef DEBUG_LOG
+    const char *label_text = lv_label_get_text(label);
+    int dt_hh = -1;
+    if (display_ts > 0 && localtime_r(&display_ts, &info)) {
+        dt_hh = info.tm_hour;
+    }
+    const char *icon_id = "";
+    int condition_id = 0;
+    if (icon_src && icon_src->valid) {
+        icon_id = icon_src->iconId.c_str();
+        condition_id = icon_src->conditionId;
+    }
+    float entry_temp = NAN;
+    if (entry && entry->valid) {
+        entry_temp = entry->temperature;
+    }
+    const char *entry_valid = (entry && entry->valid) ? "1" : "0";
+    const char *icon_valid = (icon_src && icon_src->valid) ? "1" : "0";
+    ESP_LOGI("HOURLY",
+             "ui_meteo_detail slot=%u id=%d icon_id=%s dt_hh=%d label=%s temp=%.2f ts=%ld entry_ts=%ld fallback_ts=%ld entry_valid=%s icon_valid=%s",
+             (unsigned)index,
+             condition_id,
+             icon_id ? icon_id : "",
+             dt_hh,
+             label_text ? label_text : "",
+             (double)entry_temp,
+             (long)ts,
+             (long)entry_ts,
+             (long)fallback_ts,
+             entry_valid,
+             icon_valid);
+#endif
 }
 
 static void hourly_detail_apply_widgets(time_t now_ts)
@@ -464,6 +512,10 @@ static void hourly_detail_apply_widgets(time_t now_ts)
     if (!objects.ui_detail_hourly) {
         return;
     }
+
+#ifdef DEBUG_LOG
+    const char *trace_src = s_hourly.trace_source ? s_hourly.trace_source : "unknown";
+#endif
 
     if (!now_ts) {
         now_ts = time(NULL);
@@ -481,6 +533,16 @@ static void hourly_detail_apply_widgets(time_t now_ts)
         base_ts = current_entry->timestamp;
     }
 
+#ifdef DEBUG_LOG
+    ESP_LOGI("HOURLY",
+             "ui_meteo_detail_trace src=%s now_ts=%ld base_ts=%ld cursor=%u count=%u",
+             trace_src,
+             (long)now_ts,
+             (long)base_ts,
+             (unsigned)s_hourly.hourly_cursor,
+             (unsigned)s_hourly.hourly_count);
+#endif
+
     for (size_t slot = 0; slot < HOURLY_STRIP_ICON_COUNT; ++slot) {
         const HourlyEntry *entry = NULL;
         int idx = (int)s_hourly.hourly_cursor + ((int)slot - 2);
@@ -492,6 +554,15 @@ static void hourly_detail_apply_widgets(time_t now_ts)
             int offset_hours = (int)slot - 2;
             fallback_ts = base_ts + (time_t)(offset_hours * 3600);
         }
+#ifdef DEBUG_LOG
+        ESP_LOGI("HOURLY",
+                 "ui_meteo_detail_trace src=%s slot=%u idx=%d fallback_ts=%ld entry=%s",
+                 trace_src,
+                 (unsigned)slot,
+                 idx,
+                 (long)fallback_ts,
+                 entry ? "1" : "0");
+#endif
         const HourlyEntry *icon_entry = entry;
         if (slot == 0 && s_hourly.history_valid[1]) {
             icon_entry = &s_hourly.history[1];
@@ -771,6 +842,9 @@ static void hourly_strip_sim_tick(const struct tm *timeinfo, bool details_active
     s_hourly.sim_temp = hourly_strip_sim_next_temp();
     s_hourly.sim_pending = true;
     (void)details_active;
+#ifdef DEBUG_LOG
+    s_hourly.trace_source = "sim_tick";
+#endif
     hourly_strip_sim_shift_cache(now_ts);
     hourly_strip_shift_no_anim(now_ts, false);
 }
@@ -787,6 +861,7 @@ void hourly_strip_update(const CurrentWeatherData *current,
 
     if (!hourly || hourly_count == 0) {
 #ifdef DEBUG_LOG
+        s_hourly.trace_source = "update_empty";
         ESP_LOGW("HOURLY", "erreur data hourly: cache vide, affichage conserve");
 #endif
         return;
@@ -807,6 +882,22 @@ void hourly_strip_update(const CurrentWeatherData *current,
     s_hourly.hourly_count = copy;
     s_hourly.hourly_cursor = hourly_strip_find_cursor(now_ts);
 
+#ifdef DEBUG_LOG
+    for (size_t i = 0; i < s_hourly.hourly_count; ++i) {
+        ESP_LOGI("HOURLY",
+                 "cache_hourly i=%u dt=%ld temp=%.2f pop=%.2f valid=%d",
+                 (unsigned)i,
+                 (long)s_hourly.hourly_cache[i].timestamp,
+                 (double)s_hourly.hourly_cache[i].temperature,
+                 (double)s_hourly.hourly_cache[i].pop,
+                 s_hourly.hourly_cache[i].valid ? 1 : 0);
+    }
+#endif
+
+#ifdef DEBUG_LOG
+    s_hourly.trace_source = "update";
+#endif
+    bool first_update = !s_hourly.detail_init_done;
     hourly_strip_apply_detail(now_ts);
 
     float now_temp = NAN;
@@ -817,10 +908,20 @@ void hourly_strip_update(const CurrentWeatherData *current,
     if (std::isnan(fallback_temp)) {
         fallback_temp = s_hourly.temps[2];
     }
+    if (s_hourly.detail_init_done) {
+        s_hourly.temps[0] = s_hourly.temps[1];
+        s_hourly.temps[1] = s_hourly.temps[2];
+    }
     s_hourly.temps[2] = fallback_temp;
 
-    s_hourly.temps[0] = 0.0f;
-    s_hourly.temps[1] = 0.0f;
+    if (first_update) {
+        float init_ref = fallback_temp;
+        if (s_hourly.hourly_count > s_hourly.hourly_cursor) {
+            init_ref = hourly_strip_temp_from_entry(&s_hourly.hourly_cache[s_hourly.hourly_cursor], fallback_temp);
+        }
+        s_hourly.temps[0] = init_ref;
+        s_hourly.temps[1] = init_ref;
+    }
 
     for (size_t i = 0; i < 4; ++i) {
         size_t idx = s_hourly.hourly_cursor + i;
@@ -852,12 +953,21 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
     }
 
     if (details_active) {
+#ifdef DEBUG_LOG
+        s_hourly.trace_source = "tick_detail";
+#endif
         hourly_strip_detail_chart_refresh();
     }
 #if HOURLY_STRIP_SIMULATION
     hourly_strip_sim_tick(timeinfo, details_active);
     return;
 #endif
+    if (s_hourly.hourly_count == 0) {
+        return;
+    }
+    if (timeinfo->tm_min != 0) {
+        return;
+    }
     if (s_hourly.last_hour == timeinfo->tm_hour &&
         s_hourly.last_yday == timeinfo->tm_yday) {
         return;
@@ -871,6 +981,9 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
     if (now_ts == (time_t)-1) {
         now_ts = 0;
     }
+#ifdef DEBUG_LOG
+    s_hourly.trace_source = "tick_shift";
+#endif
     hourly_strip_shift_no_anim(now_ts, true);
 }
 
@@ -885,5 +998,14 @@ extern "C" void hourly_strip_detail_ui_init(void)
         return;
     }
     s_hourly.detail_init_pending = true;
-    hourly_detail_apply_widgets(time(NULL));
+#ifdef DEBUG_LOG
+    s_hourly.trace_source = "detail_ui_init";
+#endif
+    if (s_hourly.hourly_count > 0) {
+        hourly_detail_apply_widgets(time(NULL));
+#ifdef DEBUG_LOG
+    } else {
+        ESP_LOGI("HOURLY", "detail_ui_init: hourly vide, update differe");
+#endif
+    }
 }

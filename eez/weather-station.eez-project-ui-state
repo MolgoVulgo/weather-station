@@ -138,7 +138,6 @@
                   "type": "tabset",
                   "id": "#9a2d7456-9b42-4e46-9522-c050e77cc0c2",
                   "weight": 1,
-                  "selected": 1,
                   "enableClose": false,
                   "children": [
                     {
@@ -254,7 +253,8 @@
                   },
                   "icon": "svg:page"
                 }
-              ]
+              ],
+              "active": true
             },
             {
               "type": "row",
@@ -274,8 +274,7 @@
                       "enableClose": false,
                       "icon": "svg:properties"
                     }
-                  ],
-                  "active": true
+                  ]
                 },
                 {
                   "type": "tabset",
@@ -1132,9 +1131,7 @@
           "0": {
             "1": {}
           },
-          "1": {
-            "$selected": true
-          }
+          "1": {}
         }
       },
       "transform": {
@@ -1189,7 +1186,11 @@
       }
     },
     "[weather-station.eez-project]:/userWidgets/0[flow-state]": {
-      "selection": {},
+      "selection": {
+        "1": {
+          "$selected": true
+        }
+      },
       "transform": {
         "translate": {
           "x": -25,
@@ -1222,7 +1223,8 @@
   "lvglState": "DEFAULT",
   "lvglExpandedPropertiesGroup": [
     "TEXT",
-    "BORDER"
+    "BORDER",
+    "SHADOW"
   ],
   "showInactiveFlowsInDebugger": true,
   "globalFlowZoom": true,
