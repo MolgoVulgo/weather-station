@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include "temp_unit.h"
 #include "time_sync.h"
+#include "hourly_strip.h"
 #include "vars.h"
 #include "lanague.h"
 #include "i18n.h"
@@ -263,6 +264,7 @@ void set_var_ui_setting_hour(bool value)
     if (changed) {
         time_sync_set_hour_format_24h(value);
         time_sync_save_config();
+        hourly_strip_refresh_time_format();
     }
 }
 

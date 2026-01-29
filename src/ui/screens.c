@@ -493,31 +493,42 @@ void create_screen_ui_meteo() {
             lv_label_set_text(obj, "");
         }
         {
-            lv_obj_t *obj = lv_led_create(parent_obj);
+            lv_obj_t *obj = lv_line_create(parent_obj);
             objects.obj8 = obj;
-            lv_obj_set_pos(obj, 230, 293);
-            lv_obj_set_size(obj, 18, 16);
-            lv_led_set_color(obj, lv_color_hex(0xffffffff));
-            lv_led_set_brightness(obj, 0);
-            lv_obj_clear_flag(obj, LV_OBJ_FLAG_CLICKABLE|LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SCROLL_WITH_ARROW|LV_OBJ_FLAG_SNAPPABLE);
+            lv_obj_set_pos(obj, 24, 309);
+            lv_obj_set_size(obj, 430, LV_SIZE_CONTENT);
+            static lv_point_t line_points[] = {
+                { 0, 0 },
+                { 430, 0 }
+            };
+            lv_line_set_points(obj, line_points, 2);
+            lv_obj_set_style_line_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
         {
-            lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj9 = obj;
-            lv_obj_set_pos(obj, 268, 293);
-            lv_obj_set_size(obj, 18, 16);
-            lv_led_set_color(obj, lv_color_hex(0xffffffff));
-            lv_led_set_brightness(obj, 0);
-            lv_obj_clear_flag(obj, LV_OBJ_FLAG_CLICKABLE|LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SCROLL_WITH_ARROW|LV_OBJ_FLAG_SNAPPABLE);
-        }
-        {
-            lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj10 = obj;
-            lv_obj_set_pos(obj, 193, 293);
-            lv_obj_set_size(obj, 18, 16);
-            lv_led_set_color(obj, lv_color_hex(0xffffffff));
-            lv_led_set_brightness(obj, 255);
-            lv_obj_clear_flag(obj, LV_OBJ_FLAG_CLICKABLE|LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SCROLL_WITH_ARROW|LV_OBJ_FLAG_SNAPPABLE);
+            // aler_meteo
+            lv_obj_t *obj = lv_obj_create(parent_obj);
+            objects.aler_meteo = obj;
+            lv_obj_set_pos(obj, 24, 283);
+            lv_obj_set_size(obj, 431, 27);
+            lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_width(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            {
+                lv_obj_t *parent_obj = obj;
+                {
+                    lv_obj_t *obj = lv_label_create(parent_obj);
+                    objects.obj9 = obj;
+                    lv_obj_set_pos(obj, 168, 5);
+                    lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+                    lv_obj_set_style_text_font(obj, &ui_font_ui_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_label_set_text(obj, "Alerte Meteo");
+                }
+            }
         }
     }
     
@@ -702,7 +713,7 @@ void create_screen_ui_meteo_details() {
                 lv_obj_t *parent_obj = obj;
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj11 = obj;
+                    objects.obj10 = obj;
                     lv_obj_set_pos(obj, -3, 0);
                     lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -715,7 +726,7 @@ void create_screen_ui_meteo_details() {
                 }
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj12 = obj;
+                    objects.obj11 = obj;
                     lv_obj_set_pos(obj, 60, 0);
                     lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -728,7 +739,7 @@ void create_screen_ui_meteo_details() {
                 }
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj13 = obj;
+                    objects.obj12 = obj;
                     lv_obj_set_pos(obj, 123, 0);
                     lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -741,7 +752,7 @@ void create_screen_ui_meteo_details() {
                 }
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj14 = obj;
+                    objects.obj13 = obj;
                     lv_obj_set_pos(obj, 184, 0);
                     lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -754,7 +765,7 @@ void create_screen_ui_meteo_details() {
                 }
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj15 = obj;
+                    objects.obj14 = obj;
                     lv_obj_set_pos(obj, 248, 0);
                     lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -767,7 +778,7 @@ void create_screen_ui_meteo_details() {
                 }
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj16 = obj;
+                    objects.obj15 = obj;
                     lv_obj_set_pos(obj, 312, 0);
                     lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -780,7 +791,7 @@ void create_screen_ui_meteo_details() {
                 }
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj17 = obj;
+                    objects.obj16 = obj;
                     lv_obj_set_pos(obj, 375, 0);
                     lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -807,17 +818,19 @@ void create_screen_ui_meteo_details() {
             lv_obj_set_style_radius(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
             lv_obj_set_style_pad_left(obj, 5, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_shadow_color(obj, lv_color_hex(0xffded9d9), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_shadow_spread(obj, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.obj25 = obj;
-            lv_obj_set_pos(obj, 156, 14);
+            objects.obj21 = obj;
+            lv_obj_set_pos(obj, 162, 14);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "");
         }
         {
             lv_obj_t *obj = lv_line_create(parent_obj);
-            objects.obj18 = obj;
+            objects.obj17 = obj;
             lv_obj_set_pos(obj, 24, 282);
             lv_obj_set_size(obj, 430, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
@@ -828,32 +841,8 @@ void create_screen_ui_meteo_details() {
             lv_obj_set_style_line_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
         {
-            lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj19 = obj;
-            lv_obj_set_pos(obj, 231, 293);
-            lv_obj_set_size(obj, 16, 16);
-            lv_led_set_color(obj, lv_color_hex(0xffcac8e9));
-            lv_led_set_brightness(obj, 255);
-        }
-        {
-            lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj20 = obj;
-            lv_obj_set_pos(obj, 269, 293);
-            lv_obj_set_size(obj, 16, 16);
-            lv_led_set_color(obj, lv_color_hex(0xffffffff));
-            lv_led_set_brightness(obj, 0);
-        }
-        {
-            lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj21 = obj;
-            lv_obj_set_pos(obj, 194, 293);
-            lv_obj_set_size(obj, 16, 16);
-            lv_led_set_color(obj, lv_color_hex(0xffffffff));
-            lv_led_set_brightness(obj, 0);
-        }
-        {
             lv_obj_t *obj = lv_line_create(parent_obj);
-            objects.obj22 = obj;
+            objects.obj18 = obj;
             lv_obj_set_pos(obj, 37, 91);
             lv_obj_set_size(obj, 423, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
@@ -865,7 +854,7 @@ void create_screen_ui_meteo_details() {
         }
         {
             lv_obj_t *obj = lv_line_create(parent_obj);
-            objects.obj23 = obj;
+            objects.obj19 = obj;
             lv_obj_set_pos(obj, 37, 120);
             lv_obj_set_size(obj, 423, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
@@ -877,7 +866,7 @@ void create_screen_ui_meteo_details() {
         }
         {
             lv_obj_t *obj = lv_line_create(parent_obj);
-            objects.obj24 = obj;
+            objects.obj20 = obj;
             lv_obj_set_pos(obj, 187, 126);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
@@ -966,10 +955,10 @@ void tick_screen_ui_meteo_details() {
     tick_user_widget_hourly(58);
     {
         const char *new_val = get_var_ui_meteo_date();
-        const char *cur_val = lv_label_get_text(objects.obj25);
+        const char *cur_val = lv_label_get_text(objects.obj21);
         if (strcmp(new_val, cur_val) != 0) {
-            tick_value_change_obj = objects.obj25;
-            lv_label_set_text(objects.obj25, new_val);
+            tick_value_change_obj = objects.obj21;
+            lv_label_set_text(objects.obj21, new_val);
             tick_value_change_obj = NULL;
         }
     }
@@ -1015,7 +1004,7 @@ void create_screen_ui_setting() {
         lv_obj_t *parent_obj = obj;
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.obj26 = obj;
+            objects.obj22 = obj;
             lv_obj_set_pos(obj, 218, 73);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1036,7 +1025,7 @@ void create_screen_ui_setting() {
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.obj27 = obj;
+            objects.obj23 = obj;
             lv_obj_set_pos(obj, 280, 73);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1153,7 +1142,7 @@ void create_screen_ui_setting() {
         }
         {
             lv_obj_t *obj = lv_line_create(parent_obj);
-            objects.obj28 = obj;
+            objects.obj24 = obj;
             lv_obj_set_pos(obj, 24, 282);
             lv_obj_set_size(obj, 430, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
@@ -1165,7 +1154,7 @@ void create_screen_ui_setting() {
         }
         {
             lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj29 = obj;
+            objects.obj25 = obj;
             lv_obj_set_pos(obj, 230, 293);
             lv_obj_set_size(obj, 18, 16);
             lv_led_set_color(obj, lv_color_hex(0xffffffff));
@@ -1173,7 +1162,7 @@ void create_screen_ui_setting() {
         }
         {
             lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj30 = obj;
+            objects.obj26 = obj;
             lv_obj_set_pos(obj, 268, 293);
             lv_obj_set_size(obj, 18, 16);
             lv_led_set_color(obj, lv_color_hex(0xffffffff));
@@ -1181,7 +1170,7 @@ void create_screen_ui_setting() {
         }
         {
             lv_obj_t *obj = lv_led_create(parent_obj);
-            objects.obj31 = obj;
+            objects.obj27 = obj;
             lv_obj_set_pos(obj, 193, 293);
             lv_obj_set_size(obj, 18, 16);
             lv_led_set_color(obj, lv_color_hex(0xffffffff));
@@ -1298,7 +1287,7 @@ void create_screen_ui_wifi() {
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.obj32 = obj;
+            objects.obj28 = obj;
             lv_obj_set_pos(obj, 261, 240);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_add_flag(obj, LV_OBJ_FLAG_CLICKABLE);
@@ -1307,7 +1296,7 @@ void create_screen_ui_wifi() {
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.obj33 = obj;
+            objects.obj29 = obj;
             lv_obj_set_pos(obj, 159, 31);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1341,7 +1330,7 @@ void create_user_widget_hourly(lv_obj_t *parent_obj, int startWidgetIndex) {
             lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &ui_font_ui_16, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xffffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text(obj, "22H");
+            lv_label_set_text(obj, "11 pm");
         }
     }
 }

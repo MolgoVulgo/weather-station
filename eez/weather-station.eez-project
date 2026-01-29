@@ -2742,9 +2742,6 @@
                     "DEFAULT": {
                       "pad_left": 5,
                       "shadow_color": "#ded9d9",
-                      "shadow_width": 1,
-                      "shadow_ofs_x": 1,
-                      "shadow_ofs_y": 1,
                       "shadow_spread": 1
                     }
                   }
@@ -4968,7 +4965,7 @@
           },
           "group": "",
           "groupIndex": 0,
-          "text": "22H",
+          "text": "11 pm",
           "textType": "literal",
           "longMode": "WRAP",
           "recolor": false
