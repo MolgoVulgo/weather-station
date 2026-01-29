@@ -37,6 +37,7 @@ typedef struct {
     bool detail_init_done = false;
     HourlyEntry history[2] = {};
     bool history_valid[2] = { false, false };
+    bool last_unit_f = false;
 #ifdef DEBUG_LOG
     const char *trace_source = NULL;
 #endif
@@ -68,6 +69,7 @@ static lv_coord_t s_hourly_chart_series_1_array[HOURLY_STRIP_ICON_COUNT] = { 2, 
 static void hourly_strip_apply_detail(time_t now_ts);
 static void hourly_detail_apply_widgets(time_t now_ts);
 static void hourly_strip_set_detail_vars(const HourlyEntry *entry);
+static float __attribute__((unused)) hourly_strip_to_unit(float temp_c, bool is_fahrenheit);
 
 #if HOURLY_STRIP_SIMULATION
 static const struct {
@@ -114,6 +116,7 @@ static bool hourly_strip_chart_compute_range(lv_coord_t *out_min, lv_coord_t *ou
         return false;
     }
 
+    bool is_fahrenheit = temp_unit_is_fahrenheit();
     float min_temp = NAN;
     float max_temp = NAN;
     for (size_t i = 2; i < HOURLY_STRIP_ICON_COUNT; ++i) {
@@ -121,11 +124,12 @@ static bool hourly_strip_chart_compute_range(lv_coord_t *out_min, lv_coord_t *ou
         if (std::isnan(temp)) {
             continue;
         }
-        if (std::isnan(min_temp) || temp < min_temp) {
-            min_temp = temp;
+        float display = hourly_strip_to_unit(temp, is_fahrenheit);
+        if (std::isnan(min_temp) || display < min_temp) {
+            min_temp = display;
         }
-        if (std::isnan(max_temp) || temp > max_temp) {
-            max_temp = temp;
+        if (std::isnan(max_temp) || display > max_temp) {
+            max_temp = display;
         }
     }
 
@@ -133,14 +137,17 @@ static bool hourly_strip_chart_compute_range(lv_coord_t *out_min, lv_coord_t *ou
         return false;
     }
 
-    int32_t min_floor = (int32_t)std::floor((min_temp - 5.0f) / 5.0f) * 5;
-    int32_t max_ceil = (int32_t)std::ceil((max_temp + 5.0f) / 5.0f) * 5;
+    float step = is_fahrenheit ? 10.0f : 5.0f;
+    float pad = step;
+    int32_t min_floor = (int32_t)std::floor((min_temp - pad) / step) * (int32_t)step;
+    int32_t max_ceil = (int32_t)std::ceil((max_temp + pad) / step) * (int32_t)step;
 
     int32_t range_min = min_floor;
-    int32_t range_max = range_min + 20;
+    int32_t span = is_fahrenheit ? 40 : 20;
+    int32_t range_max = range_min + span;
     if (max_ceil > range_max) {
         range_max = max_ceil;
-        range_min = range_max - 20;
+        range_min = range_max - span;
     }
 
     *out_min = (lv_coord_t)range_min;
@@ -150,12 +157,14 @@ static bool hourly_strip_chart_compute_range(lv_coord_t *out_min, lv_coord_t *ou
 
 static void hourly_strip_chart_sync(void)
 {
+    bool is_fahrenheit = temp_unit_is_fahrenheit();
     for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
         float temp = s_hourly.temps[i];
         if (std::isnan(temp)) {
             s_hourly_chart_series_1_array[i] = 0;
         } else {
-            s_hourly_chart_series_1_array[i] = (lv_coord_t)std::lround(temp);
+            float display = hourly_strip_to_unit(temp, is_fahrenheit);
+            s_hourly_chart_series_1_array[i] = (lv_coord_t)std::lround(display);
         }
     }
 
@@ -170,7 +179,8 @@ static void hourly_strip_chart_sync(void)
             if (offset < 0) {
                 label_buf[0] = '\0';
             } else {
-                for (int val = (int)range_max; val >= (int)range_min; val -= 5) {
+                int step = temp_unit_is_fahrenheit() ? 10 : 5;
+                for (int val = (int)range_max; val >= (int)range_min; val -= step) {
                     int written = snprintf(label_buf + offset, sizeof(label_buf) - (size_t)offset,
                                            "%s%d", (offset > 1) ? " " : "", val);
                     if (written < 0 || (size_t)written >= sizeof(label_buf) - (size_t)offset) {
@@ -190,6 +200,16 @@ static void hourly_strip_chart_sync(void)
         }
         lv_chart_refresh(s_hourly_chart);
     }
+}
+
+static void hourly_strip_refresh_unit_if_needed(void)
+{
+    bool is_fahrenheit = temp_unit_is_fahrenheit();
+    if (s_hourly.last_unit_f == is_fahrenheit) {
+        return;
+    }
+    s_hourly.last_unit_f = is_fahrenheit;
+    hourly_strip_chart_sync();
 }
 
 static void hourly_strip_apply_detail(time_t now_ts)
@@ -859,6 +879,8 @@ void hourly_strip_update(const CurrentWeatherData *current,
         return;
     }
 
+    hourly_strip_refresh_unit_if_needed();
+
     if (!hourly || hourly_count == 0) {
 #ifdef DEBUG_LOG
         s_hourly.trace_source = "update_empty";
@@ -958,6 +980,7 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
 #endif
         hourly_strip_detail_chart_refresh();
     }
+    hourly_strip_refresh_unit_if_needed();
 #if HOURLY_STRIP_SIMULATION
     hourly_strip_sim_tick(timeinfo, details_active);
     return;
