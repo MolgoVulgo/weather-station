@@ -927,7 +927,7 @@ static float hourly_strip_next_temp(void)
     }
 #endif
     float fallback = s_hourly.temps[2];
-    size_t next_index = s_hourly.hourly_cursor + 4;
+    size_t next_index = s_hourly.hourly_cursor + 5;
     if (next_index < s_hourly.hourly_count) {
         return hourly_strip_temp_from_entry(&s_hourly.hourly_cache[next_index], fallback);
     }
@@ -1163,7 +1163,11 @@ void hourly_strip_update(const CurrentWeatherData *current,
         s_hourly.temps[0] = s_hourly.temps[1];
         s_hourly.temps[1] = s_hourly.temps[2];
     }
-    s_hourly.temps[2] = fallback_temp;
+    float base_temp = fallback_temp;
+    if (s_hourly.hourly_count > s_hourly.hourly_cursor) {
+        base_temp = hourly_strip_temp_from_entry(&s_hourly.hourly_cache[s_hourly.hourly_cursor], fallback_temp);
+    }
+    s_hourly.temps[2] = base_temp;
 
     if (first_update) {
         float init_ref = fallback_temp;
@@ -1175,7 +1179,7 @@ void hourly_strip_update(const CurrentWeatherData *current,
     }
 
     for (size_t i = 0; i < 4; ++i) {
-        size_t idx = s_hourly.hourly_cursor + i;
+        size_t idx = s_hourly.hourly_cursor + 1 + i;
         if (idx < s_hourly.hourly_count) {
             s_hourly.temps[3 + i] = hourly_strip_temp_from_entry(&s_hourly.hourly_cache[idx], fallback_temp);
         } else {
