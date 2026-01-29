@@ -405,19 +405,19 @@ static lv_obj_t *hourly_detail_widget_container(size_t index)
 {
     switch (index) {
     case 0:
-        return objects.obj11;
+        return objects.obj10;
     case 1:
-        return objects.obj12;
+        return objects.obj11;
     case 2:
-        return objects.obj13;
+        return objects.obj12;
     case 3:
-        return objects.obj14;
+        return objects.obj13;
     case 4:
-        return objects.obj15;
+        return objects.obj14;
     case 5:
-        return objects.obj16;
+        return objects.obj15;
     case 6:
-        return objects.obj17;
+        return objects.obj16;
     default:
         return NULL;
     }
@@ -427,19 +427,19 @@ static lv_obj_t *hourly_detail_widget_label(size_t index)
 {
     switch (index) {
     case 0:
-        return objects.obj11__obj0;
+        return objects.obj10__obj0;
     case 1:
-        return objects.obj12__obj0;
+        return objects.obj11__obj0;
     case 2:
-        return objects.obj13__obj0;
+        return objects.obj12__obj0;
     case 3:
-        return objects.obj14__obj0;
+        return objects.obj13__obj0;
     case 4:
-        return objects.obj15__obj0;
+        return objects.obj14__obj0;
     case 5:
-        return objects.obj16__obj0;
+        return objects.obj15__obj0;
     case 6:
-        return objects.obj17__obj0;
+        return objects.obj16__obj0;
     default:
         return NULL;
     }
@@ -475,7 +475,17 @@ static void hourly_detail_set_widget(size_t index,
     struct tm info;
     if (display_ts > 0 && localtime_r(&display_ts, &info)) {
         char buf[8];
-        snprintf(buf, sizeof(buf), "%02dH", info.tm_hour);
+        if (time_cfg && !time_cfg->hour_format_24h) {
+            int hour = info.tm_hour;
+            int hour12 = hour % 12;
+            if (hour12 == 0) {
+                hour12 = 12;
+            }
+            const char *suffix = (hour >= 12) ? "pm" : "am";
+            snprintf(buf, sizeof(buf), "%d %s", hour12, suffix);
+        } else {
+            snprintf(buf, sizeof(buf), "%02dH", info.tm_hour);
+        }
         buf[sizeof(buf) - 1] = '\0';
         lv_label_set_text(label, buf);
     } else {
@@ -1031,4 +1041,15 @@ extern "C" void hourly_strip_detail_ui_init(void)
         ESP_LOGI("HOURLY", "detail_ui_init: hourly vide, update differe");
 #endif
     }
+}
+
+extern "C" void hourly_strip_refresh_time_format(void)
+{
+    if (!hourly_strip_ready() || !s_hourly.initialized) {
+        return;
+    }
+#ifdef DEBUG_LOG
+    s_hourly.trace_source = "hour_format";
+#endif
+    hourly_detail_apply_widgets(time(NULL));
 }
