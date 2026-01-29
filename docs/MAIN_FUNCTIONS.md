@@ -27,3 +27,9 @@ This document lists the main runtime functions used by the weather station app.
 
 ## UI Data Binding
 - `set_var_ui_meteo_*()` (`src/vars.c`): update UI-bound variables.
+
+## Hourly Strip (UI details)
+- `hourly_strip_update()` (`src/hourly_strip.cpp`): load hourly cache and sync detail slots.
+- `hourly_strip_tick()` (`src/hourly_strip.cpp`): continuous offset + hourly shift when the hour changes.
+- `hourly_strip_detail_ui_init()` (`src/hourly_strip.cpp`): initial detail slots fill + history seed.
+- `hourly_strip_refresh_time_format()` (`src/hourly_strip.cpp`): refresh slot labels (12h/24h).

@@ -24,6 +24,8 @@ extern "C" {
 
 #define HOURLY_STRIP_ICON_COUNT 7
 #define HOURLY_CACHE_MAX 12
+#define HOURLY_STRIP_SLOT_PX 50
+#define HOURLY_STRIP_SECONDS_PER_SLOT 3600
 
 typedef struct {
     bool initialized = false;
@@ -38,6 +40,21 @@ typedef struct {
     HourlyEntry history[2] = {};
     bool history_valid[2] = { false, false };
     bool last_unit_f = false;
+    lv_coord_t last_offset_px = -1;
+    int last_anim_log_sec = -1;
+    lv_coord_t anim_offset_px = 0;
+    float anim_frac = 0.0f;
+    bool anim_active = false;
+    bool last_anim_active = false;
+    bool base_slot_valid = false;
+    lv_coord_t base_slot_x[HOURLY_STRIP_ICON_COUNT] = {};
+    lv_coord_t base_slot_y[HOURLY_STRIP_ICON_COUNT] = {};
+    lv_obj_t *base_slot_obj[HOURLY_STRIP_ICON_COUNT] = {};
+    lv_obj_t *extra_slot = NULL;
+    lv_obj_t *extra_slot_label = NULL;
+    lv_coord_t extra_base_x = 0;
+    lv_coord_t extra_base_y = 0;
+    bool extra_base_valid = false;
 #ifdef DEBUG_LOG
     const char *trace_source = NULL;
 #endif
@@ -70,6 +87,15 @@ static void hourly_strip_apply_detail(time_t now_ts);
 static void hourly_detail_apply_widgets(time_t now_ts);
 static void hourly_strip_set_detail_vars(const HourlyEntry *entry);
 static float __attribute__((unused)) hourly_strip_to_unit(float temp_c, bool is_fahrenheit);
+static void hourly_strip_apply_offset(lv_coord_t offset_px, float frac);
+static float hourly_strip_lerp_temp(float a, float b, float frac);
+static void hourly_strip_chart_sync_fraction(float frac);
+static void hourly_strip_ensure_extra_slot(void);
+static void hourly_detail_set_widget_objects(lv_obj_t *container,
+                                             lv_obj_t *label,
+                                             const HourlyEntry *entry,
+                                             const HourlyEntry *icon_entry,
+                                             time_t fallback_ts);
 
 #if HOURLY_STRIP_SIMULATION
 static const struct {
@@ -108,6 +134,121 @@ static void hourly_strip_history_push(const HourlyEntry *entry)
     s_hourly.history_valid[1] = s_hourly.history_valid[0];
     s_hourly.history[0] = *entry;
     s_hourly.history_valid[0] = true;
+}
+
+static void hourly_strip_ensure_extra_slot(void)
+{
+    if (!objects.ui_detail_hourly || !lv_obj_is_valid(objects.ui_detail_hourly)) {
+        return;
+    }
+    if (s_hourly.extra_slot && lv_obj_is_valid(s_hourly.extra_slot)) {
+        return;
+    }
+
+    lv_obj_clear_flag(objects.ui_detail_hourly, LV_OBJ_FLAG_OVERFLOW_VISIBLE);
+
+    lv_obj_t *container = lv_obj_create(objects.ui_detail_hourly);
+    const lv_style_selector_t selector = (lv_style_selector_t)LV_PART_MAIN | (lv_style_selector_t)LV_STATE_DEFAULT;
+    s_hourly.extra_slot = container;
+    lv_obj_set_size(container, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+    lv_obj_set_style_pad_left(container, 0, selector);
+    lv_obj_set_style_pad_top(container, 0, selector);
+    lv_obj_set_style_pad_right(container, 0, selector);
+    lv_obj_set_style_pad_bottom(container, 0, selector);
+    lv_obj_set_style_bg_opa(container, 0, selector);
+    lv_obj_set_style_border_width(container, 0, selector);
+
+    lv_obj_t *icon = lv_img_create(container);
+    lv_obj_set_pos(icon, 0, 0);
+    lv_obj_set_size(icon, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+    lv_img_set_src(icon, &img_clear_day_50);
+
+    lv_obj_t *label = lv_label_create(container);
+    s_hourly.extra_slot_label = label;
+    lv_obj_set_pos(label, 0, 60);
+    lv_obj_set_size(label, 50, LV_SIZE_CONTENT);
+    lv_obj_set_style_text_align(label, LV_TEXT_ALIGN_CENTER, selector);
+    lv_obj_set_style_text_font(label, &ui_font_ui_16, selector);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffffff), selector);
+    lv_label_set_text(label, "");
+
+    lv_obj_add_flag(container, LV_OBJ_FLAG_HIDDEN);
+}
+
+static void hourly_strip_apply_offset(lv_coord_t offset_px, float frac)
+{
+    if (!objects.ui_detail_hourly || !lv_obj_is_valid(objects.ui_detail_hourly)) {
+        return;
+    }
+
+    if (offset_px < 0) {
+        offset_px = 0;
+    } else if (offset_px > HOURLY_STRIP_SLOT_PX) {
+        offset_px = HOURLY_STRIP_SLOT_PX;
+    }
+
+    if (s_hourly.last_offset_px == offset_px) {
+        hourly_strip_chart_sync_fraction(frac);
+        return;
+    }
+    s_hourly.last_offset_px = offset_px;
+
+    lv_obj_t *slots[HOURLY_STRIP_ICON_COUNT] = {
+        objects.obj10,
+        objects.obj11,
+        objects.obj12,
+        objects.obj13,
+        objects.obj14,
+        objects.obj15,
+        objects.obj16
+    };
+
+    for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
+        lv_obj_t *slot = slots[i];
+        if (!slot || !lv_obj_is_valid(slot)) {
+            continue;
+        }
+        if (!s_hourly.base_slot_valid || s_hourly.base_slot_obj[i] != slot) {
+            s_hourly.base_slot_x[i] = lv_obj_get_x(slot);
+            s_hourly.base_slot_y[i] = lv_obj_get_y(slot);
+            s_hourly.base_slot_obj[i] = slot;
+            s_hourly.base_slot_valid = true;
+        }
+        lv_obj_set_pos(slot,
+                       (lv_coord_t)(s_hourly.base_slot_x[i] - offset_px),
+                       s_hourly.base_slot_y[i]);
+    }
+
+    if (s_hourly.anim_active) {
+        hourly_strip_ensure_extra_slot();
+        if (s_hourly.extra_slot && lv_obj_is_valid(s_hourly.extra_slot)) {
+            if (!s_hourly.extra_base_valid && s_hourly.base_slot_valid) {
+                lv_coord_t spacing = HOURLY_STRIP_SLOT_PX;
+                if (HOURLY_STRIP_ICON_COUNT >= 2) {
+                    lv_coord_t last = s_hourly.base_slot_x[HOURLY_STRIP_ICON_COUNT - 1];
+                    lv_coord_t prev = s_hourly.base_slot_x[HOURLY_STRIP_ICON_COUNT - 2];
+                    if (last > prev) {
+                        spacing = (lv_coord_t)(last - prev);
+                    }
+                }
+                s_hourly.extra_base_x = (lv_coord_t)(s_hourly.base_slot_x[HOURLY_STRIP_ICON_COUNT - 1] + spacing);
+                s_hourly.extra_base_y = s_hourly.base_slot_y[HOURLY_STRIP_ICON_COUNT - 1];
+                s_hourly.extra_base_valid = true;
+            }
+            if (s_hourly.extra_base_valid) {
+                lv_obj_set_pos(s_hourly.extra_slot,
+                               (lv_coord_t)(s_hourly.extra_base_x - offset_px),
+                               s_hourly.extra_base_y);
+            }
+            lv_obj_clear_flag(s_hourly.extra_slot, LV_OBJ_FLAG_HIDDEN);
+        }
+    } else {
+        if (s_hourly.extra_slot && lv_obj_is_valid(s_hourly.extra_slot)) {
+            lv_obj_add_flag(s_hourly.extra_slot, LV_OBJ_FLAG_HIDDEN);
+        }
+    }
+
+    hourly_strip_chart_sync_fraction(frac);
 }
 
 static bool hourly_strip_chart_compute_range(lv_coord_t *out_min, lv_coord_t *out_max)
@@ -197,6 +338,51 @@ static void hourly_strip_chart_sync(void)
             }
             ESP_LOGI("HOURLY", "new val : %d : range Y %s", (int)s_hourly_chart_series_1_array[2], label_buf);
 #endif
+        }
+        lv_chart_refresh(s_hourly_chart);
+    }
+}
+
+static float hourly_strip_lerp_temp(float a, float b, float frac)
+{
+    if (std::isnan(a) && std::isnan(b)) {
+        return NAN;
+    }
+    if (std::isnan(a)) {
+        return b;
+    }
+    if (std::isnan(b)) {
+        return a;
+    }
+    return a + (b - a) * frac;
+}
+
+static void hourly_strip_chart_sync_fraction(float frac)
+{
+    if (frac < 0.0f) {
+        frac = 0.0f;
+    } else if (frac > 1.0f) {
+        frac = 1.0f;
+    }
+
+    bool is_fahrenheit = temp_unit_is_fahrenheit();
+    for (size_t i = 0; i < HOURLY_STRIP_ICON_COUNT; ++i) {
+        float a = s_hourly.temps[i];
+        float b = (i + 1 < HOURLY_STRIP_ICON_COUNT) ? s_hourly.temps[i + 1] : s_hourly.temps[i];
+        float temp = hourly_strip_lerp_temp(a, b, frac);
+        if (std::isnan(temp)) {
+            s_hourly_chart_series_1_array[i] = 0;
+        } else {
+            float display = hourly_strip_to_unit(temp, is_fahrenheit);
+            s_hourly_chart_series_1_array[i] = (lv_coord_t)std::lround(display);
+        }
+    }
+
+    if (s_hourly_chart && s_hourly_chart_series) {
+        lv_coord_t range_min = 0;
+        lv_coord_t range_max = 0;
+        if (hourly_strip_chart_compute_range(&range_min, &range_max)) {
+            lv_chart_set_range(s_hourly_chart, LV_CHART_AXIS_PRIMARY_Y, range_min, range_max);
         }
         lv_chart_refresh(s_hourly_chart);
     }
@@ -445,13 +631,12 @@ static lv_obj_t *hourly_detail_widget_label(size_t index)
     }
 }
 
-static void hourly_detail_set_widget(size_t index,
-                                     const HourlyEntry *entry,
-                                     const HourlyEntry *icon_entry,
-                                     time_t fallback_ts)
+static void hourly_detail_set_widget_objects(lv_obj_t *container,
+                                             lv_obj_t *label,
+                                             const HourlyEntry *entry,
+                                             const HourlyEntry *icon_entry,
+                                             time_t fallback_ts)
 {
-    lv_obj_t *container = hourly_detail_widget_container(index);
-    lv_obj_t *label = hourly_detail_widget_label(index);
     if (!container || !label) {
         return;
     }
@@ -464,7 +649,7 @@ static void hourly_detail_set_widget(size_t index,
         ts = entry->timestamp;
 #ifdef DEBUG_LOG
     } else if (entry && !entry->valid) {
-        ESP_LOGW("HOURLY", "erreur data hourly: entry invalide (ts) slot=%u", (unsigned)index);
+        ESP_LOGW("HOURLY", "erreur data hourly: entry invalide (ts)");
 #endif
     }
 
@@ -522,8 +707,7 @@ static void hourly_detail_set_widget(size_t index,
     const char *entry_valid = (entry && entry->valid) ? "1" : "0";
     const char *icon_valid = (icon_src && icon_src->valid) ? "1" : "0";
     ESP_LOGI("HOURLY",
-             "ui_meteo_detail slot=%u id=%d icon_id=%s dt_hh=%d label=%s temp=%.2f ts=%ld entry_ts=%ld fallback_ts=%ld entry_valid=%s icon_valid=%s",
-             (unsigned)index,
+             "ui_meteo_detail slot=manual id=%d icon_id=%s dt_hh=%d label=%s temp=%.2f ts=%ld entry_ts=%ld fallback_ts=%ld entry_valid=%s icon_valid=%s",
              condition_id,
              icon_id ? icon_id : "",
              dt_hh,
@@ -535,6 +719,21 @@ static void hourly_detail_set_widget(size_t index,
              entry_valid,
              icon_valid);
 #endif
+}
+
+static void hourly_detail_set_widget(size_t index,
+                                     const HourlyEntry *entry,
+                                     const HourlyEntry *icon_entry,
+                                     time_t fallback_ts)
+{
+    lv_obj_t *container = hourly_detail_widget_container(index);
+    lv_obj_t *label = hourly_detail_widget_label(index);
+    if (entry && !entry->valid) {
+#ifdef DEBUG_LOG
+        ESP_LOGW("HOURLY", "erreur data hourly: entry invalide (ts) slot=%u", (unsigned)index);
+#endif
+    }
+    hourly_detail_set_widget_objects(container, label, entry, icon_entry, fallback_ts);
 }
 
 static void hourly_detail_apply_widgets(time_t now_ts)
@@ -638,6 +837,26 @@ static void hourly_detail_apply_widgets(time_t now_ts)
             ESP_LOGI("HOURLY", "%s", log_buf);
         }
 #endif
+    }
+
+    if (s_hourly.anim_active) {
+        hourly_strip_ensure_extra_slot();
+        if (s_hourly.extra_slot && s_hourly.extra_slot_label && lv_obj_is_valid(s_hourly.extra_slot)) {
+            const HourlyEntry *entry = NULL;
+            int idx = (int)s_hourly.hourly_cursor + 5;
+            if (idx >= 0 && (size_t)idx < s_hourly.hourly_count) {
+                entry = &s_hourly.hourly_cache[idx];
+            }
+            time_t fallback_ts = 0;
+            if (base_ts) {
+                fallback_ts = base_ts + (time_t)(5 * 3600);
+            }
+            hourly_detail_set_widget_objects(s_hourly.extra_slot,
+                                             s_hourly.extra_slot_label,
+                                             entry,
+                                             entry,
+                                             fallback_ts);
+        }
     }
 
     if (s_hourly.detail_init_pending && current_entry) {
@@ -985,6 +1204,46 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
     }
 
     if (details_active) {
+        int sec_in_hour = timeinfo->tm_min * 60 + timeinfo->tm_sec;
+        float offset = ((float)sec_in_hour / (float)HOURLY_STRIP_SECONDS_PER_SLOT) * (float)HOURLY_STRIP_SLOT_PX;
+        lv_coord_t offset_px = (lv_coord_t)std::lround(offset);
+        float frac = offset / (float)HOURLY_STRIP_SLOT_PX;
+        s_hourly.anim_offset_px = offset_px;
+        s_hourly.anim_frac = frac;
+        s_hourly.anim_active = (offset_px > 0);
+        if (s_hourly.anim_active != s_hourly.last_anim_active) {
+            s_hourly.last_anim_active = s_hourly.anim_active;
+            struct tm timeinfo_copy = *timeinfo;
+            time_t now_ts = mktime(&timeinfo_copy);
+            if (now_ts == (time_t)-1) {
+                now_ts = 0;
+            }
+            hourly_detail_apply_widgets(now_ts);
+        }
+        hourly_strip_apply_offset(offset_px, frac);
+#ifdef DEBUG_LOG
+        if ((sec_in_hour % 10) == 0 && s_hourly.last_anim_log_sec != sec_in_hour) {
+            s_hourly.last_anim_log_sec = sec_in_hour;
+            float temp_now = s_hourly.temps[2];
+            float temp_next = s_hourly.temps[3];
+            float temp_interp = hourly_strip_lerp_temp(temp_now, temp_next, frac);
+            float temp_display = hourly_strip_to_unit(temp_interp, temp_unit_is_fahrenheit());
+            ESP_LOGI("HOURLY",
+                     "anim_offset sec=%d offset_px=%d temp=%.2f",
+                     sec_in_hour,
+                     (int)offset_px,
+                     (double)temp_display);
+        }
+#endif
+    } else {
+        s_hourly.anim_offset_px = 0;
+        s_hourly.anim_frac = 0.0f;
+        s_hourly.anim_active = false;
+        s_hourly.last_anim_active = false;
+        hourly_strip_apply_offset(0, 0.0f);
+    }
+
+    if (details_active) {
 #ifdef DEBUG_LOG
         s_hourly.trace_source = "tick_detail";
 #endif
@@ -1005,6 +1264,16 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
         s_hourly.last_yday == timeinfo->tm_yday) {
         return;
     }
+
+#ifdef DEBUG_LOG
+    ESP_LOGI("HOURLY",
+             "hour_shift tm=%02d:%02d:%02d yday=%d offset_px=%d",
+             timeinfo->tm_hour,
+             timeinfo->tm_min,
+             timeinfo->tm_sec,
+             timeinfo->tm_yday,
+             (int)s_hourly.last_offset_px);
+#endif
 
     s_hourly.last_hour = timeinfo->tm_hour;
     s_hourly.last_yday = timeinfo->tm_yday;

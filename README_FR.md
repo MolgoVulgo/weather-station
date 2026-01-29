@@ -1,10 +1,7 @@
 # Documentation technique - Weather-Station (LVGL demo)
 
 ## Objet
-Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x480). Le code demarre LVGL 8.3 avec un pilote LCD AXS15231B en QSPI et un controle tactile associe.
-
-## Etat actuel (UI)
-- Aucun changement fonctionnel en cours cote code; dernier diff git ne touche que l'etat UI EEZ (`eez/weather-station.eez-project-ui-state`).
+Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x480). Le code demarre LVGL 8.4 avec un pilote LCD AXS15231B en QSPI et un controle tactile associe.
 
 ## Structure des sources
 - `src/weatherStation.c`: point d'entree `app_main()` et sequence de demarrage LVGL + init SD.
@@ -27,10 +24,14 @@ Ce projet est un build PlatformIO/ESP-IDF pour la carte JC3248W535EN (ecran 320x
 - L'UI met a jour les labels dans `src/ui/screens.c` a chaque `tick_screen()` en lisant ces getters.
 
 ## UI: meteo details (hourly strip)
-- Le conteneur `hourly_strip` affiche 7 icones (index 2 = "now", 3..6 = futures +1..+4, 0..1 = historique -2..-1).
-- Les donnees horaires proviennent du One Call v3 (tableau `hourly`, 12 entrees chargees).
-- Le shift s'effectue a chaque changement d'heure si l'ecran `ui_meteo_details` est actif (animation 300ms).
-- L'animation recale le X de base du conteneur au demarrage pour eviter le decalage vers la gauche au premier move.
+- Le conteneur `ui_detail_hourly` affiche 7 widgets (slots) centrés sur leur axe vertical. Chaque widget fait 50 px de large.
+- Echelle temporelle: 1 heure = 50 px. L'offset visuel varie en continu selon `tm_min`/`tm_sec`.
+- Les donnees horaires proviennent du One Call v3 (tableau `hourly`, 12 entrees chargees dans `hourly_cache`).
+- Mapping logique: slot 2 = "now" (`hourly[0]`), slots 3..6 = +1..+4 (`hourly[1..4]`), slots 0..1 = -2..-1 (historique).
+- Au premier affichage, les slots 0..1 reprennent la valeur du slot 2 si l'historique est vide.
+- Animation: l'offset evolue en continu; pendant le glissement, un slot "extra" est ajoute apres le dernier pour afficher +5h (`hourly[5]`).
+- Shift logique: au changement d'heure, les donnees "glissent" d'un slot, puis l'offset repasse a 0.
+  La nouvelle donnee est deja connue (ex: `json.hourly[4]` cote service meteo).
 
 ## Internationalisation (i18n)
 - Les traductions sont definies dans `src/i18n.c` et resolues via la macro `_()` de `src/lv_i18n.h`.

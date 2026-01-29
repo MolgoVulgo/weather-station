@@ -1,7 +1,7 @@
 # Technical Documentation - Weather-Station (LVGL demo)
 
 ## Purpose
-This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 display). The code starts LVGL 8.3 with an AXS15231B LCD driver over QSPI and an associated touch controller.
+This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 display). The code starts LVGL 8.4 with an AXS15231B LCD driver over QSPI and an associated touch controller.
 
 ## Source Structure
 - `src/weatherStation.c`: entry point `app_main()` and LVGL startup sequence + SD init.
@@ -24,10 +24,14 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - The UI updates labels in `src/ui/screens.c` on each `tick_screen()` by reading these getters.
 
 ## UI: meteo details (hourly strip)
-- The `hourly_strip` container shows 7 icons (index 2 = "now", 3..6 = future +1..+4, 0..1 = history -2..-1).
-- Hourly data comes from One Call v3 (`hourly` array, 12 entries loaded).
-- The strip shifts on each hour change if `ui_meteo_details` is active (300ms animation).
-- The animation captures the container base X at start to avoid the first-move left offset.
+- The `ui_detail_hourly` container shows 7 widgets (slots) centered on a vertical axis. Each widget is 50 px wide.
+- Time scale: 1 hour = 50 px. The visual offset moves continuously based on `tm_min`/`tm_sec`.
+- Hourly data comes from One Call v3 (`hourly` array, 12 entries loaded into `hourly_cache`).
+- Logical mapping: slot 2 = "now" (`hourly[0]`), slots 3..6 = +1..+4 (`hourly[1..4]`), slots 0..1 = -2..-1 (history).
+- On first display, slots 0..1 reuse slot 2 if no history is available.
+- Animation: offset moves continuously; during sliding, an extra slot is added after the last one to show +5h (`hourly[5]`).
+- Logical shift: on hour change, data slides by one slot and the offset resets to 0.
+  The incoming hour data is already known (e.g. `json.hourly[4]` in the weather service layer).
 
 ## Internationalization (i18n)
 - Translations are defined in `src/i18n.c` and resolved via the `_()` macro from `src/lv_i18n.h`.

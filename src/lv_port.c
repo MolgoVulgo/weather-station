@@ -572,6 +572,9 @@ static void lvgl_port_flush_callback(lv_disp_drv_t *drv, const lv_area_t *area, 
 }
 
 #ifdef ESP_LVGL_PORT_TOUCH_COMPONENT
+#ifndef TOUCHPAD_LOG
+#define TOUCHPAD_LOG 0
+#endif
 static void lvgl_port_touchpad_read(lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
 {
     assert(indev_drv);
@@ -596,7 +599,9 @@ static void lvgl_port_touchpad_read(lv_indev_drv_t *indev_drv, lv_indev_data_t *
             data->point.x = touchpad_x[0];
             data->point.y = touchpad_y[0];
             data->state = LV_INDEV_STATE_PRESSED;
+#if TOUCHPAD_LOG
             esp_rom_printf("Touchpad pressed: x=%d, y=%d\n", data->point.x, data->point.y);
+#endif
         } else {
             data->state = LV_INDEV_STATE_RELEASED;
         }

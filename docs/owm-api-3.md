@@ -51,12 +51,14 @@ Chaque entrée contient:
 - `rain.1h`, `snow.1h`: cumul 1h (mm) lorsque présent.
 
 ### Usage dans l'UI (strip horaire)
-- Le point de départ est **toujours** `json.hourly[0]` (son `dt` alimente le 1er slot horaire).
-- L'UI affiche **7 slots**: `hourly[0..6]`.
+- Le point de départ est **toujours** `json.hourly[0]`.
+- L'UI affiche **7 slots** fixes (0..6) + un slot "extra" temporaire pendant l'animation.
 - Mapping des timestamps:
-  - `hourly[2..6]` prennent leurs `dt` depuis `json.hourly[0..4]`.
-  - `hourly[0]` et `hourly[1]` sont des valeurs d'historique (décalage: `hourly[2] -> hourly[1] -> hourly[0]`).
-- A l'init de l'UI, `hourly[0]` et `hourly[1]` reprennent les valeurs de `hourly[2]`.
+  - Slot 2 = `json.hourly[0]` (now).
+  - Slots 3..6 = `json.hourly[1..4]` (+1..+4h).
+  - Slots 0..1 = historique (décalage: slot 2 -> slot 1 -> slot 0).
+  - Slot "extra" = `json.hourly[5]` (+5h) pendant le glissement.
+- A l'init de l'UI, les slots 0..1 reprennent la valeur du slot 2 si l'historique est vide.
 - Si les données hourly sont absentes/invalides, l'UI conserve l'affichage actuel et un log debug est émis.
 
 ## Tableau `daily`
