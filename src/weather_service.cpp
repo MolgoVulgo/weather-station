@@ -394,10 +394,15 @@ static void weather_fetch_once(void)
     }
     boot_progress_set(75, _("Meteo"));
     weather_apply_ui(&current);
-    hourly_strip_update(&current,
-                        hourly_valid ? hourly : NULL,
-                        hourly_valid ? 12 : 0,
-                        current.observationTime);
+    if (bsp_display_lock(0)) {
+        hourly_strip_update(&current,
+                            hourly_valid ? hourly : NULL,
+                            hourly_valid ? 12 : 0,
+                            current.observationTime);
+        bsp_display_unlock();
+    } else {
+        ESP_LOGW(TAG, "LVGL lock failed, hourly strip update skipped");
+    }
     if (strlen(api_key_3) > 0) {
         weather_apply_forecast(daily, 6);
         if (!s_boot_done) {

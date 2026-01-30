@@ -1232,11 +1232,28 @@ void hourly_strip_tick(const struct tm *timeinfo, bool details_active)
             float temp_next = s_hourly.temps[3];
             float temp_interp = hourly_strip_lerp_temp(temp_now, temp_next, frac);
             float temp_display = hourly_strip_to_unit(temp_interp, temp_unit_is_fahrenheit());
+            float hourly0_temp = NAN;
+            if (s_hourly.hourly_count > s_hourly.hourly_cursor &&
+                s_hourly.hourly_cache[s_hourly.hourly_cursor].valid) {
+                hourly0_temp = s_hourly.hourly_cache[s_hourly.hourly_cursor].temperature;
+            }
             ESP_LOGI("HOURLY",
                      "anim_offset sec=%d offset_px=%d temp=%.2f",
                      sec_in_hour,
                      (int)offset_px,
                      (double)temp_display);
+            ESP_LOGI("HOURLY",
+                     "chart_points [%d %d %d %d %d %d %d] hourly0=%.2f temp_match=%d",
+                     (int)s_hourly_chart_series_1_array[0],
+                     (int)s_hourly_chart_series_1_array[1],
+                     (int)s_hourly_chart_series_1_array[2],
+                     (int)s_hourly_chart_series_1_array[3],
+                     (int)s_hourly_chart_series_1_array[4],
+                     (int)s_hourly_chart_series_1_array[5],
+                     (int)s_hourly_chart_series_1_array[6],
+                     (double)hourly0_temp,
+                     (!std::isnan(hourly0_temp) &&
+                      std::fabs(hourly_strip_to_unit(hourly0_temp, temp_unit_is_fahrenheit()) - temp_display) < 0.5f));
         }
 #endif
     } else {
