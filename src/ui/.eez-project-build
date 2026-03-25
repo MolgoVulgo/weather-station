@@ -1,0 +1,26 @@
+{
+  "files": [
+    "actions.h",
+    "fonts.h",
+    "fonts/ui_font_test.c",
+    "fonts/ui_font_ui_16.c",
+    "fonts/ui_font_ui_18.c",
+    "fonts/ui_font_ui_40.c",
+    "fonts/ui_font_ui_48.c",
+    "fonts/ui_font_ui_50.c",
+    "images.c",
+    "images.h",
+    "images/ui_image_clear_day.c",
+    "images/ui_image_clear_day_50.c",
+    "images/ui_image_gear.c",
+    "images/ui_image_night_clear.c",
+    "screens.c",
+    "screens.h",
+    "structs.h",
+    "styles.c",
+    "styles.h",
+    "ui.c",
+    "ui.h",
+    "vars.h"
+  ]
+}

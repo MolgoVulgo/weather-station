@@ -7,13 +7,18 @@
 extern "C" {
 #endif
 
-typedef struct _groups_t {
-    lv_group_t *test;
-} groups_t;
+// Screens
 
-extern groups_t groups;
-
-void ui_create_groups();
+enum ScreensEnum {
+    _SCREEN_ID_FIRST = 1,
+    SCREEN_ID_UI_START = 1,
+    SCREEN_ID_UI_METEO = 2,
+    SCREEN_ID_UI_METEO_DETAILS = 3,
+    SCREEN_ID_UI_SETTING = 4,
+    SCREEN_ID_UI_WIFI = 5,
+    SCREEN_ID_UI_MONITORING = 6,
+    _SCREEN_ID_LAST = 6
+};
 
 typedef struct _objects_t {
     lv_obj_t *ui_start;
@@ -21,8 +26,7 @@ typedef struct _objects_t {
     lv_obj_t *ui_meteo_details;
     lv_obj_t *ui_setting;
     lv_obj_t *ui_wifi;
-    lv_obj_t *ui_setting_hour;
-    lv_obj_t *ui_setting_unit;
+    lv_obj_t *ui_monitoring;
     lv_obj_t *ui_start_bar;
     lv_obj_t *ui_start_bar_texte;
     lv_obj_t *obj0;
@@ -63,33 +67,39 @@ typedef struct _objects_t {
     lv_obj_t *ui_detail_hourly;
     lv_obj_t *obj10;
     lv_obj_t *obj10__obj0;
+    lv_obj_t *obj10__obj1;
     lv_obj_t *obj11;
     lv_obj_t *obj11__obj0;
+    lv_obj_t *obj11__obj1;
     lv_obj_t *obj12;
     lv_obj_t *obj12__obj0;
+    lv_obj_t *obj12__obj1;
     lv_obj_t *obj13;
     lv_obj_t *obj13__obj0;
+    lv_obj_t *obj13__obj1;
     lv_obj_t *obj14;
     lv_obj_t *obj14__obj0;
+    lv_obj_t *obj14__obj1;
     lv_obj_t *obj15;
     lv_obj_t *obj15__obj0;
+    lv_obj_t *obj15__obj1;
     lv_obj_t *obj16;
     lv_obj_t *obj16__obj0;
+    lv_obj_t *obj16__obj1;
     lv_obj_t *ui_detail_chart;
     lv_obj_t *obj17;
     lv_obj_t *obj18;
     lv_obj_t *obj19;
     lv_obj_t *obj20;
-    lv_obj_t *ui_humidity;
-    lv_obj_t *ui_pop;
-    lv_obj_t *ui_clouds;
     lv_obj_t *obj21;
     lv_obj_t *obj22;
+    lv_obj_t *ui_setting_hour;
     lv_obj_t *obj23;
     lv_obj_t *ui_setting_gmt_switch;
     lv_obj_t *ui_setting_gmt_label;
     lv_obj_t *ui_setting_gmt_switch1;
     lv_obj_t *ui_setting_gmt_switch2;
+    lv_obj_t *ui_setting_unit;
     lv_obj_t *obj24;
     lv_obj_t *obj25;
     lv_obj_t *obj26;
@@ -101,14 +111,6 @@ typedef struct _objects_t {
 } objects_t;
 
 extern objects_t objects;
-
-enum ScreensEnum {
-    SCREEN_ID_UI_START = 1,
-    SCREEN_ID_UI_METEO = 2,
-    SCREEN_ID_UI_METEO_DETAILS = 3,
-    SCREEN_ID_UI_SETTING = 4,
-    SCREEN_ID_UI_WIFI = 5,
-};
 
 void create_screen_ui_start();
 void tick_screen_ui_start();
@@ -125,6 +127,9 @@ void tick_screen_ui_setting();
 void create_screen_ui_wifi();
 void tick_screen_ui_wifi();
 
+void create_screen_ui_monitoring();
+void tick_screen_ui_monitoring();
+
 void create_user_widget_hourly(lv_obj_t *parent_obj, int startWidgetIndex);
 void tick_user_widget_hourly(int startWidgetIndex);
 
@@ -133,6 +138,15 @@ void tick_screen(int screen_index);
 
 void create_screens();
 
+// Groups
+
+typedef struct _groups_t {
+    lv_group_t *test;
+} groups_t;
+
+extern groups_t groups;
+
+void ui_create_groups();
 
 #ifdef __cplusplus
 }

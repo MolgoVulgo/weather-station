@@ -10,8 +10,6 @@ extern "C" {
 
 // enum declarations
 
-
-
 // Flow global variables
 
 enum FlowGlobalVariables {
@@ -97,7 +95,6 @@ extern const char *get_var_ui_clouds();
 extern void set_var_ui_clouds(const char *value);
 extern const char *get_var_ui_pop();
 extern void set_var_ui_pop(const char *value);
-
 
 #ifdef __cplusplus
 }

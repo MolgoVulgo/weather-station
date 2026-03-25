@@ -153,5 +153,3 @@ void app_main(void)
     }
 }
 ```
-
-Dependance: zlib (`REQUIRES zlib` dans le CMakeLists.txt du composant).
