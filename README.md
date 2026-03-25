@@ -14,6 +14,8 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `src/ui/`: EEZ Studio export (UI, assets, screens). Do not edit manually.
 - `libraries/weather/`: ESP-IDF weather fetcher and OWM icon mapping (uses embedded icon index).
 - `src/hourly_strip.cpp` / `src/hourly_strip.h`: hourly strip controller (7 icons, animation, local buffer).
+- `src/monitoring_service.cpp` / `src/monitoring_service.h`: PulseMon API fetch task (dashboard + history, JSON parse, cache).
+- `src/monitoring_ui.cpp` / `src/monitoring_ui.h`: runtime LVGL widgets for `ui_monitoring` and screen-visibility driven polling.
 
 ## UI: EEZ Studio
 - `ui/` (EEZ Studio): generates an `objects` structure (e.g. `objects.ui_screen_label_time`) and an EEZ screen pipeline (`loadScreen`, `tick_screen`).
@@ -32,6 +34,13 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - Animation: offset moves continuously; during sliding, an extra slot is added after the last one to show +5h (`hourly[5]`).
 - Logical shift: on hour change, data slides by one slot and the offset resets to 0.
   The incoming hour data is already known (e.g. `json.hourly[4]` in the weather service layer).
+
+## UI: monitoring (PulseMon)
+- `ui_monitoring` is kept generated/empty in `src/ui/`; widgets are created at runtime from `src/monitoring_ui.cpp`.
+- Swipe navigation:
+  - `ui_meteo` swipe right -> `ui_monitoring`
+  - `ui_monitoring` swipe left -> `ui_meteo`
+- PulseMon polling is active only while `ui_monitoring` is the current screen.
 
 ## Internationalization (i18n)
 - Translations are defined in `src/i18n.c` and resolved via the `_()` macro from `src/lv_i18n.h`.
@@ -56,6 +65,7 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 9. SD mount (`/sdcard`) and list files.
 10. `ui_screen_start()` starts the local clock (LVGL timer).
 11. Weather service runs current + forecast, then switches to `ui_meteo`.
+12. Monitoring service starts idle and polls PulseMon only when `ui_monitoring` is displayed.
 
 ## Display Pipeline
 - `bsp_display_new()` configures the QSPI bus and the AXS15231B panel.
@@ -79,6 +89,8 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - Temperature unit: `temp_unit` in NVS `weather_cfg` (0=°C, 1=°F).
 - Wi-Fi: SSID + password in NVS, namespace `wifi_cfg` (`src/wifi_manager.c`).
 - Wi-Fi reset: set `WIFI_RESET_NVS=1` in `include/secrets.h` to clear stored credentials.
+- Monitoring API endpoint: `MONITOR_API_HOST`, `MONITOR_API_PORT`, `MONITOR_API_DASHBOARD_PATH`, `MONITOR_API_HISTORY_PATH` in `include/secrets.h`.
+- Monitoring poll rates: `MONITOR_POLL_DASHBOARD_MS`, `MONITOR_POLL_HISTORY_MS`.
 
 ## Extension Points
 - Use `bsp_display_lock()` / `bsp_display_unlock()` to protect LVGL calls from other tasks.
@@ -106,6 +118,8 @@ This project is a PlatformIO/ESP-IDF build for the JC3248W535EN board (320x480 d
 - `ui_init()` (`src/ui/ui.c`): initializes screens and loads the main screen.
 - `ui_screen_start()` (`src/ui_screen.c`): initializes the clock at 00:00:00 and updates the time label every second (24h or 12h with am/pm).
 - Weather service (`src/weather_service.cpp`): fetches current data at startup and then every `WEATHER_REFRESH_MINUTES`, updates UI text, and loads the icon from `icon_150.bin` using the embedded index. Forecast temperatures are formatted as `min/max°unit`.
+- Monitoring service (`src/monitoring_service.cpp`): fetches PulseMon `/api/v1/dashboard` and `/api/v1/history`, parses metric envelopes (`value_display`), and stores chart-ready series.
+- Monitoring UI (`src/monitoring_ui.cpp`): builds `ui_monitoring` cards/charts with LVGL and refreshes values only when the screen is active.
 - Weather icons (`src/weather_icons.c`): global `code/variant/bin` cache to avoid redundant decodes across targets.
 - Boot progress (`src/boot_progress.c`): updates `ui_start_bar`/`ui_start_bar_texte` and switches to `ui_meteo` when ready.
 - Captive portal (`src/wifi_portal.c`): AP + web UI for Wi-Fi setup, save to NVS, reboot. Scan returns up to 50 SSIDs and is refreshable in the UI; scan results are logged.

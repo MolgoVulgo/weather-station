@@ -1,10 +1,10 @@
 {
   "navigation": {
-    "selectedUserPageObject": "[weather-station.eez-project]:/userPages/2",
+    "selectedUserPageObject": "[weather-station.eez-project]:/userPages/1",
     "selectedUserWidgetObject": "[weather-station.eez-project]:/userWidgets/0",
     "selectedGlobalVariableObject": "[weather-station.eez-project]:/variables/globalVariables/24",
     "selectedThemeObject": "[weather-station.eez-project]:/themes/0",
-    "selectedFontObject": "[weather-station.eez-project]:/fonts/4",
+    "selectedFontObject": "[weather-station.eez-project]:/fonts/3",
     "selectedBitmapObject": "[weather-station.eez-project]:/bitmaps/3",
     "selectedLvglGroupObject": "[weather-station.eez-project]:/lvglGroups/groups/0",
     "subnavigationSelectedItems": {
@@ -29,7 +29,7 @@
           },
           {
             "type": "border",
-            "selected": 4,
+            "selected": 1,
             "size": 240,
             "location": "right",
             "children": [
@@ -77,6 +77,7 @@
           },
           {
             "type": "border",
+            "selected": 0,
             "location": "bottom",
             "children": [
               {
@@ -138,7 +139,6 @@
                   "type": "tabset",
                   "id": "#9a2d7456-9b42-4e46-9522-c050e77cc0c2",
                   "weight": 1,
-                  "selected": 1,
                   "enableClose": false,
                   "children": [
                     {
@@ -223,10 +223,10 @@
                 {
                   "type": "tab",
                   "id": "#7d4e11e6-43cc-47ff-9166-629ed3232335",
-                  "name": "ui_meteo_details",
+                  "name": "ui_meteo",
                   "component": "editor",
                   "config": {
-                    "objectPath": "[weather-station.eez-project]:/userPages/2",
+                    "objectPath": "[weather-station.eez-project]:/userPages/1",
                     "permanent": false
                   },
                   "icon": "svg:page"
@@ -538,6 +538,88 @@
                       "id": "DEBUGGER_LOGS",
                       "name": "Logs",
                       "component": "logs",
+                      "enableClose": false,
+                      "icon": "svg:log"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "rootDockerSimulator": {
+      "version": 1,
+      "json": {
+        "global": {
+          "splitterSize": 4,
+          "splitterExtra": 4,
+          "tabEnableRename": false,
+          "borderEnableAutoHide": true
+        },
+        "borders": [],
+        "layout": {
+          "type": "row",
+          "id": "#28da8117-9113-4ab5-94e5-099eb029d6a2",
+          "children": [
+            {
+              "type": "tabset",
+              "id": "#2065a6e6-3845-46d8-9b13-87abceac1542",
+              "weight": 70,
+              "enableDrop": false,
+              "enableDrag": false,
+              "enableClose": false,
+              "enableTabStrip": true,
+              "children": [
+                {
+                  "type": "tab",
+                  "id": "DOCKER_SIMULATOR_PREVIEW",
+                  "name": "Preview",
+                  "component": "dockerSimulatorPreview",
+                  "enableClose": false,
+                  "icon": "material:computer"
+                }
+              ]
+            },
+            {
+              "type": "row",
+              "id": "#4d042c74-8967-4330-8d09-d0f3e76b40c4",
+              "weight": 30,
+              "children": [
+                {
+                  "type": "tabset",
+                  "id": "#4186dfcd-5f98-45c9-b674-76a296827f62",
+                  "weight": 50,
+                  "enableDrop": false,
+                  "enableDrag": false,
+                  "enableClose": false,
+                  "enableTabStrip": true,
+                  "children": [
+                    {
+                      "type": "tab",
+                      "id": "DOCKER_SIMULATOR_LOGS",
+                      "name": "Build Logs",
+                      "component": "dockerSimulatorLogs",
+                      "enableClose": false,
+                      "icon": "svg:log"
+                    }
+                  ]
+                },
+                {
+                  "type": "tabset",
+                  "id": "#92c6e393-4664-41d7-a844-106ec7dd2187",
+                  "weight": 50,
+                  "enableDrop": false,
+                  "enableDrag": false,
+                  "enableClose": false,
+                  "enableTabStrip": true,
+                  "children": [
+                    {
+                      "type": "tab",
+                      "id": "DOCKER_SIMULATOR_PREVIEW_LOGS",
+                      "name": "Preview Logs",
+                      "component": "dockerSimulatorPreviewLogs",
                       "enableClose": false,
                       "icon": "svg:log"
                     }
@@ -1107,14 +1189,16 @@
           "x": -525,
           "y": -419
         },
-        "scale": 1.5
+        "scale": 1
       },
       "timeline": {
         "isEditorActive": false,
         "position": 0,
         "secondToPx": 200,
         "scrollLeft": 0
-      }
+      },
+      "selectionFront": {},
+      "selectionBack": {}
     },
     "[weather-station.eez-project]:/userPages/2[flow-state]": {
       "selection": {
@@ -1137,7 +1221,9 @@
         "position": 0,
         "secondToPx": 200,
         "scrollLeft": 0
-      }
+      },
+      "selectionFront": {},
+      "selectionBack": {}
     },
     "[weather-station.eez-project]:/userPages/3[flow-state]": {
       "selection": {
@@ -1167,14 +1253,16 @@
           "x": -240,
           "y": -160
         },
-        "scale": 1.5
+        "scale": 1
       },
       "timeline": {
         "isEditorActive": false,
         "position": 0,
         "secondToPx": 200,
         "scrollLeft": 0
-      }
+      },
+      "selectionFront": {},
+      "selectionBack": {}
     },
     "[weather-station.eez-project]:/userWidgets/0[flow-state]": {
       "selection": {
@@ -1184,6 +1272,25 @@
         "translate": {
           "x": -25,
           "y": -280
+        },
+        "scale": 1
+      },
+      "timeline": {
+        "isEditorActive": false,
+        "position": 0,
+        "secondToPx": 200,
+        "scrollLeft": 0
+      },
+      "selectionFront": {},
+      "selectionBack": {}
+    },
+    "[weather-station.eez-project]:/userPages/5[flow-state]": {
+      "selectionFront": {},
+      "selectionBack": {},
+      "transform": {
+        "translate": {
+          "x": -240,
+          "y": -160
         },
         "scale": 1
       },
@@ -1213,7 +1320,8 @@
   "lvglExpandedPropertiesGroup": [
     "TEXT",
     "BORDER",
-    "SHADOW"
+    "SHADOW",
+    "BACKGROUND"
   ],
   "showInactiveFlowsInDebugger": true,
   "globalFlowZoom": true,

@@ -18,6 +18,8 @@ static lv_obj_t *screen_from_id(enum ScreensEnum target)
             return objects.ui_setting;
         case SCREEN_ID_UI_WIFI:
             return objects.ui_wifi;
+        case SCREEN_ID_UI_MONITORING:
+            return objects.ui_monitoring;
         default:
             return NULL;
     }
@@ -70,7 +72,11 @@ void action_ui_swipe(lv_event_t *e)
     lv_obj_t *target = lv_event_get_target(e);
     if (target == objects.ui_meteo && dir == LV_DIR_LEFT) {
         action_swipe_to(SCREEN_ID_UI_METEO_DETAILS, LV_SCR_LOAD_ANIM_MOVE_LEFT);
+    } else if (target == objects.ui_meteo && dir == LV_DIR_RIGHT) {
+        action_swipe_to(SCREEN_ID_UI_MONITORING, LV_SCR_LOAD_ANIM_MOVE_RIGHT);
     } else if (target == objects.ui_meteo_details && dir == LV_DIR_RIGHT) {
         action_swipe_to(SCREEN_ID_UI_METEO, LV_SCR_LOAD_ANIM_MOVE_RIGHT);
+    } else if (target == objects.ui_monitoring && dir == LV_DIR_LEFT) {
+        action_swipe_to(SCREEN_ID_UI_METEO, LV_SCR_LOAD_ANIM_MOVE_LEFT);
     }
 }

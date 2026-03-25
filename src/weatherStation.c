@@ -72,6 +72,8 @@ static void log_configure(void)
   esp_log_level_set("LVGL", app_level);
   esp_log_level_set("LVFS", app_level);
   esp_log_level_set("BootProgress", app_level);
+  esp_log_level_set("MonitoringService", app_level);
+  esp_log_level_set("MonitoringUI", app_level);
   esp_log_level_set("Svg2BinFS", app_level);
   esp_log_level_set("TempUnit", app_level);
   esp_log_level_set("Lang", app_level);
@@ -203,6 +205,8 @@ static bool wait_for_wifi_ip(uint32_t timeout_ms)
 #include "weather_service.h"
 #include "boot_progress.h"
 #include "wifi_manager.h"
+#include "monitoring_service.h"
+#include "monitoring_ui.h"
 
 void setup();
 
@@ -287,6 +291,10 @@ void setup()
   logSection("Create UI");
   bsp_display_lock(0);
   ui_init();
+  esp_err_t monitor_ui_ret = monitoring_ui_init();
+  if (monitor_ui_ret != ESP_OK) {
+    ESP_LOGW(TAG, "Monitoring UI init failed: %s", esp_err_to_name(monitor_ui_ret));
+  }
   boot_progress_init();
   ui_settings_enable_language_restart(true);
   bsp_display_unlock();
@@ -376,6 +384,11 @@ void setup()
    */
   ui_screen_start();
   weather_service_start();
+  esp_err_t monitor_service_ret = monitoring_service_start();
+  if (monitor_service_ret != ESP_OK) {
+    ESP_LOGW(TAG, "Monitoring service start failed: %s", esp_err_to_name(monitor_service_ret));
+  }
+  monitoring_ui_start();
   lv_timer_create((lv_timer_cb_t)ui_tick, 100, NULL);
 
   /* Release the mutex */
